@@ -8,13 +8,17 @@ dependencies/utilities:
 - jdbc
 - jcalendar
 
+icon:
+- https://www.svgrepo.com/svg/30601/wallet
+
 colors:
 - dark blue - 10,46,127,255
-- yellow - 255,168,0,255
+- light yellow - 255,168,0,255
+- dark yellow - 255,120,0,255
 - light blue - 29,82,188,255
 
 current plans:
-- login page
+- login page (done)
 	- mysql stuff
 - top nav: 
 	- "<img (scholash logo or user)> welcome <username>"
