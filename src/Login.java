@@ -21,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
-import java.awt.Panel;
 import components.PasswordField;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -90,7 +89,7 @@ public class Login extends JFrame {
 		welcome.setFont(new Font("Arial", Font.BOLD, 32));
 		bg.add(welcome);
 
-		JLabel instructions = new JLabel("" + "<html>" + "To create an account..." + "<ol>"
+		JLabel instructions = new JLabel("<html>" + "To create an account..." + "<ol>"
 				+ "<li>Type in a username*</li>" + "<li>Type in a password*</li>" + "<li>Sign up!</li>" + "</ol>"
 				+ "To log into your account..." + "<ol>" + "<li>Type in your username</li>"
 				+ "<li>Type in your password</li>" + "<li>Log in!</li>" + "</ol>" + "</html>");
@@ -98,11 +97,10 @@ public class Login extends JFrame {
 		instructions.setHorizontalAlignment(SwingConstants.LEFT);
 		instructions.setForeground(Color.WHITE);
 		instructions.setFont(new Font("Arial", Font.BOLD, 20));
-		instructions.setBounds(20, 80, 284, 232);
+		instructions.setBounds(20, 90, 284, 232);
 		bg.add(instructions);
 
-		JLabel requirements = new JLabel("" + "<html>"
-				+ "*usernames and passwords have to be more than 5 characters and at most 32 characters." + "</html>");
+		JLabel requirements = new JLabel("<html> *usernames and passwords have to be at least 5 characters and at most 32 characters. </html>");
 		requirements.setVerticalAlignment(SwingConstants.BOTTOM);
 		requirements.setHorizontalAlignment(SwingConstants.CENTER);
 		requirements.setForeground(Color.WHITE);
@@ -110,8 +108,14 @@ public class Login extends JFrame {
 		requirements.setBounds(10, 333, 304, 37);
 		bg.add(requirements);
 
-		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 68, 324, 2);
+		JSeparator separator = new JSeparator() {
+			public void paintComponent(Graphics g) {
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setPaint(Color.white);
+				g2.fill(new Rectangle(getWidth(), getHeight()));
+			}
+		};
+		separator.setBounds(0, 68, 324, 3);
 		bg.add(separator);
 
 		JPanel login = new JPanel();
@@ -142,15 +146,15 @@ public class Login extends JFrame {
 					statement.setString(1, username.getText());
 					statement.setString(2, password.getPassword());
 					ResultSet resultSet = statement.executeQuery();
-					if (resultSet.next())
-						System.out.println("HOOZAH");
-					else
-						JOptionPane.showMessageDialog(rootPane, "Invalid username or password!", "Invalid Login",
-								JOptionPane.WARNING_MESSAGE);
+					if (resultSet.next()) {
+						App app = new App();
+						app.setVisible(true);
+						dispose();
+					}
+					else JOptionPane.showMessageDialog(rootPane, "Invalid username or password!", "Invalid Login", JOptionPane.WARNING_MESSAGE);
 					connection.close();
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(rootPane, "Invalid username or password!", "Invalid Login",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(rootPane, "Invalid username or password!", "Invalid Login", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -172,12 +176,14 @@ public class Login extends JFrame {
 							.prepareStatement("insert into users(username, password) value(?, ?)");
 					statement.setString(1, username.getText());
 					statement.setString(2, password.getPassword());
-					int result = statement.executeUpdate();
+					statement.executeUpdate();
+					JOptionPane.showMessageDialog(rootPane, "<html> Sign up successful! Continue to log in with the same credentials. <html>");
 					connection.close();
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(rootPane,
-							"<html Make sure your username and password are <br> over 5 characters and at most 32 characters! <html>",
-							"Invalid Sign Up", JOptionPane.WARNING_MESSAGE);
+					if (e.toString().contains("Duplicate")) JOptionPane.showMessageDialog(rootPane, "<html> This username is unavailable, please choose another one. <html>", "Invalid Sign Up", JOptionPane.WARNING_MESSAGE);
+					else JOptionPane.showMessageDialog(rootPane, "<html> Make sure your username and password are at <br> least 5 characters and at most 32 characters! <html>", "Invalid Sign Up", JOptionPane.WARNING_MESSAGE);
+					System.out.println(e);
+					e.printStackTrace();
 				}
 			}
 		});
@@ -212,7 +218,7 @@ public class Login extends JFrame {
 				g2.setPaint(Color.white);
 				g2.fillOval(0, 0, getWidth(), getHeight());
 				g2.setPaint(gp);
-				g2.fillOval(4, 4, getWidth() - 8, getHeight() - 8);
+				g2.fillOval(5, 5, getWidth() - 10, getHeight() - 10);
 			}
 		};
 		bgIcon.setPreferredSize(new Dimension(90, 90));

@@ -17,9 +17,12 @@ colors:
 - dark yellow - 255,120,0,255
 - light blue - 29,82,188,255
 
-current plans:
-- login page (done)
+finished:
+- login page
 	- mysql stuff
+
+current plans:
+- connect login to actual content
 - top nav: 
 	- "<img (scholash logo or user)> welcome <username>"
 	- time at the other side
