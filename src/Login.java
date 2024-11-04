@@ -26,6 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import java.awt.Panel;
 import java.awt.Label;
+import components.PasswordField;
 
 public class Login extends JFrame {
 
@@ -52,6 +53,7 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+		setResizable(false);
 		setTitle("Scholash Login");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/fbla.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,10 +85,6 @@ public class Login extends JFrame {
 		welcome.setForeground(new Color(255, 255, 255));
 		welcome.setFont(new Font("Arial", Font.BOLD, 32));
 		bg.add(welcome);
-		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 68, 324, 2);
-		bg.add(separator);
 		
 		JLabel instructions = new JLabel(""
 				+ "<html>"
@@ -120,6 +118,10 @@ public class Login extends JFrame {
 		requirements.setFont(new Font("Arial", Font.BOLD, 10));
 		requirements.setBounds(10, 333, 304, 37);
 		bg.add(requirements);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(0, 68, 324, 2);
+		bg.add(separator);
 
 		JPanel login = new JPanel();
 		login.setBackground(Color.WHITE);
@@ -127,26 +129,31 @@ public class Login extends JFrame {
 		contentPane.add(login, BorderLayout.CENTER);
 		login.setLayout(null);
 		
+				TextField username = new TextField((String) null, (Color) null, (Color) null, (Color) null);
+				username.setTitle("Username");
+				username.setBounds(65, 110, 250, 64);
+				login.add(username);
+		
+		PasswordField passwordField = new PasswordField((String) null, (Color) null, (Color) null, (Color) null);
+		passwordField.setTitle("Password");
+		passwordField.setBounds(65, 200, 250, 64);
+		login.add(passwordField);
+		
 		Button loginBtn = new Button();
 		loginBtn.setText("Log In");
 		loginBtn.setColorClick(new Color(192, 192, 192));
 		loginBtn.setBorderColor(new Color(0, 0, 0));
 		loginBtn.setBounds(65, 300, 120, 40);
 		login.add(loginBtn);
-
-		TextField username = new TextField((String) null, (Color) null, (Color) null, (Color) null);
-		username.setTitle("Username");
-		username.setBounds(65, 110, 250, 64);
-		login.add(username);
-
-		TextField password = new TextField((String) null, (Color) null, (Color) null, (Color) null);
-		password.setTitle("Password");
-		password.setBounds(65, 200, 250, 64);
-		login.add(password);
 		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/icons/wallet.png")); // load the image to a imageIcon
 		Image image = imageIcon.getImage(); // transform it 
 		Image newimg = image.getScaledInstance(64, 64,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		imageIcon = new ImageIcon(newimg);  // transform it back
+		
+		Button signupBtn = new Button();
+		signupBtn.setText("Sign Up");
+		signupBtn.setBounds(195, 300, 120, 40);
+		login.add(signupBtn);
 		
 		Panel top = new Panel();
 		FlowLayout flowLayout = (FlowLayout) top.getLayout();
@@ -164,10 +171,5 @@ public class Login extends JFrame {
 		top.add(title);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Arial", Font.BOLD, 32));
-		
-		Button signupBtn = new Button();
-		signupBtn.setText("Sign Up");
-		signupBtn.setBounds(195, 300, 120, 40);
-		login.add(signupBtn);
 	}
 }
