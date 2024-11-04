@@ -4,6 +4,8 @@ dependencies/utilities:
 - eclipse ide
 - java 21
 - windowbuilder
+- mysql workbench, mysql
+- jdbc
 - jcalendar
 
 colors:
