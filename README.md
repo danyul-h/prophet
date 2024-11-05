@@ -20,9 +20,9 @@ colors:
 finished:
 - login page
 	- mysql stuff
+- connect login to actual content
 
 current plans:
-- connect login to actual content
 - top nav: 
 	- "<img (scholash logo or user)> welcome <username>"
 	- time at the other side

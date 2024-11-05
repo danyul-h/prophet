@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
+import javax.swing.border.BevelBorder;
 
 public class App extends JFrame {
 
@@ -87,7 +88,7 @@ public class App extends JFrame {
 		info.add(welcome, BorderLayout.NORTH);
 		
 		JTabbedPane pages = new JTabbedPane();
-		pages.setBorder(new EmptyBorder(5, 5, 5, 5));
+		pages.setBorder(null);
 		pages.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 //		pages.setUI(new BasicTabbedPaneUI() {
 //		    protected int calculateTabAreaHeight(int tab_placement, int run_count, int max_tab_height) {

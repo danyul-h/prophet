@@ -1,9 +1,16 @@
-import java.awt.Color;
-import java.awt.EventQueue;
-
+import components.TextField;
+import components.PasswordField;
+import components.Button;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import components.TextField;
+import javax.swing.JSeparator;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
@@ -13,21 +20,13 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Dimension;
-import javax.swing.JSeparator;
-import java.awt.Toolkit;
-import components.Button;
 import java.awt.Font;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
-import components.PasswordField;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
 
@@ -137,24 +136,24 @@ public class Login extends JFrame {
 		Button loginBtn = new Button();
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
-				try {
-					Class.forName("com.mysql.cj.jdbc.Driver");
-					Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/scholash", "root",
-							"");
-					PreparedStatement statement = connection
-							.prepareStatement("select * from users where username=? and password=?");
-					statement.setString(1, username.getText());
-					statement.setString(2, password.getPassword());
-					ResultSet resultSet = statement.executeQuery();
-					if (resultSet.next()) {
+				switch (Database.login(username.getText(), password.getPassword())) {
+					case 0: 
+						JOptionPane.showMessageDialog(rootPane, 
+								"Connection unavailable, try again later.", 
+								"Error", 
+								JOptionPane.WARNING_MESSAGE);
+						break;
+					case 1:
 						App app = new App();
 						app.setVisible(true);
 						dispose();
-					}
-					else JOptionPane.showMessageDialog(rootPane, "Invalid username or password!", "Invalid Login", JOptionPane.WARNING_MESSAGE);
-					connection.close();
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(rootPane, "Invalid username or password!", "Invalid Login", JOptionPane.WARNING_MESSAGE);
+						break;
+					case 2:
+						JOptionPane.showMessageDialog(rootPane,
+								"Invalid username or password", 
+								"Error",
+								JOptionPane.WARNING_MESSAGE);
+						break;
 				}
 			}
 		});
@@ -168,22 +167,31 @@ public class Login extends JFrame {
 		Button signupBtn = new Button();
 		signupBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
-				try {
-					Class.forName("com.mysql.cj.jdbc.Driver");
-					Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/scholash", "root",
-							"");
-					PreparedStatement statement = connection
-							.prepareStatement("insert into users(username, password) value(?, ?)");
-					statement.setString(1, username.getText());
-					statement.setString(2, password.getPassword());
-					statement.executeUpdate();
-					JOptionPane.showMessageDialog(rootPane, "<html> Sign up successful! Continue to log in with the same credentials. <html>");
-					connection.close();
-				} catch (Exception e) {
-					if (e.toString().contains("Duplicate")) JOptionPane.showMessageDialog(rootPane, "<html> This username is unavailable, please choose another one. <html>", "Invalid Sign Up", JOptionPane.WARNING_MESSAGE);
-					else JOptionPane.showMessageDialog(rootPane, "<html> Make sure your username and password are at <br> least 5 characters and at most 32 characters! <html>", "Invalid Sign Up", JOptionPane.WARNING_MESSAGE);
-					System.out.println(e);
-					e.printStackTrace();
+				switch (Database.signup(username.getText(), password.getPassword())) {
+					case 0: 
+						JOptionPane.showMessageDialog(rootPane, 
+								"Connection unavailable, try again later.", 
+								"Error", 
+								JOptionPane.WARNING_MESSAGE);
+						break;
+					case 1:
+						JOptionPane.showMessageDialog(rootPane,
+								"Sign up successful! Continue to login.",
+								"Success",
+								JOptionPane.INFORMATION_MESSAGE);
+						break;
+					case 2:
+						JOptionPane.showMessageDialog(rootPane, 
+								"This username is taken, try a different one.", 
+								"Error", 
+								JOptionPane.WARNING_MESSAGE);
+						break;
+					case 3:
+						JOptionPane.showMessageDialog(rootPane, 
+								"Your username or password doesn't meet app guidelines.", 
+								"Error", 
+								JOptionPane.WARNING_MESSAGE); 
+						break;
 				}
 			}
 		});
@@ -227,11 +235,11 @@ public class Login extends JFrame {
 		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/icons/light.png")); // load the image to a
 																							// imageIcon
 		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(54, 54, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		Image newimg = image.getScaledInstance(56, 56, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
 		imageIcon = new ImageIcon(newimg);
 		bgIcon.setLayout(null);
 		JLabel icon = new JLabel("");
-		icon.setBounds(15, 13, 60, 60);
+		icon.setBounds(15, 11, 60, 60);
 		bgIcon.add(icon);
 		icon.setFont(new Font("Arial", Font.BOLD, 32));
 		icon.setHorizontalAlignment(SwingConstants.CENTER);
