@@ -29,6 +29,7 @@ public class App extends JFrame {
 				try {
 					App frame = new App();
 					frame.setVisible(true);
+					System.out.println(Database.getTransactions("admin"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

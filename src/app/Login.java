@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import app.Database.Status;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Login extends JFrame {
 
@@ -43,7 +44,6 @@ public class Login extends JFrame {
 				try {
 					Login frame = new Login("Classcash Login");
 					frame.setVisible(true);
-					System.out.println(Database.getTransactions("admin"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -55,7 +55,7 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login(String s) {
-		setResizable(false);
+//		setResizable(false);
 		setTitle(s);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -266,27 +266,27 @@ public class Login extends JFrame {
 		GroupLayout gl_login = new GroupLayout(login);
 		gl_login.setHorizontalGroup(
 			gl_login.createParallelGroup(Alignment.LEADING)
-				.addComponent(top, GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+				.addComponent(top, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
 				.addGroup(gl_login.createSequentialGroup()
 					.addGap(65)
-					.addComponent(username, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+					.addComponent(username, GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
 					.addGap(65))
 				.addGroup(gl_login.createSequentialGroup()
 					.addGap(65)
-					.addComponent(password, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+					.addComponent(password, GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
 					.addGap(65))
 				.addGroup(gl_login.createSequentialGroup()
 					.addGap(65)
-					.addComponent(loginBtn, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+					.addComponent(loginBtn, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
 					.addGap(10)
-					.addComponent(signupBtn, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+					.addComponent(signupBtn, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
 					.addGap(65))
 		);
 		gl_login.setVerticalGroup(
 			gl_login.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_login.createSequentialGroup()
 					.addComponent(top, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
-					.addGap(11)
+					.addPreferredGap(ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
 					.addComponent(username, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
 					.addGap(26)
 					.addComponent(password, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
@@ -294,7 +294,7 @@ public class Login extends JFrame {
 					.addGroup(gl_login.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(loginBtn, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 						.addComponent(signupBtn, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(41, Short.MAX_VALUE))
+					.addGap(41))
 		);
 		login.setLayout(gl_login);
 	}
