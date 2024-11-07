@@ -26,6 +26,8 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import app.Database.Status;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class Login extends JFrame {
 
@@ -41,7 +43,7 @@ public class Login extends JFrame {
 				try {
 					Login frame = new Login("Classcash Login");
 					frame.setVisible(true);
-					System.out.println(Database.getTransactions("sup"));
+					System.out.println(Database.getTransactions("admin"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -57,7 +59,7 @@ public class Login extends JFrame {
 		setTitle(s);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 720, 420);
+		setBounds(100, 100, 760, 420);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -79,14 +81,11 @@ public class Login extends JFrame {
 		bg.setBackground(new Color(0, 64, 128));
 		bg.setPreferredSize(new Dimension(324, 380));
 		contentPane.add(bg, BorderLayout.WEST);
-		bg.setLayout(null);
 
 		JLabel welcome = new JLabel("Getting Started?");
 		welcome.setHorizontalAlignment(SwingConstants.CENTER);
-		welcome.setBounds(10, 20, 304, 37);
 		welcome.setForeground(new Color(255, 255, 255));
 		welcome.setFont(new Font("Arial", Font.BOLD, 32));
-		bg.add(welcome);
 
 		JLabel instructions = new JLabel("<html>" + "To create an account..." + "<ol>"
 				+ "<li>Type in a username*</li>" + "<li>Type in a password*</li>" + "<li>Sign up!</li>" + "</ol>"
@@ -96,16 +95,12 @@ public class Login extends JFrame {
 		instructions.setHorizontalAlignment(SwingConstants.LEFT);
 		instructions.setForeground(Color.WHITE);
 		instructions.setFont(new Font("Arial", Font.BOLD, 20));
-		instructions.setBounds(20, 90, 284, 232);
-		bg.add(instructions);
 
 		JLabel requirements = new JLabel("<html> *usernames and passwords have to be at least 5 characters and at most 45 characters. </html>");
 		requirements.setVerticalAlignment(SwingConstants.BOTTOM);
 		requirements.setHorizontalAlignment(SwingConstants.CENTER);
 		requirements.setForeground(Color.WHITE);
 		requirements.setFont(new Font("Arial", Font.BOLD, 10));
-		requirements.setBounds(10, 333, 304, 37);
-		bg.add(requirements);
 
 		JSeparator separator = new JSeparator() {
 			public void paintComponent(Graphics g) {
@@ -114,24 +109,46 @@ public class Login extends JFrame {
 				g2.fill(new Rectangle(getWidth(), getHeight()));
 			}
 		};
-		separator.setBounds(0, 68, 324, 3);
-		bg.add(separator);
+		GroupLayout gl_bg = new GroupLayout(bg);
+		gl_bg.setHorizontalGroup(
+			gl_bg.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_bg.createSequentialGroup()
+					.addGap(10)
+					.addComponent(welcome, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE))
+				.addComponent(separator, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
+				.addGroup(gl_bg.createSequentialGroup()
+					.addGap(20)
+					.addComponent(instructions, GroupLayout.PREFERRED_SIZE, 284, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(20, Short.MAX_VALUE))
+				.addGroup(gl_bg.createSequentialGroup()
+					.addGap(10)
+					.addComponent(requirements, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_bg.setVerticalGroup(
+			gl_bg.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_bg.createSequentialGroup()
+					.addGap(20)
+					.addComponent(welcome)
+					.addGap(11)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 3, GroupLayout.PREFERRED_SIZE)
+					.addGap(19)
+					.addComponent(instructions, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(11)
+					.addComponent(requirements, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+					.addGap(11))
+		);
+		bg.setLayout(gl_bg);
 
 		JPanel login = new JPanel();
 		login.setBackground(Color.WHITE);
 		login.setPreferredSize(new Dimension(380, 380));
 		contentPane.add(login, BorderLayout.CENTER);
-		login.setLayout(null);
 
 		TextField username = new TextField((String) null, (Color) null, (Color) null, (Color) null);
 		username.setTitle("Username");
-		username.setBounds(65, 110, 250, 64);
-		login.add(username);
 
 		PasswordField password = new PasswordField((String) null, (Color) null, (Color) null, (Color) null);
 		password.setTitle("Password");
-		password.setBounds(65, 200, 250, 64);
-		login.add(password);
 
 		Button loginBtn = new Button();
 		loginBtn.addActionListener(new ActionListener() {
@@ -161,8 +178,6 @@ public class Login extends JFrame {
 		loginBtn.setText("Log In");
 		loginBtn.setColorClick(new Color(192, 192, 192));
 		loginBtn.setBorderColor(new Color(0, 0, 0));
-		loginBtn.setBounds(65, 300, 120, 40);
-		login.add(loginBtn);
 
 		Button signupBtn = new Button();
 		signupBtn.addActionListener(new ActionListener() {
@@ -197,8 +212,6 @@ public class Login extends JFrame {
 		});
 
 		signupBtn.setText("Sign Up");
-		signupBtn.setBounds(195, 300, 120, 40);
-		login.add(signupBtn);
 
 		JPanel top = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -213,8 +226,6 @@ public class Login extends JFrame {
 		top.setBackground(new Color(255, 168, 0));
 		FlowLayout flowLayout = (FlowLayout) top.getLayout();
 		flowLayout.setVgap(10);
-		top.setBounds(0, 0, 380, 99);
-		login.add(top);
 
 		JPanel bgIcon = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -252,5 +263,39 @@ public class Login extends JFrame {
 		title.setForeground(new Color(255, 255, 255));
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Arial", Font.BOLD, 32));
+		GroupLayout gl_login = new GroupLayout(login);
+		gl_login.setHorizontalGroup(
+			gl_login.createParallelGroup(Alignment.LEADING)
+				.addComponent(top, GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+				.addGroup(gl_login.createSequentialGroup()
+					.addGap(65)
+					.addComponent(username, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+					.addGap(65))
+				.addGroup(gl_login.createSequentialGroup()
+					.addGap(65)
+					.addComponent(password, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+					.addGap(65))
+				.addGroup(gl_login.createSequentialGroup()
+					.addGap(65)
+					.addComponent(loginBtn, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+					.addGap(10)
+					.addComponent(signupBtn, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+					.addGap(65))
+		);
+		gl_login.setVerticalGroup(
+			gl_login.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_login.createSequentialGroup()
+					.addComponent(top, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
+					.addGap(11)
+					.addComponent(username, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+					.addGap(26)
+					.addComponent(password, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+					.addGap(36)
+					.addGroup(gl_login.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(loginBtn, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+						.addComponent(signupBtn, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(41, Short.MAX_VALUE))
+		);
+		login.setLayout(gl_login);
 	}
 }
