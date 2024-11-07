@@ -39,7 +39,7 @@ public class Login extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login frame = new Login();
+					Login frame = new Login("Classcash Login");
 					frame.setVisible(true);
 					System.out.println(Database.getTransactions("sup"));
 				} catch (Exception e) {
@@ -52,9 +52,9 @@ public class Login extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Login() {
+	public Login(String s) {
 		setResizable(false);
-		setTitle("Scholash");
+		setTitle(s);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 720, 420);
@@ -207,7 +207,7 @@ public class Login extends JFrame {
 				Color c2 = new Color(255, 120, 0, 255); // dark
 				GradientPaint gp = new GradientPaint(0, 0, c1, getWidth(), getHeight(), c2);
 				g2.setPaint(gp);
-				g2.fill(new Rectangle(getWidth(), 68));
+				g2.fill(new Rectangle(getWidth(), separator.getY()));
 			}
 		};
 		top.setBackground(new Color(255, 168, 0));
@@ -245,9 +245,9 @@ public class Login extends JFrame {
 		icon.setHorizontalAlignment(SwingConstants.CENTER);
 		icon.setIcon(imageIcon);
 
-		JLabel title = new JLabel("Scholash Login");
+		JLabel title = new JLabel(s);
 		title.setVerticalAlignment(SwingConstants.TOP);
-		title.setPreferredSize(new Dimension(250, 70));
+		title.setPreferredSize(new Dimension(270, 70));
 		top.add(title);
 		title.setForeground(new Color(255, 255, 255));
 		title.setHorizontalAlignment(SwingConstants.CENTER);
