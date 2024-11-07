@@ -100,7 +100,7 @@ public class Login extends JFrame {
 		requirements.setVerticalAlignment(SwingConstants.BOTTOM);
 		requirements.setHorizontalAlignment(SwingConstants.CENTER);
 		requirements.setForeground(Color.WHITE);
-		requirements.setFont(new Font("Arial", Font.BOLD, 10));
+		requirements.setFont(new Font("Arial", Font.BOLD, 12));
 
 		JSeparator separator = new JSeparator() {
 			public void paintComponent(Graphics g) {
