@@ -1,3 +1,5 @@
+package app;
+
 import components.TextField;
 import components.PasswordField;
 import components.Button;
@@ -23,10 +25,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import app.Database.Status;
 
 public class Login extends JFrame {
 
@@ -42,6 +41,7 @@ public class Login extends JFrame {
 				try {
 					Login frame = new Login();
 					frame.setVisible(true);
+					System.out.println(Database.getTransactions("sup"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -137,18 +137,18 @@ public class Login extends JFrame {
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
 				switch (Database.login(username.getText(), password.getPassword())) {
-					case 0: 
+					case Status.UNAVAILABLE: 
 						JOptionPane.showMessageDialog(rootPane, 
 								"Connection unavailable, try again later.", 
 								"Error", 
 								JOptionPane.WARNING_MESSAGE);
 						break;
-					case 1:
+					case Status.SUCCESSFUL:
 						App app = new App();
 						app.setVisible(true);
 						dispose();
 						break;
-					case 2:
+					case Status.INVALID:
 						JOptionPane.showMessageDialog(rootPane,
 								"Invalid username or password", 
 								"Error",
@@ -168,25 +168,25 @@ public class Login extends JFrame {
 		signupBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
 				switch (Database.signup(username.getText(), password.getPassword())) {
-					case 0: 
+					case Status.UNAVAILABLE: 
 						JOptionPane.showMessageDialog(rootPane, 
 								"Connection unavailable, try again later.", 
 								"Error", 
 								JOptionPane.WARNING_MESSAGE);
 						break;
-					case 1:
+					case Status.SUCCESSFUL:
 						JOptionPane.showMessageDialog(rootPane,
 								"Sign up successful! Continue to login.",
 								"Success",
 								JOptionPane.INFORMATION_MESSAGE);
 						break;
-					case 2:
+					case Status.DUPLICATE:
 						JOptionPane.showMessageDialog(rootPane, 
 								"This username is taken, try a different one.", 
 								"Error", 
 								JOptionPane.WARNING_MESSAGE);
 						break;
-					case 3:
+					case Status.INVALID:
 						JOptionPane.showMessageDialog(rootPane, 
 								"Your username or password doesn't meet app guidelines.", 
 								"Error", 

@@ -1,3 +1,5 @@
+package app;
+
 import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
