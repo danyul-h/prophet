@@ -99,7 +99,7 @@ public class Login extends JFrame {
 		instructions.setBounds(20, 90, 284, 232);
 		bg.add(instructions);
 
-		JLabel requirements = new JLabel("<html> *usernames and passwords have to be at least 5 characters and at most 32 characters. </html>");
+		JLabel requirements = new JLabel("<html> *usernames and passwords have to be at least 5 characters and at most 45 characters. </html>");
 		requirements.setVerticalAlignment(SwingConstants.BOTTOM);
 		requirements.setHorizontalAlignment(SwingConstants.CENTER);
 		requirements.setForeground(Color.WHITE);

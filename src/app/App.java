@@ -4,22 +4,16 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-import javax.swing.border.BevelBorder;
 
 public class App extends JFrame {
 
