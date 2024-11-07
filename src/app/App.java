@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import javax.swing.JTabbedPane;
+import java.awt.CardLayout;
 
 public class App extends JFrame {
 
@@ -52,7 +52,7 @@ public class App extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel nav = new JPanel() {
 			public void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
@@ -68,30 +68,38 @@ public class App extends JFrame {
 		nav.setPreferredSize(new Dimension(154, 380));
 		contentPane.add(nav, BorderLayout.WEST);
 		nav.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel pageBtns = new JPanel();
 		nav.add(pageBtns, BorderLayout.NORTH);
-		
+
 		JPanel sysBtns = new JPanel();
 		nav.add(sysBtns, BorderLayout.SOUTH);
-		
+
 		JPanel info = new JPanel();
 		contentPane.add(info, BorderLayout.CENTER);
 		info.setLayout(new BorderLayout(0, 0));
-		
-		JPanel welcome = new JPanel();
-		welcome.setBackground(Color.RED);
+
+		JPanel welcome = new JPanel() {
+			public void paintComponent(Graphics g) {
+				Graphics2D g2 = (Graphics2D) g;
+				Color c1 = new Color(255, 168, 0, 255); // light
+				Color c2 = new Color(255, 120, 0, 255); // dark
+				GradientPaint gp = new GradientPaint(0, 0, c1, getWidth(), getHeight(), c2);
+				g2.setPaint(gp);
+				g2.fill(new Rectangle(getWidth(), getHeight()));
+			}
+		};
+		welcome.setPreferredSize(new Dimension(10, 40));
+		welcome.setBackground(new Color(255, 168, 0));
 		info.add(welcome, BorderLayout.NORTH);
+		welcome.setLayout(null);
 		
-		JTabbedPane pages = new JTabbedPane();
+		JPanel pages = new JPanel();
 		pages.setBorder(null);
-		pages.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-//		pages.setUI(new BasicTabbedPaneUI() {
-//		    protected int calculateTabAreaHeight(int tab_placement, int run_count, int max_tab_height) {
-//		    	return 0;  
-//		    }
-//		});
-		pages.setBackground(Color.WHITE);
 		info.add(pages, BorderLayout.CENTER);
+		pages.setLayout(new CardLayout(0, 0));
+		
+		TransactionsTab transactionsTab = new TransactionsTab();
+		pages.add(transactionsTab, "Transactions");
 	}
 }
