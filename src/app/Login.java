@@ -265,34 +265,36 @@ public class Login extends JFrame {
 		title.setFont(new Font("Arial", Font.BOLD, 32));
 		GroupLayout gl_login = new GroupLayout(login);
 		gl_login.setHorizontalGroup(
-			gl_login.createParallelGroup(Alignment.TRAILING)
+			gl_login.createParallelGroup(Alignment.LEADING)
 				.addComponent(top, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
 				.addGroup(gl_login.createSequentialGroup()
 					.addGap(65)
-					.addComponent(loginBtn, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(signupBtn, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+					.addComponent(username, GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
 					.addGap(65))
 				.addGroup(gl_login.createSequentialGroup()
 					.addGap(65)
-					.addGroup(gl_login.createParallelGroup(Alignment.TRAILING)
-						.addComponent(username, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-						.addComponent(password, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
+					.addComponent(password, GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+					.addGap(65))
+				.addGroup(gl_login.createSequentialGroup()
+					.addGap(65)
+					.addComponent(loginBtn, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+					.addGap(10)
+					.addComponent(signupBtn, GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
 					.addGap(65))
 		);
 		gl_login.setVerticalGroup(
 			gl_login.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_login.createSequentialGroup()
 					.addComponent(top, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
-					.addGap(37)
+					.addPreferredGap(ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
 					.addComponent(username, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addGap(26)
 					.addComponent(password, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addGroup(gl_login.createParallelGroup(Alignment.BASELINE)
+					.addGap(36)
+					.addGroup(gl_login.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(loginBtn, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 						.addComponent(signupBtn, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(41, Short.MAX_VALUE))
+					.addGap(41))
 		);
 		login.setLayout(gl_login);
 	}
