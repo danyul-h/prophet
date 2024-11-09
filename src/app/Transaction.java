@@ -3,6 +3,7 @@ package app;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.sql.Blob;
 
 public class Transaction {
@@ -11,37 +12,41 @@ public class Transaction {
 	private Date date;
 	private BigDecimal value;
 	private String category;
-	private String title;
+	private String details;
 	private String description;
 	private Blob image;
 	
-	public Transaction(int id, String username, Date date, BigDecimal value, String category, String title, String description, Blob image) {
+	public Transaction(int id, String username, Date date, BigDecimal value, String category, String details) {
 		this.id = id;
 		this.username = username;
 		this.date = date;
 		this.value = value;
 		this.category = category;
-		this.title = title;
-		this.description = description;
-		this.image = image;
+		this.details = details;
 	}
 	
-	public Transaction(String username, Date date, BigDecimal value, String category, String title, String description, Blob image) {
+	public Transaction(String username, Date date, BigDecimal value, String category, String details) {
 		this.username = username;
 		this.date = date;
 		this.value = value;
 		this.category = category;
-		this.title = title;
-		this.description = description;
-		this.image = image;
+		this.details = details;
+	}
+	
+	public static Object[][] toTable(ArrayList<Transaction> transactions){
+		Object[][] table = new Object[transactions.size()][];
+		for (int i = 0; i < transactions.size(); i++) {
+			table[i] = transactions.get(i).toArray();
+		}
+		return table;
 	}
 	
 	public Object[] toArray() {
-		return new Object[]{id, username, date, value, category, title, description, image};
+		return new Object[]{date, value, category, details, description, image, id, username};
 	}
 	
 	public String toString() {
-		return title + ": valued at " + value + " on " + new SimpleDateFormat("EE").format(date) + " " + date;
+		return details + ": valued at " + value + " on " + new SimpleDateFormat("EE").format(date) + " " + date;
 	}
 	
 	public int getId() {
@@ -70,11 +75,11 @@ public class Transaction {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public String getTitle() {
-		return title;
+	public String getDetails() {
+		return details;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setDetails(String title) {
+		this.details = title;
 	}
 	public String getDescription() {
 		return description;

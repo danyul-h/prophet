@@ -35,10 +35,10 @@ public class Database {
 		}
 	}
 	
-	public static Object[][] getTransactions(String username){
+	public static ArrayList<Transaction> getTransactions(String username){
 		Connection connection = connect();
 		if (connection == null) return null;
-		ArrayList<Transaction> data = new ArrayList<Transaction>();
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		try {
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions WHERE username=?");
 			statement.setString(1, username);
@@ -51,14 +51,10 @@ public class Database {
 				String title = rs.getString("title");
 				String description = rs.getString("description");
 				Blob image = rs.getBlob("image");
-				data.add(new Transaction(id, username, date, value, category, title, description, image));
+				transactions.add(new Transaction(id, username, date, value, category, title));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
-		}
-		Object[][] transactions =  new Object[data.size()][];
-		for (int i = 0; i < data.size(); i++) {
-			transactions[i] = data.get(i).toArray();
 		}
 		return transactions;
 	}
@@ -67,15 +63,12 @@ public class Database {
 		Connection connection = connect();
 		if (connection == null) return Status.UNAVAILABLE;
 		try {
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO transactions(username, date, value, category, title, description, image) values(?, ?, ?, ?, ?, )");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO transactions(username, date, value, category, details) values(?, ?, ?, ?, ?)");
 			statement.setString(1, transaction.getUsername());
 			statement.setDate(2, transaction.getDate());
 			statement.setBigDecimal(3, transaction.getValue());
 			statement.setString(4, transaction.getCategory());
-			statement.setString(5, transaction.getTitle());
-			statement.setString(6,  transaction.getDescription());
-			statement.setBlob(7, transaction.getImage());
-			statement.execute();
+			statement.setString(5, transaction.getDetails());
 			return Status.SUCCESSFUL; // success
 		} catch (SQLException e){
 			return Status.INVALID; // invalid category / title / description / image
@@ -89,14 +82,13 @@ public class Database {
 		Connection connection = connect();
 		if (connection == null) return Status.UNAVAILABLE;
 		try {
-			PreparedStatement statement = connection.prepareStatement("UPDATE transactions SET date=?, value=?, category=?, title=?, description=?, image=? WHERE id=?");
+			PreparedStatement statement = connection.prepareStatement("UPDATE transactions SET date=?, value=?, category=?, details=? WHERE id=?");
 			statement.setDate(1, transaction.getDate());
 			statement.setBigDecimal(2, transaction.getValue());
 			statement.setString(3, transaction.getCategory());
-			statement.setString(4, transaction.getTitle());
+			statement.setString(4, transaction.getDetails());
 			statement.setString(5,  transaction.getDescription());
-			statement.setBlob(6, transaction.getImage());
-			statement.setInt(7, transaction.getId());
+			statement.setInt(6, transaction.getId());
 			statement.executeUpdate();
 			return Status.SUCCESSFUL; // success
 		} catch (SQLException e){

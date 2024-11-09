@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,7 +40,7 @@ public class App extends JFrame {
 	 * Create the frame.
 	 */
 	public App() {
-		setResizable(false);
+//		setResizable(false);
 		setTitle("Scholash");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,7 +99,7 @@ public class App extends JFrame {
 		info.add(pages, BorderLayout.CENTER);
 		pages.setLayout(new CardLayout(0, 0));
 		
-		TransactionsTab transactionsTab = new TransactionsTab();
+		TransactionsTab transactionsTab = new TransactionsTab("admin");
 		pages.add(transactionsTab, "Transactions");
 	}
 }
