@@ -35,10 +35,10 @@ public class Database {
 		}
 	}
 	
-	public static ArrayList<Transaction> getTransactions(String username){
+	public static Object[][] getTransactions(String username){
 		Connection connection = connect();
 		if (connection == null) return null;
-		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+		ArrayList<Transaction> data = new ArrayList<Transaction>();
 		try {
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions WHERE username=?");
 			statement.setString(1, username);
@@ -51,10 +51,14 @@ public class Database {
 				String title = rs.getString("title");
 				String description = rs.getString("description");
 				Blob image = rs.getBlob("image");
-				transactions.add(new Transaction(id, username, date, value, category, title, description, image));
+				data.add(new Transaction(id, username, date, value, category, title, description, image));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+		}
+		Object[][] transactions =  new Object[data.size()][];
+		for (int i = 0; i < data.size(); i++) {
+			transactions[i] = data.get(i).toArray();
 		}
 		return transactions;
 	}

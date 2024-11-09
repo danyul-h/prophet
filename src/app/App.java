@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,7 +30,6 @@ public class App extends JFrame {
 				try {
 					App frame = new App();
 					frame.setVisible(true);
-					System.out.println(Database.getTransactions("admin"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

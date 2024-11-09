@@ -35,7 +35,11 @@ public class Transaction {
 		this.description = description;
 		this.image = image;
 	}
-
+	
+	public Object[] toArray() {
+		return new Object[]{id, username, date, value, category, title, description, image};
+	}
+	
 	public String toString() {
 		return title + ": valued at " + value + " on " + new SimpleDateFormat("EE").format(date) + " " + date;
 	}
