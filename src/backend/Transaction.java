@@ -1,4 +1,4 @@
-package app;
+package backend;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -13,6 +13,15 @@ public class Transaction {
 	private String category;
 	private String details;
 	
+	public Transaction(String username) {
+		this.id = -1;
+		this.username = username;
+		this.date = null;
+		this.value = BigDecimal.valueOf(0);
+		this.category = null;
+		this.details = "Transaction";
+	}
+	
 	public Transaction(int id, String username, Date date, BigDecimal value, String category, String details) {
 		this.id = id;
 		this.username = username;
@@ -23,6 +32,7 @@ public class Transaction {
 	}
 	
 	public Transaction(String username, Date date, BigDecimal value, String category, String details) {
+		this.id = -1;
 		this.username = username;
 		this.date = date;
 		this.value = value;

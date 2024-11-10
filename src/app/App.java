@@ -51,8 +51,7 @@ public class App extends JFrame {
 	 * Create the frame.
 	 */
 	public App(String username) {
-		setMinimumSize(new Dimension(800, 400));
-//		setResizable(false);
+		setMinimumSize(new Dimension(800, 780));
 		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -125,7 +124,7 @@ public class App extends JFrame {
 		info.add(pages, BorderLayout.CENTER);
 		pages.setLayout(new CardLayout(0, 0));
 		
-		TransactionsTab transactionsTab = new TransactionsTab("admin");
-		pages.add(transactionsTab, "Transactions");
+		TransactionsPage transactionsPage = new TransactionsPage(username);
+		pages.add(transactionsPage, "Transactions");
 	}
 }

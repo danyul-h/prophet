@@ -49,15 +49,22 @@ public class TextField extends JPanel {
 		field.setForeground(font);
 	}
 	
+	public void setFontSize(int size) {
+		this.size=size;
+		field.setFont(new Font("Arial", Font.PLAIN, size));
+	}
+	
+	private int size;
 	private String title;
 	private Color primaryColor;
 	private Color secondaryColor;
 	private Color fontColor;
 	
-	public TextField(String str, Color pri, Color sec, Color font) {
+	public TextField(String str, Color pri, Color sec, Color font, int size) {
 		setMaximumSize(new Dimension(32767, 64));
 		setMinimumSize(new Dimension(10, 64));
 		setPreferredSize(new Dimension(10, 64));
+		this.size = size;
 		title = str;
 		primaryColor = pri;
 		secondaryColor = sec;
@@ -79,7 +86,7 @@ public class TextField extends JPanel {
 		field.setBackground(primaryColor);
 		field.setBorder(null);
 		field.setCaretColor(fontColor);
-		field.setFont(new Font("Arial", Font.PLAIN, 24));
+		field.setFont(new Font("Arial", Font.PLAIN, size));
 		add(field, BorderLayout.CENTER);
 		field.setColumns(10);
 	}

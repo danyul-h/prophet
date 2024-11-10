@@ -1,4 +1,4 @@
-package app;
+package backend;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -33,6 +33,27 @@ public class Database {
 		} catch (Exception e) {
 			return null; //if fails connection, returns null
 		}
+	}
+	
+	public static Transaction getTransaction(int id) {
+		Connection connection = connect();
+		if (connection == null) return null;
+		try {
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions WHERE id=?");
+			statement.setInt(1, id);
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				String username = rs.getString("username");
+				Date date = rs.getDate("date");
+				BigDecimal value = rs.getBigDecimal("value");
+				String category = rs.getString("category");
+				String title = rs.getString("details");				
+				return new Transaction(id, username, date, value, category, title);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public static ArrayList<Transaction> getTransactions(String username){

@@ -25,10 +25,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import app.Database.Status;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import backend.Database;
+import backend.Database.Status;
 
 public class Login extends JFrame {
 
@@ -56,10 +59,9 @@ public class Login extends JFrame {
 	 */
 	public Login() {
 		setMinimumSize(new Dimension(600, 400));
-//		setResizable(false);
-		setTitle("Prophet");
+		setTitle("Prophet Login");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 760, 420);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -156,7 +158,7 @@ public class Login extends JFrame {
 		login.setPreferredSize(new Dimension(380, 380));
 		contentPane.add(login, BorderLayout.CENTER);
 
-		TextField username = new TextField((String) null, (Color) null, (Color) null, (Color) null);
+		TextField username = new TextField((String) null, (Color) null, (Color) null, (Color) null, 24);
 		username.setTitle("Username");
 
 		PasswordField password = new PasswordField((String) null, (Color) null, (Color) null, (Color) null);
