@@ -268,7 +268,7 @@ public class TransactionsPage extends JPanel {
 			gl_editor.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_editor.createSequentialGroup()
 					.addGap(15)
-					.addComponent(editorInfo, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+					.addComponent(editorInfo, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
 					.addGap(10)
 					.addComponent(add, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 					.addGap(11)

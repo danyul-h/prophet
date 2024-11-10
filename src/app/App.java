@@ -51,7 +51,7 @@ public class App extends JFrame {
 	 * Create the frame.
 	 */
 	public App(String username) {
-		setMinimumSize(new Dimension(800, 780));
+		setMinimumSize(new Dimension(800, 800));
 		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,7 +110,7 @@ public class App extends JFrame {
 		welcome.setForeground(new Color(255, 255, 255));
 		welcome.setFont(new Font("Arial", Font.BOLD, 16));
 		
-		JLabel date = new JLabel("Today is " + new SimpleDateFormat("EEEE, MMM dd YYYY").format(Calendar.getInstance().getTime()));
+		JLabel date = new JLabel(new SimpleDateFormat("EEEE, MMM dd YYYY").format(Calendar.getInstance().getTime()));
 		date.setBorder(new EmptyBorder(0, 0, 0, 10));
 		date.setHorizontalAlignment(SwingConstants.RIGHT);
 		date.setForeground(Color.WHITE);
