@@ -96,6 +96,20 @@ public class Database {
 		}
 	}
 	
+	public static Status deleteTransaction(int id) {
+		Connection connection = connect();
+		if (connection == null) return Status.UNAVAILABLE;
+		try {
+			PreparedStatement statement = connection.prepareStatement("DELETE FROM transactions WHERE id=?");
+			statement.setInt(1, id);
+			statement.executeUpdate();
+			return Status.SUCCESSFUL;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return Status.UNAVAILABLE;
+		}
+	}
+	
 	//signs up with given username and password, essentially inserts a row into the users table in scholash database in mysql
 	public static Status signup(String username, String password) {
 		//get connection

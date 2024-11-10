@@ -39,7 +39,7 @@ public class Transaction {
 	}
 	
 	public Object[] toArray() {
-		return new Object[]{date, value, category, details, id, username};
+		return new Object[]{id, date, value, category, details, username};
 	}
 	
 	public String toString() {
