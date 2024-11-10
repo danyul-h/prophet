@@ -42,7 +42,7 @@ public class Login extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login frame = new Login("Classcash Login");
+					Login frame = new Login();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,9 +54,9 @@ public class Login extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Login(String s) {
+	public Login() {
 //		setResizable(false);
-		setTitle(s);
+		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 760, 420);
@@ -161,7 +161,7 @@ public class Login extends JFrame {
 								JOptionPane.WARNING_MESSAGE);
 						break;
 					case Status.SUCCESSFUL:
-						App app = new App();
+						App app = new App(username.getText());
 						app.setVisible(true);
 						dispose();
 						break;
@@ -260,7 +260,7 @@ public class Login extends JFrame {
 		icon.setHorizontalAlignment(SwingConstants.CENTER);
 		icon.setIcon(imageIcon);
 
-		JLabel title = new JLabel(s);
+		JLabel title = new JLabel("Prophet Login    ");
 		title.setVerticalAlignment(SwingConstants.TOP);
 		title.setPreferredSize(new Dimension(270, 70));
 		top.add(title);

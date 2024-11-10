@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,6 +16,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.CardLayout;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 public class App extends JFrame {
 
@@ -27,7 +38,7 @@ public class App extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					App frame = new App();
+					App frame = new App("admin");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,12 +50,12 @@ public class App extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public App() {
+	public App(String username) {
 //		setResizable(false);
-		setTitle("Scholash");
+		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 720, 420);
+		setBounds(100, 100, 900, 420);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -79,7 +90,7 @@ public class App extends JFrame {
 		contentPane.add(info, BorderLayout.CENTER);
 		info.setLayout(new BorderLayout(0, 0));
 
-		JPanel welcome = new JPanel() {
+		JPanel top = new JPanel() {
 			public void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
 				Color c1 = new Color(255, 168, 0, 255); // light
@@ -89,10 +100,24 @@ public class App extends JFrame {
 				g2.fill(new Rectangle(getWidth(), getHeight()));
 			}
 		};
-		welcome.setPreferredSize(new Dimension(10, 40));
-		welcome.setBackground(new Color(255, 168, 0));
-		info.add(welcome, BorderLayout.NORTH);
-		welcome.setLayout(null);
+		top.setPreferredSize(new Dimension(10, 40));
+		top.setBackground(new Color(255, 168, 0));
+		info.add(top, BorderLayout.NORTH);
+		
+		JLabel welcome = new JLabel("Welcome, " + username + "!");
+		welcome.setBorder(new EmptyBorder(0, 10, 0, 0));
+		welcome.setHorizontalAlignment(SwingConstants.LEFT);
+		welcome.setForeground(new Color(255, 255, 255));
+		welcome.setFont(new Font("Arial", Font.BOLD, 16));
+		
+		JLabel date = new JLabel("Today is " + new SimpleDateFormat("EEEE, MMM dd YYYY").format(Calendar.getInstance().getTime()));
+		date.setBorder(new EmptyBorder(0, 0, 0, 10));
+		date.setHorizontalAlignment(SwingConstants.RIGHT);
+		date.setForeground(Color.WHITE);
+		date.setFont(new Font("Arial", Font.BOLD, 16));
+		top.setLayout(new BorderLayout(0, 0));
+		top.add(welcome, BorderLayout.WEST);
+		top.add(date, BorderLayout.EAST);
 		
 		JPanel pages = new JPanel();
 		pages.setBorder(null);
