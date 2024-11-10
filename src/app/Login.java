@@ -87,10 +87,10 @@ public class Login extends JFrame {
 		welcome.setForeground(new Color(255, 255, 255));
 		welcome.setFont(new Font("Arial", Font.BOLD, 32));
 
-		JLabel instructions = new JLabel("<html>" + "To create an account..." + "<ol>"
-				+ "<li>Type in a username*</li>" + "<li>Type in a password*</li>" + "<li>Sign up!</li>" + "</ol>"
-				+ "To log into your account..." + "<ol>" + "<li>Type in your username</li>"
-				+ "<li>Type in your password</li>" + "<li>Log in!</li>" + "</ol>" + "</html>");
+		JLabel instructions = new JLabel("<html>" + "To create an account:" + "<ol>"
+				+ "<li>Type in a username*</li>" + "<li>Type in a password*</li>" + "<li>Click on Sign Up!</li>" + "</ol>"
+				+ "To log into your account:" + "<ol>" + "<li>Type in your username</li>"
+				+ "<li>Type in your password</li>" + "<li>Click on Login!</li>" + "</ol>" + "</html>");
 		instructions.setVerticalAlignment(SwingConstants.TOP);
 		instructions.setHorizontalAlignment(SwingConstants.LEFT);
 		instructions.setForeground(Color.WHITE);
@@ -172,6 +172,8 @@ public class Login extends JFrame {
 								JOptionPane.WARNING_MESSAGE);
 						break;
 				}
+				username.reset();
+				password.reset();
 			}
 		});
 
@@ -208,6 +210,8 @@ public class Login extends JFrame {
 								JOptionPane.WARNING_MESSAGE); 
 						break;
 				}
+				username.reset();
+				password.reset();
 			}
 		});
 

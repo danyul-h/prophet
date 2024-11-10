@@ -19,6 +19,10 @@ public class TextField extends JPanel {
 	private JTextField field;
 	private JLabel label;
 	
+	public void reset() {
+		field.setText("");
+	}
+	
 	public String getText() {
 		return field.getText();
 	}

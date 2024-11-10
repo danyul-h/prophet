@@ -21,6 +21,10 @@ public class PasswordField extends JPanel {
 	private JPasswordField field;
 	private JLabel label;
 	
+	public void reset() {
+		field.setText("");
+	}
+	
 	public String getPassword() {
 		return String.valueOf(field.getPassword());
 	}

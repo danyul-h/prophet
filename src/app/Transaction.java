@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.sql.Blob;
 
 public class Transaction {
 	private int id;
@@ -13,8 +12,6 @@ public class Transaction {
 	private BigDecimal value;
 	private String category;
 	private String details;
-	private String description;
-	private Blob image;
 	
 	public Transaction(int id, String username, Date date, BigDecimal value, String category, String details) {
 		this.id = id;
@@ -42,7 +39,7 @@ public class Transaction {
 	}
 	
 	public Object[] toArray() {
-		return new Object[]{date, value, category, details, description, image, id, username};
+		return new Object[]{date, value, category, details, id, username};
 	}
 	
 	public String toString() {
@@ -81,16 +78,4 @@ public class Transaction {
 	public void setDetails(String title) {
 		this.details = title;
 	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public Blob getImage() {
-		return image;
-	}
-	public void setImage(Blob image) {
-		this.image = image;
-	}	
 }

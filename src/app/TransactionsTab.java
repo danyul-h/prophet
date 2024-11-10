@@ -3,6 +3,7 @@ package app;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.awt.BorderLayout;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -38,5 +39,4 @@ public class TransactionsTab extends JPanel {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.EAST);
 	}
-
 }

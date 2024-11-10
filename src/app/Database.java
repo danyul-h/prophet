@@ -37,8 +37,8 @@ public class Database {
 	
 	public static ArrayList<Transaction> getTransactions(String username){
 		Connection connection = connect();
-		if (connection == null) return null;
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+		if (connection == null) return null;
 		try {
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions WHERE username=?");
 			statement.setString(1, username);
@@ -48,9 +48,7 @@ public class Database {
 				Date date = rs.getDate("date");
 				BigDecimal value = rs.getBigDecimal("value");
 				String category = rs.getString("category");
-				String title = rs.getString("title");
-				String description = rs.getString("description");
-				Blob image = rs.getBlob("image");
+				String title = rs.getString("details");
 				transactions.add(new Transaction(id, username, date, value, category, title));
 			}
 		} catch(Exception e) {
@@ -87,8 +85,7 @@ public class Database {
 			statement.setBigDecimal(2, transaction.getValue());
 			statement.setString(3, transaction.getCategory());
 			statement.setString(4, transaction.getDetails());
-			statement.setString(5,  transaction.getDescription());
-			statement.setInt(6, transaction.getId());
+			statement.setInt(5, transaction.getId());
 			statement.executeUpdate();
 			return Status.SUCCESSFUL; // success
 		} catch (SQLException e){
