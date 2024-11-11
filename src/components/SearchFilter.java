@@ -9,13 +9,13 @@ public class SearchFilter extends RowFilter{
 	private String category;
 	
 	public SearchFilter(String details, String category){
-		this.details = details;
+		this.details = details.toLowerCase();
 		this.category = category;
 	}
 	
 	@Override
 	public boolean include(Entry entry) {
-		boolean detailsFilter = entry.getStringValue(4).indexOf(details) >= 0, categoryFilter = entry.getStringValue(3).equals(category);
+		boolean detailsFilter = entry.getStringValue(4).toLowerCase().indexOf(details) >= 0, categoryFilter = entry.getStringValue(3).equals(category);
 		if (category.equals("All")) return detailsFilter;
 		else if (category.equals("Income")) categoryFilter = ((BigDecimal) entry.getValue(2)).floatValue() >= 0;
 		else if (category.equals("Expense")) categoryFilter = ((BigDecimal) entry.getValue(2)).floatValue() <= 0;

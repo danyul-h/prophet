@@ -51,7 +51,7 @@ public class TransactionsPage extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TransactionsPage(String username) {
+	public TransactionsPage(String username, Object[][] transactions) {
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EmptyBorder(10, 10, 10, 5));
 		setLayout(new BorderLayout(0, 0));
@@ -63,7 +63,6 @@ public class TransactionsPage extends JPanel {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane, BorderLayout.CENTER);
 		
-		Object[][] transactions = Transaction.toTable(Database.getTransactions(username));
 		for (Transaction i : Database.getTransactions(username)) {
 			System.out.println(i);
 		}

@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.JFrame;
@@ -21,15 +22,22 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import backend.Database;
+import backend.Transaction;
+
 public class App extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
+	
+	private ArrayList<Transaction> transactions;
+	
 	/**
 	 * Create the frame.
 	 */
 	public App(String username) {
+		transactions = Database.getTransactions(username);
+		
 		setMinimumSize(new Dimension(850, 770));
 		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
@@ -105,7 +113,7 @@ public class App extends JFrame {
 		info.add(pages, BorderLayout.CENTER);
 		pages.setLayout(new CardLayout(0, 0));
 		
-		TransactionsPage transactionsPage = new TransactionsPage(username);
+		TransactionsPage transactionsPage = new TransactionsPage(username, Transaction.toTable(transactions));
 		pages.add(transactionsPage, "Transactions");
 	}
 }
