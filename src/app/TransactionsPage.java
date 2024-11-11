@@ -143,7 +143,7 @@ public class TransactionsPage extends JPanel {
 				dialog.setModal(true);
 				dialog.setVisible(true);
 				Transaction newTransaction = dialog.getTransaction();
-				if (newTransaction.equals(transaction)) {
+				if (newTransaction == null) {
 					JOptionPane.showMessageDialog(getParent(), 
 							"Transaction addition cancelled!", 
 							"Cancellation", 
@@ -183,9 +183,9 @@ public class TransactionsPage extends JPanel {
 					dialog.setModal(true);
 					dialog.setVisible(true);
 					Transaction editedTransaction = dialog.getTransaction();
-					if (editedTransaction.equals(transactions)) {
+					if (editedTransaction == null) {
 						JOptionPane.showMessageDialog(getParent(), 
-								"No changes made, cancelled or same values were saved.", 
+								"Transaction edit cancelled!",
 								"Cancellation", 
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
@@ -204,7 +204,6 @@ public class TransactionsPage extends JPanel {
 									JOptionPane.INFORMATION_MESSAGE);
 						}
 					}
-					System.out.println(dialog.getTransaction());
 				}
 			}
 		});

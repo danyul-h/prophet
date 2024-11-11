@@ -3,6 +3,7 @@ package backend;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -17,8 +18,8 @@ public class Transaction {
 	public Transaction(String username) {
 		this.id = -1;
 		this.username = username;
-		this.date = null;
-		this.value = BigDecimal.valueOf(0);
+		this.date = Date.valueOf(LocalDate.now());
+		this.value = BigDecimal.valueOf(0.00);
 		this.category = null;
 		this.details = "Transaction";
 	}

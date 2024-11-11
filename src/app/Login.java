@@ -60,7 +60,7 @@ public class Login extends JFrame {
 		setMinimumSize(new Dimension(600, 400));
 		setTitle("Prophet Login");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 760, 420);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();

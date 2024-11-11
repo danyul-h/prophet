@@ -178,6 +178,7 @@ public class TransactionDialog extends JDialog {
 		cancelBtn.setText("Cancel");
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
+				transaction = null;
 				dispose();
 			}
 		});

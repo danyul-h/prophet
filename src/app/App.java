@@ -27,22 +27,6 @@ public class App extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					App frame = new App("admin");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public App(String username) {
@@ -78,7 +62,7 @@ public class App extends JFrame {
 		JPanel pageBtns = new JPanel();
 		pageBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(pageBtns, BorderLayout.NORTH);
-
+		
 		JPanel sysBtns = new JPanel();
 		sysBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(sysBtns, BorderLayout.SOUTH);
