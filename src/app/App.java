@@ -51,11 +51,11 @@ public class App extends JFrame {
 	 * Create the frame.
 	 */
 	public App(String username) {
-		setMinimumSize(new Dimension(850, 800));
+		setMinimumSize(new Dimension(850, 850));
 		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 510);
+		setBounds(100, 100, 900, 850);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -81,9 +81,11 @@ public class App extends JFrame {
 		nav.setLayout(new BorderLayout(0, 0));
 
 		JPanel pageBtns = new JPanel();
+		pageBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(pageBtns, BorderLayout.NORTH);
 
 		JPanel sysBtns = new JPanel();
+		sysBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(sysBtns, BorderLayout.SOUTH);
 
 		JPanel info = new JPanel();

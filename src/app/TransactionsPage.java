@@ -134,7 +134,7 @@ public class TransactionsPage extends JPanel {
 		JPanel editor = new JPanel();
 		editor.setBackground(new Color(255, 255, 255));
 		editor.setBorder(new LineBorder(new Color(0, 0, 0)));
-		editor.setPreferredSize(new Dimension(200, 380));
+		editor.setPreferredSize(new Dimension(200, 450));
 		side.add(editor);
 		
 		JLabel editorInfo = new JLabel(""
@@ -225,11 +225,11 @@ public class TransactionsPage extends JPanel {
 		);
 		editor.setLayout(gl_editor);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
-		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel.setPreferredSize(new Dimension(200, 310));
-		side.add(panel);
+		JPanel filter = new JPanel();
+		filter.setBackground(new Color(255, 255, 255));
+		filter.setBorder(new LineBorder(new Color(0, 0, 0)));
+		filter.setPreferredSize(new Dimension(200, 310));
+		side.add(filter);
 		
 		JLabel filterInfo = new JLabel(""
 				+ "<html>"
@@ -268,13 +268,13 @@ public class TransactionsPage extends JPanel {
 			}
 		});
 		resetBtn.setText("Clear");
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
+		GroupLayout gl_filter = new GroupLayout(filter);
+		gl_filter.setHorizontalGroup(
+			gl_filter.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_filter.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
+					.addGroup(gl_filter.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_filter.createSequentialGroup()
 							.addComponent(filterBtn, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(resetBtn, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE))
@@ -283,9 +283,9 @@ public class TransactionsPage extends JPanel {
 						.addComponent(detailsField, GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
 					.addContainerGap())
 		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
+		gl_filter.setVerticalGroup(
+			gl_filter.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_filter.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(filterInfo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -293,11 +293,11 @@ public class TransactionsPage extends JPanel {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(categoryField, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_filter.createParallelGroup(Alignment.LEADING)
 						.addComponent(resetBtn, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 						.addComponent(filterBtn, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
 					.addGap(36))
 		);
-		panel.setLayout(gl_panel);
+		filter.setLayout(gl_filter);
 	}
 }
