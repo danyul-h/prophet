@@ -134,7 +134,7 @@ public class TransactionsPage extends JPanel {
 		JPanel editor = new JPanel();
 		editor.setBackground(new Color(255, 255, 255));
 		editor.setBorder(new LineBorder(new Color(0, 0, 0)));
-		editor.setPreferredSize(new Dimension(200, 350));
+		editor.setPreferredSize(new Dimension(200, 335));
 		side.add(editor);
 		
 		Button addBtn = new Button();
@@ -228,7 +228,7 @@ public class TransactionsPage extends JPanel {
 		JPanel filter = new JPanel();
 		filter.setBackground(new Color(255, 255, 255));
 		filter.setBorder(new LineBorder(new Color(0, 0, 0)));
-		filter.setPreferredSize(new Dimension(200, 400));
+		filter.setPreferredSize(new Dimension(200, 365));
 		side.add(filter);
 		
 		detailsField = new JTextField();
