@@ -143,18 +143,25 @@ public class TransactionsPage extends JPanel {
 				dialog.setModal(true);
 				dialog.setVisible(true);
 				Transaction newTransaction = dialog.getTransaction();
-				model.addRow(newTransaction.toArray());
-				switch(Database.addTransaction(newTransaction)) {
-				case Status.UNAVAILABLE:
+				if (newTransaction.equals(transaction)) {
 					JOptionPane.showMessageDialog(getParent(), 
-							"Connection unavailable, transaction will show locally, but not save.", 
-							"Error", 
-							JOptionPane.WARNING_MESSAGE);
-				case Status.SUCCESSFUL:
-					JOptionPane.showMessageDialog(getParent(), 
-							"Transaction addition successful!", 
-							"Success", 
+							"Transaction addition cancelled!", 
+							"Cancellation", 
 							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					model.addRow(newTransaction.toArray());
+					switch(Database.addTransaction(newTransaction)) {
+					case Status.UNAVAILABLE:
+						JOptionPane.showMessageDialog(getParent(), 
+								"Connection unavailable, transaction will show locally, but not save.", 
+								"Error", 
+								JOptionPane.WARNING_MESSAGE);
+					case Status.SUCCESSFUL:
+						JOptionPane.showMessageDialog(getParent(), 
+								"Transaction addition successful!", 
+								"Success", 
+								JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
 			}
 		});

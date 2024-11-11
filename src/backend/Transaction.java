@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Transaction {
 	private int id;
@@ -49,15 +50,22 @@ public class Transaction {
 	}
 	
 	@Override
-	public boolean equals(Object o) {
-		if(o == null || !(o instanceof Transaction)) return false;
-		Transaction obj = (Transaction) o;
-		return obj.getId() == id 
-			&& obj.getUsername().equals(username) 
-			&& obj.getDate().equals(date) 
-			&& obj.getValue().equals(value)
-			&& obj.getCategory().equals(category) 
-			&& obj.getDetails().equals(details);
+	public int hashCode() {
+		return Objects.hash(category, date, details, id, username, value);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Transaction)) {
+			return false;
+		}
+		Transaction other = (Transaction) obj;
+		return Objects.equals(category, other.category) && Objects.equals(date, other.date)
+				&& Objects.equals(details, other.details) && id == other.id && Objects.equals(username, other.username)
+				&& Objects.equals(value, other.value);
 	}
 	
 	public Object[] toArray() {
