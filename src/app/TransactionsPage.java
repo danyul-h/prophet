@@ -51,7 +51,7 @@ public class TransactionsPage extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TransactionsPage(String username, Object[][] transactions) {
+	public TransactionsPage(String username, ArrayList<Transaction> transactions, App app) {
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EmptyBorder(10, 10, 10, 5));
 		setLayout(new BorderLayout(0, 0));
@@ -63,10 +63,6 @@ public class TransactionsPage extends JPanel {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane, BorderLayout.CENTER);
 		
-		for (Transaction i : Database.getTransactions(username)) {
-			System.out.println(i);
-		}
-		
 		table = new JTable() {
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -77,7 +73,7 @@ public class TransactionsPage extends JPanel {
 		table.getTableHeader().setPreferredSize(new Dimension(24, 24));
 		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 		
-		DefaultTableModel model = new DefaultTableModel(transactions, new String[] {"ID", "Date", "Value", "Category", "Details"}) {
+		DefaultTableModel model = new DefaultTableModel(Transaction.toTable(transactions), new String[] {"ID", "Date", "Value", "Category", "Details"}) {
 			@Override
 			public Class<?> getColumnClass(int column){
 	             switch (column) {
@@ -127,7 +123,7 @@ public class TransactionsPage extends JPanel {
 		side.setBackground(new Color(255, 255, 255));
 		add(side, BorderLayout.EAST);
 		side.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		JPanel editor = new JPanel();
 		editor.setBackground(new Color(255, 255, 255));
 		editor.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -155,12 +151,13 @@ public class TransactionsPage extends JPanel {
 								"Error", 
 								JOptionPane.WARNING_MESSAGE);
 					} else {
+						newTransaction.setId(newId);
+						model.addRow(newTransaction.toArray());
+						app.refresh();
 						JOptionPane.showMessageDialog(getParent(), 
 								"Transaction addition successful!", 
 								"Success", 
 								JOptionPane.INFORMATION_MESSAGE);
-						newTransaction.setId(newId);
-						model.addRow(newTransaction.toArray());
 					}
 				}
 			}
@@ -199,6 +196,7 @@ public class TransactionsPage extends JPanel {
 									"Error", 
 									JOptionPane.WARNING_MESSAGE);
 						case Status.SUCCESSFUL:
+							app.refresh();
 							JOptionPane.showMessageDialog(getParent(), 
 									"Transaction edit successful!", 
 									"Success", 
@@ -223,6 +221,7 @@ public class TransactionsPage extends JPanel {
 					row = table.convertRowIndexToModel(row);
 					Database.deleteTransaction((int)table.getModel().getValueAt(row, 0));
 					model.removeRow(row);
+					app.refresh();
 					JOptionPane.showMessageDialog(getParent(),
 							"Transaction deleted!",
 							"Success",

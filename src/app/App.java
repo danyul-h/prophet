@@ -1,11 +1,11 @@
 package app;
 
-import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,13 +31,16 @@ public class App extends JFrame {
 	private JPanel contentPane;
 	
 	private ArrayList<Transaction> transactions;
+	private BigDecimal balance = new BigDecimal(0);
+	private JLabel balanceLbl;
+	private String username;
 	
 	/**
 	 * Create the frame.
 	 */
 	public App(String username) {
-		transactions = Database.getTransactions(username);
-		
+		this.username = username;
+
 		setMinimumSize(new Dimension(850, 770));
 		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
@@ -93,7 +96,7 @@ public class App extends JFrame {
 		top.setBackground(new Color(255, 168, 0));
 		info.add(top, BorderLayout.NORTH);
 		
-		JLabel welcome = new JLabel("Welcome, " + username + "!");
+		JLabel welcome = new JLabel("Welcome, " + username.toUpperCase() + "!");
 		welcome.setBorder(new EmptyBorder(0, 10, 0, 0));
 		welcome.setHorizontalAlignment(SwingConstants.LEFT);
 		welcome.setForeground(new Color(255, 255, 255));
@@ -108,12 +111,29 @@ public class App extends JFrame {
 		top.add(welcome, BorderLayout.WEST);
 		top.add(date, BorderLayout.EAST);
 		
+		balanceLbl = new JLabel("Balance: $" + balance);
+		balanceLbl.setHorizontalAlignment(SwingConstants.CENTER);
+		balanceLbl.setForeground(Color.WHITE);
+		balanceLbl.setFont(new Font("Dialog", Font.BOLD, 16));
+		balanceLbl.setBorder(new EmptyBorder(0, 10, 0, 0));
+		top.add(balanceLbl, BorderLayout.CENTER);
+		
 		JPanel pages = new JPanel();
 		pages.setBorder(null);
 		info.add(pages, BorderLayout.CENTER);
 		pages.setLayout(new CardLayout(0, 0));
 		
-		TransactionsPage transactionsPage = new TransactionsPage(username, Transaction.toTable(transactions));
+		refresh();
+		TransactionsPage transactionsPage = new TransactionsPage(username, transactions, this);
 		pages.add(transactionsPage, "Transactions");
+	}
+	
+	public void refresh() {
+		transactions = Database.getTransactions(username);
+		balance = new BigDecimal(0);
+		for (Transaction i : transactions) {
+			balance = balance.add(i.getValue());
+		}
+		balanceLbl.setText("Balance: $" + balance);
 	}
 }

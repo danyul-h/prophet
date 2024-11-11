@@ -3,15 +3,12 @@ package app;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import backend.Transaction;
-import backend.Database;
-import backend.Database.Status;
 import components.Button;
 
 import java.awt.event.ActionListener;
@@ -23,16 +20,11 @@ import java.time.ZoneId;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JTextFieldDateEditor;
-import com.toedter.calendar.JCalendar;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -95,7 +87,7 @@ public class TransactionDialog extends JDialog {
 		contentPanel.add(valueLbl);
 		
 		valueField = new JTextField();
-		valueField.setBorder(new LineBorder(new Color(0, 0, 0)));
+		valueField.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0)), new EmptyBorder(5, 5, 5, 5)));
 		valueField.setBounds(170, 54, 136, 32);
 		valueField.setFont(new Font("Arial", Font.PLAIN, 16));
 		valueField.setColumns(10);
@@ -158,13 +150,13 @@ public class TransactionDialog extends JDialog {
 					BigDecimal value = new BigDecimal(new DecimalFormat("#.00").format((double) Math.round(Double.parseDouble(valueField.getText())*100)/100));
 					String category = categoryField.getSelectedItem().toString();
 					String details = detailsField.getText();
-					if(details.length() > 45) JOptionPane.showMessageDialog(rootPane, "\"Details\" field too long, try again.", "Error", JOptionPane.WARNING_MESSAGE);
+					if(details.length() > 500) JOptionPane.showMessageDialog(rootPane, "\"Details\" field too long, try again.", "Error", JOptionPane.WARNING_MESSAGE);
 					transaction = new Transaction(transaction.getId(), transaction.getUsername(), date, value, category, details);
 					dispose();
 				} catch (java.lang.NumberFormatException e) {
 					JOptionPane.showMessageDialog(rootPane, "Invalid \"Value\" field, try again.", "Error",JOptionPane.WARNING_MESSAGE);
 				} catch (java.lang.NullPointerException e) {
-					JOptionPane.showMessageDialog(rootPane, "Missing fields, try again.", "Error", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(rootPane, "Missing or empty fields, try again.", "Error", JOptionPane.WARNING_MESSAGE);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(rootPane, "Invalid fields, try again.", "Error", JOptionPane.WARNING_MESSAGE);
 				} finally {
