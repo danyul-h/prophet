@@ -51,7 +51,7 @@ public class App extends JFrame {
 	 * Create the frame.
 	 */
 	public App(String username) {
-		setMinimumSize(new Dimension(800, 800));
+		setMinimumSize(new Dimension(850, 800));
 		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
