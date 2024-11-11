@@ -25,6 +25,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import backend.Database;
+import backend.Database.Status;
 import backend.Transaction;
 import components.SearchFilter;
 
@@ -137,14 +138,31 @@ public class TransactionsPage extends JPanel {
 		Button addBtn = new Button();
 		addBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				Transaction transaction = new Transaction(username);
+				TransactionDialog dialog = new TransactionDialog(transaction);
+				dialog.setModal(true);
+				dialog.setVisible(true);
+				Transaction newTransaction = dialog.getTransaction();
+				model.addRow(newTransaction.toArray());
+				switch(Database.addTransaction(newTransaction)) {
+				case Status.UNAVAILABLE:
+					JOptionPane.showMessageDialog(getParent(), 
+							"Connection unavailable, transaction will show locally, but not save.", 
+							"Error", 
+							JOptionPane.WARNING_MESSAGE);
+				case Status.SUCCESSFUL:
+					JOptionPane.showMessageDialog(getParent(), 
+							"Transaction addition successful!", 
+							"Success", 
+							JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
 		addBtn.setText("Add Transaction");
 		
 		Button editBtn = new Button();
 		editBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent a) {
 				int row = table.getSelectedRow();
 				if (row == -1) {
 					JOptionPane.showMessageDialog(getParent(), 
@@ -157,6 +175,28 @@ public class TransactionsPage extends JPanel {
 					TransactionDialog dialog = new TransactionDialog(transaction);
 					dialog.setModal(true);
 					dialog.setVisible(true);
+					Transaction editedTransaction = dialog.getTransaction();
+					if (editedTransaction.equals(transactions)) {
+						JOptionPane.showMessageDialog(getParent(), 
+								"No changes made, cancelled or same values were saved.", 
+								"Cancellation", 
+								JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						model.removeRow(row);
+						model.addRow(editedTransaction.toArray());
+						switch(Database.editTransaction(editedTransaction)) {
+						case Status.UNAVAILABLE:
+							JOptionPane.showMessageDialog(getParent(), 
+									"Connection unavailable, transaction will show locally, but not save.", 
+									"Error", 
+									JOptionPane.WARNING_MESSAGE);
+						case Status.SUCCESSFUL:
+							JOptionPane.showMessageDialog(getParent(), 
+									"Transaction edit successful!", 
+									"Success", 
+									JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
 					System.out.println(dialog.getTransaction());
 				}
 			}

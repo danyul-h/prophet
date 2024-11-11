@@ -87,8 +87,10 @@ public class Database {
 			statement.setBigDecimal(3, transaction.getValue());
 			statement.setString(4, transaction.getCategory());
 			statement.setString(5, transaction.getDetails());
+			statement.executeUpdate();
 			return Status.SUCCESSFUL; // success
 		} catch (SQLException e){
+			e.printStackTrace();
 			return Status.INVALID; // invalid category / title / description / image
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -109,7 +111,7 @@ public class Database {
 			statement.executeUpdate();
 			return Status.SUCCESSFUL; // success
 		} catch (SQLException e){
-			return Status.INVALID; // description exceeded
+			return Status.INVALID; // fields exceeded
 		} catch(Exception e) {
 			e.printStackTrace();
 			return Status.UNAVAILABLE; // assume connection failure

@@ -49,9 +49,15 @@ public class Transaction {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
-		if(obj == null || !(obj instanceof Transaction)) return false;
-		return ((Transaction) obj).getId() == id;
+	public boolean equals(Object o) {
+		if(o == null || !(o instanceof Transaction)) return false;
+		Transaction obj = (Transaction) o;
+		return obj.getId() == id 
+			&& obj.getUsername().equals(username) 
+			&& obj.getDate().equals(date) 
+			&& obj.getValue().equals(value)
+			&& obj.getCategory().equals(category) 
+			&& obj.getDetails().equals(details);
 	}
 	
 	public Object[] toArray() {
