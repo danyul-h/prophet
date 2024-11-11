@@ -146,11 +146,22 @@ public class TransactionDialog extends JDialog {
 			public void actionPerformed(ActionEvent a) {
 				try {
 					Date date = Date.valueOf(LocalDate.ofInstant(dateField.getDate().toInstant(), ZoneId.systemDefault()));
-					if(date == null) JOptionPane.showMessageDialog(rootPane, "Invalid \"Date\" field, try again.", "Error", JOptionPane.WARNING_MESSAGE);
-					BigDecimal value = new BigDecimal(new DecimalFormat("#.00").format((double) Math.round(Double.parseDouble(valueField.getText())*100)/100));
+					if(date == null) {
+						JOptionPane.showMessageDialog(rootPane, "Invalid \"Date\" field, try again.", "Error", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+					Double roundedValue = (double) Math.round(Double.parseDouble(valueField.getText())*100)/100;
+					if (roundedValue > 10000000000000.00 || roundedValue < -10000000000000.00) {
+						JOptionPane.showMessageDialog(rootPane, "\"Value\" field too big, try again.", "Error", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+					BigDecimal value = new BigDecimal(new DecimalFormat("#.00").format(roundedValue));
 					String category = categoryField.getSelectedItem().toString();
 					String details = detailsField.getText();
-					if(details.length() > 500) JOptionPane.showMessageDialog(rootPane, "\"Details\" field too long, try again.", "Error", JOptionPane.WARNING_MESSAGE);
+					if(details.length() > 500) {
+						JOptionPane.showMessageDialog(rootPane, "\"Details\" field too long, try again.", "Error", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
 					transaction = new Transaction(transaction.getId(), transaction.getUsername(), date, value, category, details);
 					dispose();
 				} catch (java.lang.NumberFormatException e) {
