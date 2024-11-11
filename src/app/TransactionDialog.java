@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import backend.Transaction;
+import backend.Database;
 import backend.Database.Status;
 import components.Button;
 

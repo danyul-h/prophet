@@ -77,9 +77,9 @@ public class Database {
 		return transactions;
 	}
 	
-	public static Status addTransaction(Transaction transaction) {
+	public static int addTransaction(Transaction transaction) {
 		Connection connection = connect();
-		if (connection == null) return Status.UNAVAILABLE;
+		if (connection == null) return -1;
 		try {
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO transactions(username, date, value, category, details) values(?, ?, ?, ?, ?)");
 			statement.setString(1, transaction.getUsername());
@@ -88,14 +88,15 @@ public class Database {
 			statement.setString(4, transaction.getCategory());
 			statement.setString(5, transaction.getDetails());
 			statement.executeUpdate();
-			return Status.SUCCESSFUL; // success
-		} catch (SQLException e){
-			e.printStackTrace();
-			return Status.INVALID; // invalid category / title / description / image
+			statement = connection.prepareStatement("SELECT LAST_INSERT_ID() FROM transactions");
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
-			return Status.UNAVAILABLE; // assume connection failure
 		}
+		return -1; // assume connection failure
 	}
 	
 	public static Status editTransaction(Transaction transaction) {

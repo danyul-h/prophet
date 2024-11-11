@@ -74,7 +74,11 @@ public class Transaction {
 	}
 	
 	public String toString() {
-		return details + ": valued at " + value + " on " + new SimpleDateFormat("EE").format(date) + " " + date;
+		return id + " "+ details + ": valued at " + value + " on " + new SimpleDateFormat("EE").format(date) + " " + date;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public int getId() {

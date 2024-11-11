@@ -149,18 +149,19 @@ public class TransactionsPage extends JPanel {
 							"Cancellation", 
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					model.addRow(newTransaction.toArray());
-					switch(Database.addTransaction(newTransaction)) {
-					case Status.UNAVAILABLE:
+					int newId = Database.addTransaction(newTransaction);
+					if (newId == -1) {
 						JOptionPane.showMessageDialog(getParent(), 
-								"Connection unavailable, transaction will show locally, but not save.", 
+								"Connection unavailable, transaction addition failed.",
 								"Error", 
 								JOptionPane.WARNING_MESSAGE);
-					case Status.SUCCESSFUL:
+					} else {
 						JOptionPane.showMessageDialog(getParent(), 
 								"Transaction addition successful!", 
 								"Success", 
 								JOptionPane.INFORMATION_MESSAGE);
+						newTransaction.setId(newId);
+						model.addRow(newTransaction.toArray());
 					}
 				}
 			}
@@ -179,6 +180,7 @@ public class TransactionsPage extends JPanel {
 				} else {
 					row = table.convertRowIndexToModel(row);
 					Transaction transaction = Database.getTransaction((int) table.getModel().getValueAt(row, 0));
+					System.out.println(transaction);
 					TransactionDialog dialog = new TransactionDialog(transaction);
 					dialog.setModal(true);
 					dialog.setVisible(true);
