@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 import backend.Database;
 import backend.Database.Status;

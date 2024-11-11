@@ -48,6 +48,12 @@ public class Transaction {
 		return table;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null || !(obj instanceof Transaction)) return false;
+		return ((Transaction) obj).getId() == id;
+	}
+	
 	public Object[] toArray() {
 		return new Object[]{id, date, value, category, details, username};
 	}

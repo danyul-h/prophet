@@ -5,11 +5,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.awt.BorderLayout;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Font;
@@ -19,7 +17,6 @@ import java.sql.Date;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -32,22 +29,17 @@ import backend.Transaction;
 import components.SearchFilter;
 
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
 import components.Button;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import components.TextField;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import javax.swing.border.EtchedBorder;
 import java.awt.FlowLayout;
-import java.awt.Rectangle;
 
 public class TransactionsPage extends JPanel {
 
@@ -75,7 +67,12 @@ public class TransactionsPage extends JPanel {
 			System.out.println(i);
 		}
 		
-		table = new JTable();
+		table = new JTable() {
+			@Override
+			public boolean editCellAt(int row, int column, java.util.EventObject e) {
+				return false;
+			}
+		};
 		table.setFocusable(false);
 		table.getTableHeader().setPreferredSize(new Dimension(24, 24));
 		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
@@ -157,6 +154,10 @@ public class TransactionsPage extends JPanel {
 				} else {
 					row = table.convertRowIndexToModel(row);
 					Transaction transaction = Database.getTransaction((int) table.getModel().getValueAt(row, 0));
+					TransactionDialog dialog = new TransactionDialog(transaction);
+					dialog.setModal(true);
+					dialog.setVisible(true);
+					System.out.println(dialog.getTransaction());
 				}
 			}
 		});

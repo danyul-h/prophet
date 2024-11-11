@@ -18,12 +18,7 @@ import java.awt.Dimension;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
-import java.awt.FlowLayout;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
 public class App extends JFrame {
@@ -55,7 +50,7 @@ public class App extends JFrame {
 		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 770);
+		setBounds(100, 100, 900, 810);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
