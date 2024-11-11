@@ -134,7 +134,7 @@ public class TransactionsPage extends JPanel {
 		JPanel editor = new JPanel();
 		editor.setBackground(new Color(255, 255, 255));
 		editor.setBorder(new LineBorder(new Color(0, 0, 0)));
-		editor.setPreferredSize(new Dimension(200, 450));
+		editor.setPreferredSize(new Dimension(200, 350));
 		side.add(editor);
 		
 		Button addBtn = new Button();
@@ -184,7 +184,14 @@ public class TransactionsPage extends JPanel {
 		});
 		deleteBtn.setText("Delete Transaction");
 		
-		JLabel editorInfo = new JLabel("<html><h2 style=\"margin-bottom:-5;text-align:center\">Transaction Editor</h2><ul style=\"margin-left:20\"><li>Click on the table headers to sort the transactions based on columns</li><li>Clicking \"Add\" or \"Edit\" will open a separate window to input transaction details</li><li>Select a row on the table before clicking \"Edit\" or \"Delete\" </li></ul></html>");
+		JLabel editorInfo = new JLabel(""
+				+ "<html>"
+					+ "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Editor</h2>"
+					+ "<ul style=\"margin-left:20\">"
+						+ "<li>Clicking \"Add\" or \"Edit\" will open a separate window to input transaction details</li>"
+						+ "<li>Select a row on the table before clicking \"Edit\" or \"Delete\" </li>"
+					+ "</ul>"
+				+ "</html>");
 		editorInfo.setVerticalAlignment(SwingConstants.TOP);
 		editorInfo.setHorizontalAlignment(SwingConstants.CENTER);
 		editorInfo.setForeground(Color.BLACK);
@@ -221,7 +228,7 @@ public class TransactionsPage extends JPanel {
 		JPanel filter = new JPanel();
 		filter.setBackground(new Color(255, 255, 255));
 		filter.setBorder(new LineBorder(new Color(0, 0, 0)));
-		filter.setPreferredSize(new Dimension(200, 300));
+		filter.setPreferredSize(new Dimension(200, 400));
 		side.add(filter);
 		
 		detailsField = new JTextField();
@@ -250,7 +257,14 @@ public class TransactionsPage extends JPanel {
 		});
 		resetBtn.setText("Clear");
 		
-		JLabel filterInfo = new JLabel("<html><h2 style=\"margin-bottom:-5;text-align:center\">Transaction Filters</h2><ul style=\"margin-left:20\"><li>Modify the parameters above to filter the transactions shown in the table</li></ul></html>");
+		JLabel filterInfo = new JLabel(""
+				+ "<html>"
+					+ "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Filters</h2>"
+					+ "<ul style=\"margin-left:20\">"
+						+ "<li>Click on the table headers to sort the transactions based on columns</li>"
+						+ "<li>Modify the parameters above to filter the transactions shown in the table</li>"
+					+ "</ul>"
+				+ "</html>");
 		filterInfo.setHorizontalAlignment(SwingConstants.CENTER);
 		filterInfo.setForeground(Color.BLACK);
 		filterInfo.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -261,18 +275,18 @@ public class TransactionsPage extends JPanel {
 				.addGroup(gl_filter.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_filter.createParallelGroup(Alignment.LEADING)
+						.addComponent(filterInfo, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_filter.createSequentialGroup()
 							.addComponent(filterBtn, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(resetBtn, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE))
 						.addComponent(categoryField, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
-						.addComponent(detailsField, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
-						.addComponent(filterInfo, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE))
+						.addComponent(detailsField, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_filter.setVerticalGroup(
 			gl_filter.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_filter.createSequentialGroup()
+				.addGroup(Alignment.LEADING, gl_filter.createSequentialGroup()
 					.addGap(10)
 					.addComponent(detailsField, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -282,8 +296,8 @@ public class TransactionsPage extends JPanel {
 						.addComponent(resetBtn, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 						.addComponent(filterBtn, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
 					.addGap(5)
-					.addComponent(filterInfo, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(32, Short.MAX_VALUE))
+					.addComponent(filterInfo)
+					.addContainerGap(132, Short.MAX_VALUE))
 		);
 		filter.setLayout(gl_filter);
 	}
