@@ -51,11 +51,11 @@ public class App extends JFrame {
 	 * Create the frame.
 	 */
 	public App(String username) {
-		setMinimumSize(new Dimension(850, 850));
+		setMinimumSize(new Dimension(850, 860));
 		setTitle("Prophet");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 850);
+		setBounds(100, 100, 900, 860);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);

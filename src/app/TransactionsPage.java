@@ -137,20 +137,6 @@ public class TransactionsPage extends JPanel {
 		editor.setPreferredSize(new Dimension(200, 450));
 		side.add(editor);
 		
-		JLabel editorInfo = new JLabel(""
-				+ "<html>"
-				+ "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Editor</h2>"
-				+ "<ul style=\"margin-left:20\">"
-					+ "<li>Click on the table headers to sort the transactions based on columns</li>"
-					+ "<li>Clicking \"Add\" or \"Edit\" will open a separate window to input transaction details</li>"
-					+ "<li>Select a row on the table before clicking \"Edit\" or \"Delete\" </li>"
-				+ "</ul>"
-			+ "</html>");
-		editorInfo.setForeground(new Color(0, 0, 0));
-		editorInfo.setBackground(new Color(255, 255, 255));
-		editorInfo.setHorizontalAlignment(SwingConstants.CENTER);
-		editorInfo.setFont(new Font("Arial", Font.PLAIN, 14));
-		
 		Button addBtn = new Button();
 		addBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -198,50 +184,45 @@ public class TransactionsPage extends JPanel {
 		});
 		deleteBtn.setText("Delete Transaction");
 		
+		JLabel editorInfo = new JLabel("<html><h2 style=\"margin-bottom:-5;text-align:center\">Transaction Editor</h2><ul style=\"margin-left:20\"><li>Click on the table headers to sort the transactions based on columns</li><li>Clicking \"Add\" or \"Edit\" will open a separate window to input transaction details</li><li>Select a row on the table before clicking \"Edit\" or \"Delete\" </li></ul></html>");
+		editorInfo.setVerticalAlignment(SwingConstants.TOP);
+		editorInfo.setHorizontalAlignment(SwingConstants.CENTER);
+		editorInfo.setForeground(Color.BLACK);
+		editorInfo.setFont(new Font("Arial", Font.PLAIN, 14));
+		editorInfo.setBackground(Color.WHITE);
+		
 		GroupLayout gl_editor = new GroupLayout(editor);
 		gl_editor.setHorizontalGroup(
 			gl_editor.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_editor.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_editor.createParallelGroup(Alignment.LEADING)
-						.addComponent(editorInfo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-						.addComponent(addBtn, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+					.addGroup(gl_editor.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(addBtn, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
 						.addComponent(editBtn, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
-						.addComponent(deleteBtn, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE))
+						.addComponent(deleteBtn, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
+						.addComponent(editorInfo, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_editor.setVerticalGroup(
-			gl_editor.createParallelGroup(Alignment.LEADING)
+			gl_editor.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_editor.createSequentialGroup()
-					.addGap(9)
-					.addComponent(editorInfo, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(10)
 					.addComponent(addBtn, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(editBtn, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(deleteBtn, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-					.addGap(14))
+					.addGap(5)
+					.addComponent(editorInfo, GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+					.addGap(13))
 		);
 		editor.setLayout(gl_editor);
 		
 		JPanel filter = new JPanel();
 		filter.setBackground(new Color(255, 255, 255));
 		filter.setBorder(new LineBorder(new Color(0, 0, 0)));
-		filter.setPreferredSize(new Dimension(200, 310));
+		filter.setPreferredSize(new Dimension(200, 300));
 		side.add(filter);
-		
-		JLabel filterInfo = new JLabel(""
-				+ "<html>"
-					+ "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Filters</h2>"
-					+ "<ul style=\"margin-left:20\">"
-						+ "<li>Modify the parameters below to filter the transactions shown in the table</li>"
-					+ "</ul>"
-				+ "</html>");
-		filterInfo.setForeground(new Color(0, 0, 0));
-		filterInfo.setBackground(new Color(255, 255, 255));
-		filterInfo.setHorizontalAlignment(SwingConstants.CENTER);
-		filterInfo.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 		detailsField = new JTextField();
 		detailsField.setBorder(new TitledBorder(null, "Details Parameter", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -268,6 +249,12 @@ public class TransactionsPage extends JPanel {
 			}
 		});
 		resetBtn.setText("Clear");
+		
+		JLabel filterInfo = new JLabel("<html><h2 style=\"margin-bottom:-5;text-align:center\">Transaction Filters</h2><ul style=\"margin-left:20\"><li>Modify the parameters above to filter the transactions shown in the table</li></ul></html>");
+		filterInfo.setHorizontalAlignment(SwingConstants.CENTER);
+		filterInfo.setForeground(Color.BLACK);
+		filterInfo.setFont(new Font("Arial", Font.PLAIN, 14));
+		filterInfo.setBackground(Color.WHITE);
 		GroupLayout gl_filter = new GroupLayout(filter);
 		gl_filter.setHorizontalGroup(
 			gl_filter.createParallelGroup(Alignment.LEADING)
@@ -276,19 +263,17 @@ public class TransactionsPage extends JPanel {
 					.addGroup(gl_filter.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_filter.createSequentialGroup()
 							.addComponent(filterBtn, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(resetBtn, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE))
-						.addComponent(filterInfo, GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-						.addComponent(categoryField, 0, 180, Short.MAX_VALUE)
-						.addComponent(detailsField, GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+						.addComponent(categoryField, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+						.addComponent(detailsField, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+						.addComponent(filterInfo, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_filter.setVerticalGroup(
-			gl_filter.createParallelGroup(Alignment.LEADING)
+			gl_filter.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_filter.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(filterInfo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(10)
 					.addComponent(detailsField, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(categoryField, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
@@ -296,7 +281,9 @@ public class TransactionsPage extends JPanel {
 					.addGroup(gl_filter.createParallelGroup(Alignment.LEADING)
 						.addComponent(resetBtn, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 						.addComponent(filterBtn, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-					.addGap(36))
+					.addGap(5)
+					.addComponent(filterInfo, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(32, Short.MAX_VALUE))
 		);
 		filter.setLayout(gl_filter);
 	}
