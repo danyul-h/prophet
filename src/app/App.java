@@ -3,6 +3,7 @@ package app;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -24,6 +25,19 @@ import javax.swing.border.EmptyBorder;
 
 import backend.Database;
 import backend.Transaction;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import components.Button;
+import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.FlowLayout;
 
 public class App extends JFrame {
 
@@ -71,9 +85,39 @@ public class App extends JFrame {
 		nav.setLayout(new BorderLayout(0, 0));
 
 		JPanel pageBtns = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) pageBtns.getLayout();
+		flowLayout.setVgap(10);
 		pageBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(pageBtns, BorderLayout.NORTH);
 		
+		JLabel pie = new JLabel("");
+		pie.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+				dcd.setValue(78, "Marks", "b");
+				dcd.setValue(728, "Marks", "b");
+				dcd.setValue(79, "Marks", "d");
+				dcd.setValue(80, "Marks", "f");
+				dcd.setValue(90, "Marks", "g");
+				dcd.setValue(40, "Marks", "j");
+				JFreeChart jchart = ChartFactory.createBarChart("Strudent Record", "Student Name", "Student Marks", dcd, PlotOrientation.VERTICAL, true, true, false);
+				
+				CategoryPlot plot = jchart.getCategoryPlot();
+				plot.setRangeGridlinePaint(Color.black); 
+				ChartFrame chartFrm = new ChartFrame("Student Record", jchart, true);
+				chartFrm.setVisible(true);
+				chartFrm.setSize(500, 400);
+				ChartPanel chartPanel = new ChartPanel(jchart);
+			}
+		});
+		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/icons/light.png")); // load the image to a imageIcon
+		Image image = imageIcon.getImage(); // transform it
+		Image newimg = image.getScaledInstance(56, 56, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		imageIcon = new ImageIcon(newimg);
+		pie.setIcon(imageIcon);
+		pageBtns.add(pie);
+
 		JPanel sysBtns = new JPanel();
 		sysBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(sysBtns, BorderLayout.SOUTH);

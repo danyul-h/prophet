@@ -258,20 +258,20 @@ public class Login extends JFrame {
 			}
 		};
 		bgIcon.setPreferredSize(new Dimension(90, 90));
+		bgIcon.setLayout(null);
 		top.add(bgIcon);
 
-		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/icons/light.png")); // load the image to a
-																							// imageIcon
+		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/icons/light.png")); // load the image to a imageIcon
 		Image image = imageIcon.getImage(); // transform it
 		Image newimg = image.getScaledInstance(56, 56, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
 		imageIcon = new ImageIcon(newimg);
-		bgIcon.setLayout(null);
+		
 		JLabel icon = new JLabel("");
 		icon.setBounds(15, 11, 60, 60);
-		bgIcon.add(icon);
 		icon.setFont(new Font("Arial", Font.BOLD, 32));
 		icon.setHorizontalAlignment(SwingConstants.CENTER);
 		icon.setIcon(imageIcon);
+		bgIcon.add(icon);
 
 		JLabel title = new JLabel("Prophet Login    ");
 		title.setVerticalAlignment(SwingConstants.TOP);

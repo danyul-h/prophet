@@ -58,12 +58,10 @@ public class Button extends JButton {
         setContentAreaFilled(false);
         //  Add event mouse
         addMouseListener(new MouseAdapter() {
-
             @Override
             public void mousePressed(MouseEvent me) {
                 setBackground(colorClick);
             }
-
             @Override
             public void mouseReleased(MouseEvent me) {
                 setBackground(color);
