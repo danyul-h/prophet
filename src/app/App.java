@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,11 +30,14 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
-import components.Button;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -94,21 +98,26 @@ public class App extends JFrame {
 		pie.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DefaultCategoryDataset dcd = new DefaultCategoryDataset();
-				dcd.setValue(78, "Marks", "b");
-				dcd.setValue(728, "Marks", "b");
-				dcd.setValue(79, "Marks", "d");
-				dcd.setValue(80, "Marks", "f");
-				dcd.setValue(90, "Marks", "g");
-				dcd.setValue(40, "Marks", "j");
-				JFreeChart jchart = ChartFactory.createBarChart("Strudent Record", "Student Name", "Student Marks", dcd, PlotOrientation.VERTICAL, true, true, false);
+				DefaultPieDataset data = new DefaultPieDataset();
+				for(String category : Transaction.getCategories()) {
+					double cost = Transaction.getCategoryExpenses(transactions, category);
+					if (cost != 0) data.setValue(category, Transaction.getCategoryExpenses(transactions, category));
+				}
+				Transaction.filterDayDistance(transactions, 1);
+				JFreeChart someChart = ChartFactory.createPieChart("Categorical Expenses", data, true, true, false);
 				
-				CategoryPlot plot = jchart.getCategoryPlot();
-				plot.setRangeGridlinePaint(Color.black); 
-				ChartFrame chartFrm = new ChartFrame("Student Record", jchart, true);
-				chartFrm.setVisible(true);
-				chartFrm.setSize(500, 400);
-				ChartPanel chartPanel = new ChartPanel(jchart);
+				PiePlot plot = (PiePlot) someChart.getPlot();
+
+		        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator(
+		            "{0}: -${1} ({2})", new DecimalFormat("#.##"), new DecimalFormat("#.##%"));
+		        plot.setLabelGenerator(gen);
+
+		        JFrame f = new JFrame("Test");
+		        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		        f.add(new ChartPanel(someChart));
+		        f.pack();
+		        f.setLocationRelativeTo(null);
+		        f.setVisible(true);
 			}
 		});
 		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/icons/light.png")); // load the image to a imageIcon

@@ -4,10 +4,19 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class Transaction {
+	
+	private static String[] categories = {"Miscellaneous", "Salary", "Bills", "Entertainment", "Dining", "Education", "Insurance", "Health", "Groceries", "Transportation", "Home", "Travel"};
+	
+	public static String[] getCategories() {
+		return categories;
+	}
+	
 	private int id;
 	private String username;
 	private Date date;
@@ -19,7 +28,7 @@ public class Transaction {
 		this.id = -1;
 		this.username = username;
 		this.date = Date.valueOf(LocalDate.now());
-		this.value = BigDecimal.valueOf(0.00);
+		this.value = new BigDecimal(0.00);
 		this.category = null;
 		this.details = "Transaction";
 	}
@@ -40,6 +49,27 @@ public class Transaction {
 		this.value = value;
 		this.category = category;
 		this.details = details;
+	}
+	
+	public static double getCategoryExpenses(ArrayList<Transaction> transactions, String category) {
+		double cost = 0;
+		for (Transaction i : transactions) {
+			double value = i.getValue().doubleValue();
+			if(value < 0 & i.getCategory().equals(category)) cost += Math.abs(value);
+		}
+		return cost;
+	}
+	
+	public static ArrayList<Transaction> filterDayDistance(ArrayList<Transaction> transactions, int days){
+		ArrayList<Transaction> filtered =  new ArrayList<Transaction>();
+		Calendar c = Calendar.getInstance();
+		c.setTime(Date.valueOf(LocalDate.now()));
+		c.add(Calendar.DATE, -days);
+		Date compareDate = Date.valueOf(LocalDate.ofInstant(c.getTime().toInstant(), ZoneId.systemDefault()));
+		for (Transaction i : transactions) {
+			if (i.getDate().compareTo(compareDate) >= 0) filtered.add(i);
+		}
+		return filtered;
 	}
 	
 	public static Object[][] toTable(ArrayList<Transaction> transactions){

@@ -99,7 +99,7 @@ public class TransactionDialog extends JDialog {
 		categoryLbl.setFont(new Font("Arial", Font.PLAIN, 16));
 		contentPanel.add(categoryLbl);
 		
-		categoryField = new JComboBox<String>(new String[] {"Miscellaneous", "Salary", "Bills", "Entertainment", "Dining", "Education", "Insurance", "Health", "Groceries", "Transportation", "Home", "Travel"});
+		categoryField = new JComboBox<String>(Transaction.getCategories());
 		categoryField.setBorder(new LineBorder(new Color(0, 0, 0)));
 		categoryField.setBounds(170, 97, 136, 32);
 		categoryField.setFont(new Font("Arial", Font.PLAIN, 16));
