@@ -45,12 +45,7 @@ import java.awt.FlowLayout;
 public class TransactionsPage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTable table;
-	private JTextField detailsField;
 	
-	/**
-	 * Create the panel.
-	 */
 	public TransactionsPage(String username, ArrayList<Transaction> transactions, App app) {
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EmptyBorder(10, 10, 10, 5));
@@ -63,7 +58,7 @@ public class TransactionsPage extends JPanel {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane, BorderLayout.CENTER);
 		
-		table = new JTable() {
+		JTable table = new JTable() {
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
 				return false;
@@ -278,7 +273,7 @@ public class TransactionsPage extends JPanel {
 		filter.setPreferredSize(new Dimension(200, 365));
 		side.add(filter);
 		
-		detailsField = new JTextField();
+		JTextField detailsField = new JTextField();
 		detailsField.setBorder(new TitledBorder(null, "Details Parameter", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		detailsField.setFont(new Font("Arial", Font.PLAIN, 18));
 		detailsField.setColumns(10);

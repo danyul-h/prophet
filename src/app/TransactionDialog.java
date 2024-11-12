@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -37,6 +38,7 @@ public class TransactionDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
+	private static final ImageIcon appIcon = new ImageIcon(TransactionDialog.class.getResource("/icons/dark.png"));
 	
 	/**
 	 * Create the dialog.
@@ -56,7 +58,7 @@ public class TransactionDialog extends JDialog {
 		
 		setResizable(false);
 		setTitle("Prophet Transactions");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
+		setIconImage(appIcon.getImage());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 520, 300);
 		getContentPane().setLayout(new BorderLayout());

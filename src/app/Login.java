@@ -36,10 +36,10 @@ public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	
+	private static final ImageIcon appIcon = new ImageIcon(Login.class.getResource("/icons/darkWallet.png"));
+	private static final ImageIcon logoIcon = new ImageIcon(Login.class.getResource("/icons/lightWallet.png"));
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -53,13 +53,10 @@ public class Login extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Login() {
 		setMinimumSize(new Dimension(600, 400));
 		setTitle("Prophet Login");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
+		setIconImage(appIcon.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 760, 420);
 		setLocationRelativeTo(null);
@@ -261,16 +258,11 @@ public class Login extends JFrame {
 		bgIcon.setLayout(null);
 		top.add(bgIcon);
 
-		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/icons/light.png")); // load the image to a imageIcon
-		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(56, 56, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageIcon = new ImageIcon(newimg);
-		
 		JLabel icon = new JLabel("");
 		icon.setBounds(15, 11, 60, 60);
 		icon.setFont(new Font("Arial", Font.BOLD, 32));
 		icon.setHorizontalAlignment(SwingConstants.CENTER);
-		icon.setIcon(imageIcon);
+		icon.setIcon(new ImageIcon(logoIcon.getImage().getScaledInstance(56, 56, java.awt.Image.SCALE_SMOOTH)));
 		bgIcon.add(icon);
 
 		JLabel title = new JLabel("Prophet Login    ");

@@ -46,22 +46,23 @@ import java.awt.FlowLayout;
 public class App extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+
+	private static final ImageIcon appIcon = new ImageIcon(App.class.getResource("/icons/darkWallet.png"));
+	private static final ImageIcon pieIcon = new ImageIcon(App.class.getResource("/icons/lightWallet.png"));
+	private static final ImageIcon logoutIcon = new ImageIcon(App.class.getResource("/icons/logout.png"));
 	
+	private JPanel contentPane;
 	private ArrayList<Transaction> transactions;
 	private BigDecimal balance = new BigDecimal(0);
 	private JLabel balanceLbl;
 	private String username;
 	
-	/**
-	 * Create the frame.
-	 */
 	public App(String username) {
 		this.username = username;
 
 		setMinimumSize(new Dimension(850, 770));
 		setTitle("Prophet");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/icons/dark.png")));
+		setIconImage(appIcon.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 810);
 		setLocationRelativeTo(null);
@@ -84,13 +85,13 @@ public class App extends JFrame {
 		};
 		nav.setBorder(null);
 		nav.setBackground(new Color(0, 64, 128));
-		nav.setPreferredSize(new Dimension(154, 380));
+		nav.setPreferredSize(new Dimension(100, 380));
 		contentPane.add(nav, BorderLayout.WEST);
 		nav.setLayout(new BorderLayout(0, 0));
 
 		JPanel pageBtns = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) pageBtns.getLayout();
-		flowLayout.setVgap(10);
+		flowLayout.setVgap(20);
 		pageBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(pageBtns, BorderLayout.NORTH);
 		
@@ -114,22 +115,32 @@ public class App extends JFrame {
 
 		        JFrame f = new JFrame("Test");
 		        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		        f.add(new ChartPanel(someChart));
+		        f.getContentPane().add(new ChartPanel(someChart));
 		        f.pack();
 		        f.setLocationRelativeTo(null);
 		        f.setVisible(true);
 			}
 		});
-		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/icons/light.png")); // load the image to a imageIcon
-		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(56, 56, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageIcon = new ImageIcon(newimg);
-		pie.setIcon(imageIcon);
+		pie.setIcon(new ImageIcon(pieIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
 		pageBtns.add(pie);
 
 		JPanel sysBtns = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) sysBtns.getLayout();
+		flowLayout_1.setVgap(20);
 		sysBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(sysBtns, BorderLayout.SOUTH);
+		
+		JLabel logout = new JLabel("");
+		logout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+				Login login = new Login();
+				login.setVisible(true);
+			}
+		});
+		logout.setIcon(new ImageIcon(logoutIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
+		sysBtns.add(logout);
 
 		JPanel info = new JPanel();
 		contentPane.add(info, BorderLayout.CENTER);
