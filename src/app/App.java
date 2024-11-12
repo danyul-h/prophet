@@ -99,26 +99,8 @@ public class App extends JFrame {
 		pie.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DefaultPieDataset data = new DefaultPieDataset();
-				for(String category : Transaction.getCategories()) {
-					double cost = Transaction.getCategoryExpenses(transactions, category);
-					if (cost != 0) data.setValue(category, Transaction.getCategoryExpenses(transactions, category));
-				}
-				Transaction.filterDayDistance(transactions, 1);
-				JFreeChart someChart = ChartFactory.createPieChart("Categorical Expenses", data, true, true, false);
-				
-				PiePlot plot = (PiePlot) someChart.getPlot();
-
-		        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator(
-		            "{0}: -${1} ({2})", new DecimalFormat("#.##"), new DecimalFormat("#.##%"));
-		        plot.setLabelGenerator(gen);
-
-		        JFrame f = new JFrame("Test");
-		        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		        f.getContentPane().add(new ChartPanel(someChart));
-		        f.pack();
-		        f.setLocationRelativeTo(null);
-		        f.setVisible(true);
+//				PiePage pie = new PiePage(transactions);
+//				pie.setVisible(true);
 			}
 		});
 		pie.setIcon(new ImageIcon(pieIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
@@ -189,7 +171,9 @@ public class App extends JFrame {
 		
 		refresh();
 		TransactionsPage transactionsPage = new TransactionsPage(username, transactions, this);
-		pages.add(transactionsPage, "Transactions");
+//		pages.add(transactionsPage, "Transactions");
+		PiePage piePage = new PiePage(transactions);
+		pages.add(piePage);
 	}
 	
 	public void refresh() {
