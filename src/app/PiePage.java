@@ -26,10 +26,10 @@ import org.jfree.data.general.DefaultPieDataset;
 import backend.Database;
 import backend.Transaction;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import java.awt.Dimension;
 
 public class PiePage extends JPanel {
 
@@ -42,12 +42,11 @@ public class PiePage extends JPanel {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PiePage panel = new PiePage(Database.getTransactions("daniel"));
+					PiePage panel = new PiePage(Database.getTransactions("admin"));
 					JFrame frame = new JFrame();
 					frame.getContentPane().add(panel);
 					frame.setVisible(true);
 					frame.pack();
-					System.out.println(frame.getSize());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -56,21 +55,19 @@ public class PiePage extends JPanel {
 	}
 
 	public PiePage(ArrayList<Transaction> transactions) {
-		setBackground(new Color(255, 255, 255));
-		setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), new LineBorder(new Color(0, 0, 0))));
-		days = 0;
+		days = 30;
 		this.transactions = transactions;
-		setData();
 
-		add(pie, BorderLayout.CENTER);
-        JPanel desc = new JPanel();
-        desc.setBackground(Color.white);
-        add(desc, BorderLayout.SOUTH);
+		setBackground(Color.white);
+		setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), new LineBorder(new Color(0, 0, 0))));
+        setLayout(new BorderLayout());
         
-        JPanel filter = new JPanel();
-        filter.setPreferredSize(new Dimension(200, 10));
-        filter.setBackground(Color.white);
-        add(filter, BorderLayout.EAST);
+        JPanel contentPane = new JPanel();
+        add(contentPane, BorderLayout.CENTER);
+        
+        setData();
+        pie.setLayout(new BorderLayout(0, 0));
+        contentPane.add(pie);
 	}
 	
 	private void setData() {
@@ -94,13 +91,10 @@ public class PiePage extends JPanel {
 		plot.setLabelGenerator(gen);
 		plot.setBackgroundPaint(Color.white);
 		plot.setOutlinePaint(Color.white);
-		setLayout(new BorderLayout(0, 0));
 
 		pie = new ChartPanel(pieChart);
-		pie.setMinimumDrawWidth(690);
-		pie.setMinimumDrawHeight(450);
-		pie.setMaximumDrawHeight(450);
-		pie.setMaximumDrawWidth(690);
+		pie.setPreferredSize(new Dimension(1035, 675));
+		pie.setBorder(new LineBorder(new Color(255, 0, 0)));
 	}	
 	
 	private Map<String, Double> sortMapValues(Map<String, Double> unsortedMap){
@@ -127,5 +121,4 @@ public class PiePage extends JPanel {
 	public void setDays(int days) {
 		this.days = days;
 	}
-
 }

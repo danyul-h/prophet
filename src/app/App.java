@@ -3,11 +3,8 @@ package app;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,17 +23,6 @@ import javax.swing.border.EmptyBorder;
 
 import backend.Database;
 import backend.Transaction;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.PieSectionLabelGenerator;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
@@ -47,8 +33,9 @@ public class App extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final ImageIcon appIcon = new ImageIcon(App.class.getResource("/icons/darkWallet.png"));
-	private static final ImageIcon pieIcon = new ImageIcon(App.class.getResource("/icons/lightWallet.png"));
+	private static final ImageIcon appIcon = new ImageIcon(App.class.getResource("/icons/app.png"));
+	private static final ImageIcon walletIcon = new ImageIcon(App.class.getResource("/icons/wallet.png"));
+	private static final ImageIcon pieIcon = new ImageIcon(App.class.getResource("/icons/pie.png"));
 	private static final ImageIcon logoutIcon = new ImageIcon(App.class.getResource("/icons/logout.png"));
 	
 	private JPanel contentPane;
@@ -73,60 +60,9 @@ public class App extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		JPanel nav = new JPanel() {
-			public void paintComponent(Graphics g) {
-				Graphics2D g2 = (Graphics2D) g;
-				Color c1 = new Color(10, 46, 127, 255); // dark
-				Color c2 = new Color(29, 82, 188, 255); // light
-				GradientPaint gp = new GradientPaint(0, 0, c1, getWidth(), getHeight(), c2);
-				g2.setPaint(gp);
-				g2.fill(new Rectangle(getWidth(), getHeight()));
-			}
-		};
-		nav.setBorder(null);
-		nav.setBackground(new Color(0, 64, 128));
-		nav.setPreferredSize(new Dimension(100, 380));
-		contentPane.add(nav, BorderLayout.WEST);
-		nav.setLayout(new BorderLayout(0, 0));
-
-		JPanel pageBtns = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) pageBtns.getLayout();
-		flowLayout.setVgap(20);
-		pageBtns.setBackground(new Color(0, 0, 0, 0));
-		nav.add(pageBtns, BorderLayout.NORTH);
-		
-		JLabel pie = new JLabel("");
-		pie.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-//				PiePage pie = new PiePage(transactions);
-//				pie.setVisible(true);
-			}
-		});
-		pie.setIcon(new ImageIcon(pieIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
-		pageBtns.add(pie);
-
-		JPanel sysBtns = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) sysBtns.getLayout();
-		flowLayout_1.setVgap(20);
-		sysBtns.setBackground(new Color(0, 0, 0, 0));
-		nav.add(sysBtns, BorderLayout.SOUTH);
-		
-		JLabel logout = new JLabel("");
-		logout.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				dispose();
-				Login login = new Login();
-				login.setVisible(true);
-			}
-		});
-		logout.setIcon(new ImageIcon(logoutIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
-		sysBtns.add(logout);
-
 		JPanel info = new JPanel();
 		contentPane.add(info, BorderLayout.CENTER);
-		info.setLayout(new BorderLayout(0, 0));
+		info.setLayout(new BorderLayout());
 
 		JPanel top = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -167,13 +103,77 @@ public class App extends JFrame {
 		JPanel pages = new JPanel();
 		pages.setBorder(null);
 		info.add(pages, BorderLayout.CENTER);
-		pages.setLayout(new CardLayout(0, 0));
+		CardLayout pagesLayout = new CardLayout();
+		pages.setLayout(pagesLayout);
 		
 		refresh();
-		TransactionsPage transactionsPage = new TransactionsPage(username, transactions, this);
-//		pages.add(transactionsPage, "Transactions");
+		WalletPage walletPage = new WalletPage(username, transactions, this);
 		PiePage piePage = new PiePage(transactions);
-		pages.add(piePage);
+		pages.add(walletPage, "wallet");
+		pages.add(piePage, "pie");
+		
+		JPanel nav = new JPanel() {
+			public void paintComponent(Graphics g) {
+				Graphics2D g2 = (Graphics2D) g;
+				Color c1 = new Color(10, 46, 127, 255); // dark
+				Color c2 = new Color(29, 82, 188, 255); // light
+				GradientPaint gp = new GradientPaint(0, 0, c1, getWidth(), getHeight(), c2);
+				g2.setPaint(gp);
+				g2.fill(new Rectangle(getWidth(), getHeight()));
+			}
+		};
+		nav.setBorder(null);
+		nav.setBackground(new Color(0, 64, 128));
+		nav.setPreferredSize(new Dimension(100, 380));
+		contentPane.add(nav, BorderLayout.WEST);
+		nav.setLayout(new BorderLayout(0, 0));
+
+		JPanel pageBtns = new JPanel();
+		pageBtns.setPreferredSize(new Dimension(10, 400));
+		FlowLayout flowLayout = (FlowLayout) pageBtns.getLayout();
+		flowLayout.setVgap(20);
+		pageBtns.setBackground(new Color(0, 0, 0, 0));
+		nav.add(pageBtns, BorderLayout.NORTH);
+		
+		JLabel walletBtn = new JLabel("");
+		walletBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pagesLayout.show(pages, "wallet");
+			}
+		});
+		walletBtn.setIcon(new ImageIcon(walletIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
+		pageBtns.add(walletBtn);
+		
+		JLabel pieBtn = new JLabel("");
+		pieBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pagesLayout.show(pages, "pie");
+			}
+		});
+		pieBtn.setIcon(new ImageIcon(pieIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
+		pageBtns.add(pieBtn);
+
+		JPanel sysBtns = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) sysBtns.getLayout();
+		flowLayout_1.setVgap(20);
+		sysBtns.setBackground(new Color(0, 0, 0, 0));
+		nav.add(sysBtns, BorderLayout.SOUTH);
+		
+		JLabel logout = new JLabel("");
+		logout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+				Login login = new Login();
+				login.setVisible(true);
+			}
+		});
+		logout.setIcon(new ImageIcon(logoutIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
+		sysBtns.add(logout);
+		
+		
 	}
 	
 	public void refresh() {

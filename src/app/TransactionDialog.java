@@ -38,11 +38,8 @@ public class TransactionDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private static final ImageIcon appIcon = new ImageIcon(TransactionDialog.class.getResource("/icons/dark.png"));
+	private static final ImageIcon appIcon = new ImageIcon(TransactionDialog.class.getResource("/icons/app.png"));
 	
-	/**
-	 * Create the dialog.
-	 */
 	private Transaction transaction;
 	private JDateChooser dateField;
 	private JTextField valueField;

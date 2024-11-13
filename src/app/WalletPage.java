@@ -42,11 +42,11 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import java.awt.FlowLayout;
 
-public class TransactionsPage extends JPanel {
+public class WalletPage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	public TransactionsPage(String username, ArrayList<Transaction> transactions, App app) {
+	public WalletPage(String username, ArrayList<Transaction> transactions, App app) {
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EmptyBorder(10, 10, 10, 5));
 		setLayout(new BorderLayout(0, 0));
@@ -171,7 +171,6 @@ public class TransactionsPage extends JPanel {
 				} else {
 					row = table.convertRowIndexToModel(row);
 					Transaction transaction = Database.getTransaction((int) table.getModel().getValueAt(row, 0));
-					System.out.println(transaction);
 					TransactionDialog dialog = new TransactionDialog(transaction);
 					dialog.setModal(true);
 					dialog.setVisible(true);

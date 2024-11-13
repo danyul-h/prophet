@@ -12,13 +12,11 @@ import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Dimension;
@@ -37,8 +35,7 @@ public class Login extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	
-	private static final ImageIcon appIcon = new ImageIcon(Login.class.getResource("/icons/darkWallet.png"));
-	private static final ImageIcon logoIcon = new ImageIcon(Login.class.getResource("/icons/lightWallet.png"));
+	private static final ImageIcon appIcon = new ImageIcon(Login.class.getResource("/icons/app.png"));
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -262,7 +259,7 @@ public class Login extends JFrame {
 		icon.setBounds(15, 11, 60, 60);
 		icon.setFont(new Font("Arial", Font.BOLD, 32));
 		icon.setHorizontalAlignment(SwingConstants.CENTER);
-		icon.setIcon(new ImageIcon(logoIcon.getImage().getScaledInstance(56, 56, java.awt.Image.SCALE_SMOOTH)));
+		icon.setIcon(new ImageIcon(appIcon.getImage().getScaledInstance(54, 54, java.awt.Image.SCALE_SMOOTH)));
 		bgIcon.add(icon);
 
 		JLabel title = new JLabel("Prophet Login    ");
