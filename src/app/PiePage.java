@@ -122,6 +122,7 @@ public class PiePage extends JPanel {
         		piePanel.remove(pie);
         		setData();
         		piePanel.add(pie);
+        		piePanel.updateUI();
         	}
         });
         btnApply.setRadius(40);
