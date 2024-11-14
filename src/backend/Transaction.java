@@ -29,7 +29,7 @@ public class Transaction {
 		this.username = username;
 		this.date = Date.valueOf(LocalDate.now());
 		this.value = new BigDecimal(0.00);
-		this.category = null;
+		this.category = "Miscellaneous";
 		this.details = "Transaction";
 	}
 	
@@ -60,14 +60,32 @@ public class Transaction {
 		return cost;
 	}
 	
+	public static double getCategoryIncomes(ArrayList<Transaction> transactions, String category) {
+		double income = 0;
+		for (Transaction i : transactions) {
+			double value = i.getValue().doubleValue();
+			if(value>0 & i.getCategory().equals(category)) income += value;
+		}
+		return income;
+	}
+	
 	public static ArrayList<Transaction> filterDayDistance(ArrayList<Transaction> transactions, int days){
 		ArrayList<Transaction> filtered =  new ArrayList<Transaction>();
 		Calendar c = Calendar.getInstance();
 		c.setTime(Date.valueOf(LocalDate.now()));
 		c.add(Calendar.DATE, -days);
 		Date compareDate = Date.valueOf(LocalDate.ofInstant(c.getTime().toInstant(), ZoneId.systemDefault()));
+		Date today = Date.valueOf(LocalDate.now());
 		for (Transaction i : transactions) {
-			if (i.getDate().compareTo(compareDate) >= 0) filtered.add(i);
+			if (i.getDate().compareTo(compareDate) >= 0 && i.getDate().compareTo(today) <= 0) filtered.add(i);
+		}
+		return filtered;
+	}
+	
+	public static ArrayList<Transaction> filterDayRange(ArrayList<Transaction> transactions, java.util.Date startDate, java.util.Date endDate){
+		ArrayList<Transaction> filtered = new ArrayList<Transaction>();
+		for (Transaction i : transactions) {
+			if (i.getDate().compareTo(startDate) >= 0 && i.getDate().compareTo(endDate) <= 0) filtered.add(i); 
 		}
 		return filtered;
 	}

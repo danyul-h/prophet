@@ -133,7 +133,7 @@ public class WalletPage extends JPanel {
 				dialog.setModal(true);
 				dialog.setVisible(true);
 				Transaction newTransaction = dialog.getTransaction();
-				if (newTransaction == null) {
+				if (newTransaction == null || newTransaction.equals(transaction)) {
 					JOptionPane.showMessageDialog(getParent(), 
 							"Transaction addition cancelled!", 
 							"Cancellation", 
@@ -175,7 +175,7 @@ public class WalletPage extends JPanel {
 					dialog.setModal(true);
 					dialog.setVisible(true);
 					Transaction editedTransaction = dialog.getTransaction();
-					if (editedTransaction == null) {
+					if (editedTransaction == null || editedTransaction.equals(transaction)) {
 						JOptionPane.showMessageDialog(getParent(), 
 								"Transaction edit cancelled!",
 								"Cancellation", 
@@ -273,12 +273,12 @@ public class WalletPage extends JPanel {
 		side.add(filter);
 		
 		JTextField detailsField = new JTextField();
-		detailsField.setBorder(new TitledBorder(null, "Details Parameter", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		detailsField.setBorder(new TitledBorder(null, "Search Details", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		detailsField.setFont(new Font("Arial", Font.PLAIN, 18));
 		detailsField.setColumns(10);
 		
 		JComboBox<String> categoryField = new JComboBox<String>(new String[] {"All", "Income", "Expense", "Salary", "Bills", "Entertainment", "Dining", "Education", "Insurance", "Health", "Groceries", "Transportation", "Home", "Travel"});
-		categoryField.setBorder(new TitledBorder(null, "Category Parameter", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		categoryField.setBorder(new TitledBorder(null, "Search Categories", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		Button filterBtn = new Button();
 		filterBtn.addActionListener(new ActionListener() {

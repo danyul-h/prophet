@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,11 +44,13 @@ public class App extends JFrame {
 	private BigDecimal balance = new BigDecimal(0);
 	private JLabel balanceLbl;
 	private String username;
+	private PiePage piePage;
+	private JPanel pages;
 	
 	public App(String username) {
 		this.username = username;
 
-		setMinimumSize(new Dimension(850, 770));
+		setMinimumSize(new Dimension(1050, 770));
 		setTitle("Prophet");
 		setIconImage(appIcon.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,17 +103,17 @@ public class App extends JFrame {
 		balanceLbl.setBorder(new EmptyBorder(0, 10, 0, 0));
 		top.add(balanceLbl, BorderLayout.CENTER);
 		
-		JPanel pages = new JPanel();
+		pages = new JPanel();
 		pages.setBorder(null);
 		info.add(pages, BorderLayout.CENTER);
 		CardLayout pagesLayout = new CardLayout();
 		pages.setLayout(pagesLayout);
 		
+		piePage = new PiePage(Database.getTransactions(username));
+		pages.add(piePage, "pie");
 		refresh();
 		WalletPage walletPage = new WalletPage(username, transactions, this);
-		PiePage piePage = new PiePage(transactions);
 		pages.add(walletPage, "wallet");
-		pages.add(piePage, "pie");
 		
 		JPanel nav = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -173,7 +176,7 @@ public class App extends JFrame {
 		logout.setIcon(new ImageIcon(logoutIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
 		sysBtns.add(logout);
 		
-		
+		pagesLayout.show(pages, "wallet");
 	}
 	
 	public void refresh() {
@@ -182,6 +185,9 @@ public class App extends JFrame {
 		for (Transaction i : transactions) {
 			balance = balance.add(i.getValue());
 		}
-		balanceLbl.setText("Balance: $" + balance);
+		balanceLbl.setText("Balance: $" + new DecimalFormat("#,###.00").format(balance));
+		pages.remove(piePage);
+		piePage = new PiePage(transactions);
+		pages.add(piePage, "pie");
 	}
 }

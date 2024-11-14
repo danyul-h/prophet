@@ -154,7 +154,7 @@ public class TransactionDialog extends JDialog {
 						JOptionPane.showMessageDialog(rootPane, "\"Value\" field too big, try again.", "Error", JOptionPane.WARNING_MESSAGE);
 						return;
 					}
-					BigDecimal value = new BigDecimal(new DecimalFormat("#.00").format(roundedValue));
+					BigDecimal value = new BigDecimal(new DecimalFormat("0.00").format(roundedValue));
 					String category = categoryField.getSelectedItem().toString();
 					String details = detailsField.getText();
 					if(details.length() > 500) {
@@ -169,8 +169,6 @@ public class TransactionDialog extends JDialog {
 					JOptionPane.showMessageDialog(rootPane, "Missing or empty fields, try again.", "Error", JOptionPane.WARNING_MESSAGE);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(rootPane, "Invalid fields, try again.", "Error", JOptionPane.WARNING_MESSAGE);
-				} finally {
-					refresh();
 				}
 			}
 		});
