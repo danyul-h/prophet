@@ -35,6 +35,8 @@ import javax.swing.SwingConstants;
 import components.Button;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class PiePage extends JPanel {
 	
@@ -47,8 +49,9 @@ public class PiePage extends JPanel {
 	private int days;
 	private Type chartType;
 	private ArrayList<Transaction> transactions;
-	private JComboBox<Type> categoryField;
+	private JComboBox<Type> typeField;
 	private JComboBox<Integer> dayField;
+	private JLabel reportDynamic;
 	private ChartPanel pie;
 
 	public PiePage(ArrayList<Transaction> transactions) {
@@ -72,16 +75,17 @@ public class PiePage extends JPanel {
         top.add(settings, BorderLayout.WEST);
         settings.setLayout(null);
         
-        categoryField = new JComboBox<Type>(new Type[]{Type.Expenses, Type.Income}) ;
-        categoryField.setSelectedIndex(0);
-        categoryField.setBorder(new LineBorder(new Color(0, 0, 0)));
-        categoryField.setBackground(new Color(255, 255, 255));
-        categoryField.setBounds(103, 52, 185, 32);
-        settings.add(categoryField);
+        typeField = new JComboBox<Type>(new Type[]{Type.Expenses, Type.Income});
+        typeField.setFont(new Font("Arial", Font.PLAIN, 16));
+        typeField.setSelectedIndex(0);
+        typeField.setBorder(new LineBorder(new Color(0, 0, 0)));
+        typeField.setBackground(new Color(255, 255, 255));
+        typeField.setBounds(103, 50, 185, 32);
+        settings.add(typeField);
         
         JLabel typeLbl = new JLabel("Chart Type: ");
         typeLbl.setFont(new Font("Arial", Font.PLAIN, 16));
-        typeLbl.setBounds(12, 52, 116, 32);
+        typeLbl.setBounds(12, 50, 116, 32);
         settings.add(typeLbl);
         
         JLabel dateLbl = new JLabel("Date Range: Past");
@@ -95,8 +99,9 @@ public class PiePage extends JPanel {
         dayLbl.setBounds(228, 90, 60, 32);
         settings.add(dayLbl);
         
-        dayField = new JComboBox<Integer>(new Integer[]{7, 14, 21, 28, 30, 60, 120, 180, 365});
-        dayField.setSelectedIndex(4);
+        dayField = new JComboBox<Integer>(new Integer[]{7, 14, 21, 30, 60, 120, 180, 365});
+        dayField.setFont(new Font("Arial", Font.PLAIN, 16));
+        dayField.setSelectedItem(30);
         dayField.setBackground(new Color(255, 255, 255));
         dayField.setBorder(new LineBorder(new Color(0, 0, 0)));
         dayField.setBounds(145, 90, 100, 32);
@@ -111,6 +116,31 @@ public class PiePage extends JPanel {
         piePanel.setBackground(new Color(255, 255, 255));
         piePanel.setBorder(new CompoundBorder(new EmptyBorder(5, 0, 0, 0), new LineBorder(new Color(0, 0, 0))));
         add(piePanel, BorderLayout.SOUTH);
+        
+        JPanel report = new JPanel();
+        report.setBackground(new Color(255, 255, 255));
+        top.add(report, BorderLayout.CENTER);
+        
+        reportDynamic = new JLabel();
+        reportDynamic.setHorizontalAlignment(SwingConstants.LEFT);
+        reportDynamic.setVerticalAlignment(SwingConstants.TOP);
+        reportDynamic.setFont(new Font("Arial", Font.PLAIN, 16));
+        GroupLayout gl_report = new GroupLayout(report);
+        gl_report.setHorizontalGroup(
+        	gl_report.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(Alignment.LEADING, gl_report.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(reportDynamic, GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        gl_report.setVerticalGroup(
+        	gl_report.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, gl_report.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(reportDynamic, GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        report.setLayout(gl_report);
         
         setData();
         pie.setLayout(new BorderLayout(0, 0));
@@ -129,12 +159,13 @@ public class PiePage extends JPanel {
         btnApply.setText("Apply");
         btnApply.setBounds(203, 12, 185, 32);
         settings.add(btnApply);
+        
 	}
 	
 	private void setData() {
-		chartType = (Type) categoryField.getSelectedItem();
+		chartType = (Type) typeField.getSelectedItem();
 		days = (Integer) dayField.getSelectedItem();
-		System.out.println(chartType + ", " + days);
+
 		Map<String, Double> unsortedData = new HashMap<String, Double>();
 		for(String category : Transaction.getCategories()) {
 			double cost = Transaction.getCategoryExpenses(Transaction.filterDayDistance(transactions, days), category);
@@ -148,8 +179,10 @@ public class PiePage extends JPanel {
 		Map<String, Double> sortedData = sortMapValues(unsortedData);
 		
 		DefaultPieDataset dataset = new DefaultPieDataset();
+		double total = 0;
 		for (String i: sortedData.keySet()) {
 			dataset.setValue(i, sortedData.get(i));
+			total += sortedData.get(i);
 		}
 		
 		JFreeChart pieChart = ChartFactory.createPieChart("Categorical " + chartType + " in the Past " + days + " Days", dataset, true, true, false);
@@ -164,6 +197,17 @@ public class PiePage extends JPanel {
 		pie.setBackground(new Color(255, 255, 255));
 		pie.setPreferredSize(new Dimension(920, 600));
 		pie.setBorder(null);
+		if(dataset.getItemCount() > 0) {
+			reportDynamic.setText(""
+					+ "<html>"
+					+ "<h1 style=\"margin-bottom:-5;margin-top:-2\">Chart Report</h1>"
+					+ "<ul style=\"margin-left:20\">"
+					+ "<li> In the last " + days + " days, you " + (chartType==Type.Expenses ? "spent $" : "earned $") + new DecimalFormat("#,###.##").format(total) + "</li>"
+					+ "<li> The " + dataset.getKey(0) + " category made the greatest contribution! </li>"
+					+ "<li> The " + dataset.getKey(dataset.getItemCount()-1) + " category made the least contribution! </li>"
+					+ "</ul>"
+					+ "</html>");
+		}
 	}	
 	
 	private Map<String, Double> sortMapValues(Map<String, Double> unsortedMap){
