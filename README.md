@@ -1,4 +1,4 @@
-#Prophet
+# Prophet
 Struggling to keep up with tracking all your expenses? Profit off of Prophet! 
 
 # Description
