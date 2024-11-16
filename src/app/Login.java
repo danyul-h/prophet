@@ -67,7 +67,7 @@ public class Login extends JFrame {
 		JPanel bg = new JPanel() {
 			public void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
-				g2.setPaint(new Color(40, 3, 60, 255));
+				g2.setPaint(new Color(40, 3, 50, 255));
 				g2.fill(new Rectangle(getWidth(), getHeight()));
 			}
 		};
