@@ -28,7 +28,7 @@ public class Database {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			/*	attempts to the connect to the described server, (server), (user), (password)
 			 *	returns connection if succeeds */
-			return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/scholash", "root", "password");			
+			return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/scholash", "root", "");			
 		} catch (Exception e) {
 			return null; //if fails connection, returns null
 		}
