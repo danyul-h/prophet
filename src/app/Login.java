@@ -224,9 +224,9 @@ public class Login extends JFrame {
 		JPanel top = new JPanel() {
 			public void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
-				Color c1 = new Color(120, 75, 120, 255); // light
-				Color c2 = new Color(70, 24, 70, 255); // dark
-				GradientPaint gp = new GradientPaint(0, 0, c1, getWidth(), getHeight(), c2);
+				Color c1 = new Color(120, 90, 140, 255); // light
+				Color c2 = new Color(100, 24, 120, 255); // dark
+				GradientPaint gp = new GradientPaint(0, 0, c2, getWidth(), getHeight(), c1);
 				g2.setPaint(gp);
 				g2.fill(new Rectangle(getWidth(), separator.getY()));
 			}
@@ -239,9 +239,9 @@ public class Login extends JFrame {
 			public void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				Color c1 = new Color(120, 75, 120, 255); // light
-				Color c2 = new Color(70, 24, 72, 255); // dark
-				GradientPaint gp = new GradientPaint(0, 0, c1, getWidth(), getHeight(), c2);
+				Color c1 = new Color(120, 90, 140, 255); // light
+				Color c2 = new Color(100, 24, 120, 255); // dark
+				GradientPaint gp = new GradientPaint(0, 0, c2, getWidth(), getHeight(), c1);
 				g2.setPaint(Color.white);
 				g2.fillOval(0, 0, getWidth(), getHeight());
 				g2.setPaint(gp);
