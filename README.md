@@ -1,66 +1,24 @@
-Create a program that helps students manage their personal finances by tracking account balances, income and expenses. The program should allow users to input details about their income sources and expenses, including the amount, category, and date of each transaction. It should provide features to view the current balance, generate summaries of income and expenses over specified periods (e.g., weekly, monthly), and categorize expenses to show spending patterns. Additionally, the program should include functionality to update or delete existing entries and offer search and filter options to easily find specific transactions.
+#Prophet
+Struggling to keep up with tracking all your expenses? Profit off of Prophet! 
 
-dependencies/utilities:
-- eclipse ide
-- java 21
-- windowbuilder
-- mysql workbench, mysql
-- jdbc
-- jcalendar
+# Description
+Prophet is a financial tracking app for students to manage their personal finances by tracking account balances, income, and expenses. Users can add, edit, and delete transactions.Each transaction collects the date, value, category, and details of that transaction. Prophet shows the current balance as well as summaries of finances over specified periods of time and categories using a pie chart to show spending patterns. It allows the user to search and use filters to find specific transactions easier. 
 
-icon:
-- https://www.svgrepo.com/svg/30601/wallet
+# Dependencies and Utilities
+- JFreeCharts Library
+- JCalendar Library
+- MySQL Connector/J
+- MySQL Workbench
+- Java
+- Eclipse IDE
+- Eclipse WindowBuilder
+- GitHub
+- Flaticon
+- Draw.io
 
-colors:
-- dark blue - 10,46,127,255
-- light yellow - 255,168,0,255
-- dark yellow - 255,120,0,255
-- light blue - 29,82,188,255
-
-finished:
-- login page
-	- mysql stuff
-- connect login to actual content
-
-current plans:
-- top nav: 
-	- "<img (scholash logo or user)> welcome <username>"
-	- time at the other side
-- add transactions
-	- add name to transaction
-	- add calendar page
-		- jcalendar (.getDate -> returns java.util.Date)
-	- add editing them / deleting
-	- expense or income button
-	- save button
-	- select category type
-		- salary
-		- entertainment
-		- dining
-		- education
-		- insurance
-		- health
-		- groceries
-		- transportation
-		- home
-		- travel
-	- add images
-	- ability to add description
-- implement recurring transactions (bills, salaries) etc
-	- select start date
-	- select end date
-	- mention its recurring in description or add a symbol
-	- repeat every x days
-	- repeat every x months on day x of the month
-	- repeat every x years on <month> <day>
-- add monthly, weekly, yearly, year to date, last 30 months, last 7 days, trends/avgs/totals, since start of tracking
-	- cashflow
-	- income
-	- expenses
-- add custom categories
-- filter transactions by...
-	- expense
-	- income
-	- value
-	- recently updated
-	- recent calendar
+# Contributors:
+- Daniel Hoang
+- Daphne Wen
+- [SumberRejeki](https://www.flaticon.com/authors/sumberrejeki) from [Flaticon](https://www.flaticon.com) for icons
+- [Freepik](https://www.freepik.com/) from [Flaticon](https://www.flaticon.com) for icons
+- [VectorPortal](https://www.flaticon.com/authors/vectorportal) from [Flaticon](https://www.flaticon.com) for icons
