@@ -169,7 +169,6 @@ public class PiePage extends JPanel {
 		for(String category : Transaction.getCategories()) {
 			double cost = Transaction.getCategoryExpenses(Transaction.filterDayDistance(transactions, days), category);
 			double income = Transaction.getCategoryIncomes(Transaction.filterDayDistance(transactions, days), category);
-			System.out.println(cost + ":" + income);
 			switch(chartType) {
 				case Type.Expenses:
 					if(cost > 0) unsortedData.put(category, cost);
