@@ -55,7 +55,7 @@ public class Transaction {
 		double cost = 0;
 		for (Transaction i : transactions) {
 			double value = i.getValue().doubleValue();
-			if(value < 0 & i.getCategory().equals(category)) cost += Math.abs(value);
+			if(value < 0 && i.getCategory().equals(category)) cost += Math.abs(value);
 		}
 		return cost;
 	}
@@ -64,7 +64,7 @@ public class Transaction {
 		double income = 0;
 		for (Transaction i : transactions) {
 			double value = i.getValue().doubleValue();
-			if(value>0 & i.getCategory().equals(category)) income += value;
+			if(value>0 && i.getCategory().equals(category)) income += value;
 		}
 		return income;
 	}

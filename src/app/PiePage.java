@@ -159,7 +159,6 @@ public class PiePage extends JPanel {
         btnApply.setText("Apply");
         btnApply.setBounds(203, 12, 185, 32);
         settings.add(btnApply);
-        
 	}
 	
 	private void setData() {
@@ -170,9 +169,14 @@ public class PiePage extends JPanel {
 		for(String category : Transaction.getCategories()) {
 			double cost = Transaction.getCategoryExpenses(Transaction.filterDayDistance(transactions, days), category);
 			double income = Transaction.getCategoryIncomes(Transaction.filterDayDistance(transactions, days), category);
+			System.out.println(cost + ":" + income);
 			switch(chartType) {
-				case Type.Expenses: if(cost > 0) unsortedData.put(category, cost);
-				case Type.Income: if (income > 0) unsortedData.put(category, income);
+				case Type.Expenses:
+					if(cost > 0) unsortedData.put(category, cost);
+					break;
+				case Type.Income: 
+					if (income > 0) unsortedData.put(category, income);
+					break;
 			}
 		}
 		
@@ -205,6 +209,15 @@ public class PiePage extends JPanel {
 					+ "<li> In the last " + days + " days, you " + (chartType==Type.Expenses ? "spent $" : "earned $") + new DecimalFormat("#,###.##").format(total) + "</li>"
 					+ "<li> The " + dataset.getKey(0) + " category made the greatest contribution! </li>"
 					+ "<li> The " + dataset.getKey(dataset.getItemCount()-1) + " category made the least contribution! </li>"
+					+ "</ul>"
+					+ "</html>");
+		} else {
+			reportDynamic.setText(""
+					+ "<html>"
+					+ "<h1 style=\"margin-bottom:-5;margin-top:-2\">Chart Report</h1>"
+					+ "<ul style=\"margin-left:20\">"
+					+ "<li> Blank chart, you have no transactions! </li>"
+					+ "<li> Add transactions with the wallet icon on the left! </li>"
 					+ "</ul>"
 					+ "</html>");
 		}
