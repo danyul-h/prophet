@@ -277,7 +277,7 @@ public class WalletPage extends JPanel {
 		detailsField.setFont(new Font("Arial", Font.PLAIN, 18));
 		detailsField.setColumns(10);
 		
-		JComboBox<String> categoryField = new JComboBox<String>(new String[]{"All", "Income", "Expenses","Miscellaneous", "Salary", "Bills", "Chores", "Work", "Allowance", "Entertainment", "Dining", "Education", "Insurance", "Health", "Groceries", "Transportationd", "Home", "Travel"});
+		JComboBox<String> categoryField = new JComboBox<String>(new String[]{"All", "Income", "Expense","Miscellaneous", "Salary", "Bills", "Chores", "Work", "Allowance", "Entertainment", "Dining", "Education", "Insurance", "Health", "Groceries", "Transportation", "Home", "Travel"});
 		categoryField.setBorder(new TitledBorder(null, "Search Categories", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		Button filterBtn = new Button();
