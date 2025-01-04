@@ -18,6 +18,7 @@ Prophet is a financial tracking app for students to manage their personal financ
 - GitHub
 - Flaticon
 - Draw.io
+- Canva [Presentation](https://www.canva.com/design/DAGWKyfjajA/6nuLFbCOhk_kak33W8NuTg/view?utlId=h70f88cfd85#1)
 
 # Contributors:
 - Daniel Hoang
