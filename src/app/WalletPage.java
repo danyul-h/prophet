@@ -177,8 +177,8 @@ public class WalletPage extends JPanel {
 					Transaction editedTransaction = dialog.getTransaction();
 					if (editedTransaction == null || editedTransaction.equals(transaction)) {
 						JOptionPane.showMessageDialog(getParent(), 
-								"Transaction edit cancelled!",
-								"Cancellation", 
+								"No changes to transaction!",
+								"No changes", 
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
 						model.removeRow(row);
