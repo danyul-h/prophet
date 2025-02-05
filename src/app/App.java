@@ -50,7 +50,7 @@ public class App extends JFrame {
 	public App(String username) {
 		this.username = username;
 
-		setMinimumSize(new Dimension(1050, 770));
+		setMinimumSize(new Dimension(1050, 850));
 		setTitle("Prophet");
 		setIconImage(appIcon.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -157,9 +157,20 @@ public class App extends JFrame {
 
 		JPanel sysBtns = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) sysBtns.getLayout();
+		sysBtns.setPreferredSize(new Dimension(10, 190));
 		flowLayout_1.setVgap(20);
 		sysBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(sysBtns, BorderLayout.SOUTH);
+		
+		JLabel pdfBtn = new JLabel("");
+		pdfBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pagesLayout.show(pages, "wallet");
+			}
+		});
+		pdfBtn.setIcon(new ImageIcon(walletIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
+		sysBtns.add(pdfBtn);
 		
 		JLabel logout = new JLabel("");
 		logout.addMouseListener(new MouseAdapter() {

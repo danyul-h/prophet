@@ -55,7 +55,7 @@ public class Login extends JFrame {
 		setTitle("Prophet Login");
 		setIconImage(appIcon.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 760, 420);
+		setBounds(100, 100, 760, 480);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
