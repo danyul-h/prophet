@@ -100,13 +100,15 @@ public class PdfDialog extends JDialog {
 		endDateField.setFont(new Font("Arial", Font.PLAIN, 16));
 		contentPanel.add(endDateField);
 
-		JLabel helpLbl = new JLabel("" + "<html>"
-				+ "<h2 style=\"margin-bottom:-5;text-align:center;margin-top:-5;\">Report Download</h2>"
-				+ "<ul style=\"margin-left:20\">"
-				+ "<li>Output a report of all your transactions in a date range here!</li>"
-				+ "<li>If no valid start date, the date range will start at the first transaction date on your account.</li>"
-				+ "<li>If no valid end date, the date range will end at the last transaction date on your account.</li>"
-				+ "</ul>" + "</html>");
+		JLabel helpLbl = new JLabel("" 
+				+ "<html>"
+					+ "<h2 style=\"margin-bottom:-5;text-align:center;margin-top:-5;\">Report Download</h2>"
+					+ "<ul style=\"margin-left:20\">"
+						+ "<li>Output a report of all your transactions in a date range here!</li>"
+						+ "<li>If no valid start date, the date range will start at the first transaction date on your account.</li>"
+						+ "<li>If no valid end date, the date range will end at the last transaction date on your account.</li>"
+					+ "</ul>" 
+				+ "</html>");
 		helpLbl.setFont(new Font("Arial", Font.PLAIN, 12));
 		helpLbl.setBounds(10, 116, 250, 220);
 		contentPanel.add(helpLbl);

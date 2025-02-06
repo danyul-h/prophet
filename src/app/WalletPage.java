@@ -219,11 +219,14 @@ public class WalletPage extends JPanel {
 		});
 		deleteBtn.setText("Delete Transaction");
 
-		JLabel editorInfo = new JLabel("" + "<html>"
-				+ "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Editor</h2>"
-				+ "<ul style=\"margin-left:20\">"
-				+ "<li>Clicking \"Add\" or \"Edit\" will open a separate window to input transaction details</li>"
-				+ "<li>Select a row on the table before clicking \"Edit\" or \"Delete\" </li>" + "</ul>" + "</html>");
+		JLabel editorInfo = new JLabel(""
+				+ "<html>"
+					+ "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Editor</h2>"
+					+ "<ul style=\"margin-left:20\">"
+						+ "<li>Clicking \"Add\" or \"Edit\" will open a separate window to input transaction details</li>"
+						+ "<li>Select a row on the table before clicking \"Edit\" or \"Delete\" </li>"
+					+ "</ul>"
+				+ "</html>");
 		editorInfo.setVerticalAlignment(SwingConstants.TOP);
 		editorInfo.setHorizontalAlignment(SwingConstants.CENTER);
 		editorInfo.setForeground(Color.BLACK);
@@ -263,9 +266,26 @@ public class WalletPage extends JPanel {
 		detailsField.setFont(new Font("Arial", Font.PLAIN, 18));
 		detailsField.setColumns(10);
 
-		JComboBox<String> categoryField = new JComboBox<String>(new String[] { "All", "Income", "Expense",
-				"Miscellaneous", "Salary", "Bills", "Chores", "Work", "Allowance", "Entertainment", "Dining",
-				"Education", "Insurance", "Health", "Groceries", "Transportation", "Home", "Travel" });
+		JComboBox<String> categoryField = new JComboBox<String>(new String[] { 
+				"All", 
+				"Income", 
+				"Expense",
+				"Miscellaneous", 
+				"Salary", 
+				"Bills", 
+				"Chores", 
+				"Work", 
+				"Allowance", 
+				"Entertainment", 
+				"Dining",
+				"Education", 
+				"Insurance", 
+				"Health", 
+				"Groceries", 
+				"Transportation", 
+				"Home", 
+				"Travel" 
+			});
 		categoryField.setBorder(
 				new TitledBorder(null, "Search Categories", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
@@ -287,11 +307,13 @@ public class WalletPage extends JPanel {
 		});
 		resetBtn.setText("Clear");
 
-		JLabel filterInfo = new JLabel(
-				"" + "<html>" + "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Filters</h2>"
-						+ "<ul style=\"margin-left:20\">"
-						+ "<li>Click on the table headers to sort the transactions based on columns</li>"
-						+ "<li>Modify the parameters above to filter the transactions shown in the table</li>" + "</ul>"
+		JLabel filterInfo = new JLabel("" 
+						+ "<html>"
+							+ "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Filters</h2>"
+							+ "<ul style=\"margin-left:20\">"
+								+ "<li>Click on the table headers to sort the transactions based on columns</li>"
+								+ "<li>Modify the parameters above to filter the transactions shown in the table</li>"
+							+ "</ul>"
 						+ "</html>");
 		filterInfo.setHorizontalAlignment(SwingConstants.CENTER);
 		filterInfo.setForeground(Color.BLACK);

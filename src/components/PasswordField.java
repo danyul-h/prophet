@@ -20,42 +20,42 @@ public class PasswordField extends JPanel {
 
 	private JPasswordField field;
 	private JLabel label;
-	
+
 	public void reset() {
 		field.setText("");
 	}
-	
+
 	public String getPassword() {
 		return String.valueOf(field.getPassword());
 	}
-	
+
 	public void setTitle(String str) {
 		title = str;
 		label.setText(title);
 	}
-	
+
 	public void setPrimaryColor(Color pri) {
 		primaryColor = pri;
 		setBackground(primaryColor);
 		field.setBackground(primaryColor);
 	}
-	
+
 	public void setSecondaryColor(Color sec) {
 		secondaryColor = sec;
 		label.setForeground(secondaryColor);
 		setBorder(new CompoundBorder(new LineBorder(secondaryColor), new EmptyBorder(5, 10, 5, 10)));
 	}
-	
+
 	public void setFontColor(Color font) {
 		fontColor = font;
 		field.setForeground(font);
 	}
-	
+
 	private String title;
 	private Color primaryColor;
 	private Color secondaryColor;
 	private Color fontColor;
-	
+
 	public PasswordField(String str, Color pri, Color sec, Color font) {
 		setMaximumSize(new Dimension(32767, 64));
 		setMinimumSize(new Dimension(10, 64));
@@ -64,18 +64,18 @@ public class PasswordField extends JPanel {
 		primaryColor = pri;
 		secondaryColor = sec;
 		fontColor = font;
-		
+
 		setBackground(primaryColor);
 		setBorder(new CompoundBorder(new LineBorder(secondaryColor), new EmptyBorder(5, 10, 5, 10)));
 		setBounds(new Rectangle(0, 0, 0, 64));
 		setLayout(new BorderLayout(0, 0));
-		
+
 		label = new JLabel(title);
 		label.setVerticalAlignment(SwingConstants.TOP);
 		label.setForeground(secondaryColor);
 		label.setFont(new Font("Arial", Font.PLAIN, 12));
 		add(label, BorderLayout.NORTH);
-		
+
 		field = new JPasswordField();
 		field.setForeground(fontColor);
 		field.setBackground(primaryColor);

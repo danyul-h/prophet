@@ -198,17 +198,24 @@ public class PiePage extends JPanel {
 		pie.setPreferredSize(new Dimension(920, 600));
 		pie.setBorder(null);
 		if (dataset.getItemCount() > 0) {
-			reportDynamic.setText("" + "<html>" + "<h1 style=\"margin-bottom:-5;margin-top:-2\">Chart Report</h1>"
-					+ "<ul style=\"margin-left:20\">" + "<li> In the last " + days + " days, you "
-					+ (chartType == Type.Expenses ? "spent $" : "earned $")
-					+ new DecimalFormat("#,###.##").format(total) + "</li>" + "<li> The " + dataset.getKey(0)
-					+ " category made the greatest contribution! </li>" + "<li> The "
-					+ dataset.getKey(dataset.getItemCount() - 1) + " category made the least contribution! </li>"
-					+ "</ul>" + "</html>");
+			reportDynamic.setText(""
+					+ "<html>"
+						+ "<h1 style=\"margin-bottom:-5;margin-top:-2\">Chart Report</h1>"
+						+ "<ul style=\"margin-left:20\">" 
+							+ "<li> In the last " + days + " days, you " + (chartType == Type.Expenses ? "spent $" : "earned $") + new DecimalFormat("#,###.##").format(total) + "</li>"
+							+ "<li> The " + dataset.getKey(0) + " category made the greatest contribution! </li>"
+							+ "<li> The " + dataset.getKey(dataset.getItemCount() - 1) + " category made the least contribution! </li>"
+						+ "</ul>"
+					+ "</html>");
 		} else {
-			reportDynamic.setText("" + "<html>" + "<h1 style=\"margin-bottom:-5;margin-top:-2\">Chart Report</h1>"
-					+ "<ul style=\"margin-left:20\">" + "<li> Blank chart, you have no transactions! </li>"
-					+ "<li> Add transactions with the wallet icon on the left! </li>" + "</ul>" + "</html>");
+			reportDynamic.setText("" 
+					+ "<html>"
+						+ "<h1 style=\"margin-bottom:-5;margin-top:-2\">Chart Report</h1>"
+						+ "<ul style=\"margin-left:20\">" 
+							+ "<li> Blank chart, you have no transactions! </li>"
+							+ "<li> Add transactions with the wallet icon on the left! </li>" 
+						+ "</ul>" 
+					+ "</html>");
 		}
 	}
 

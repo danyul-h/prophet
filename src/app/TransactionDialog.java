@@ -117,10 +117,14 @@ public class TransactionDialog extends JDialog {
 		detailsField.setBounds(170, 140, 320, 64);
 		contentPanel.add(detailsField);
 
-		JLabel helpLbl = new JLabel("" + "<html>"
-				+ "<h2 style=\"margin-bottom:-5;text-align:center;margin-top:-5;\">Transactions</h2>"
-				+ "<ul style=\"margin-left:20\">" + "<li>Use the fields to create your desired transaction!</li>"
-				+ "<li>Keep values as appropriate types and under 45 characters!</li>" + "</ul>" + "</html>");
+		JLabel helpLbl = new JLabel("" 
+				+ "<html>"
+					+ "<h2 style=\"margin-bottom:-5;text-align:center;margin-top:-5;\">Transactions</h2>"
+					+ "<ul style=\"margin-left:20\">"
+						+ "<li>Use the fields to create your desired transaction!</li>"
+						+ "<li>Keep values as appropriate types and under 45 characters!</li>"
+					+ "</ul>" 
+				+ "</html>");
 		helpLbl.setFont(new Font("Arial", Font.PLAIN, 12));
 		helpLbl.setBounds(316, 11, 174, 118);
 		contentPanel.add(helpLbl);

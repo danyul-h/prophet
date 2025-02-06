@@ -11,8 +11,21 @@ import java.util.Objects;
 
 public class Transaction {
 
-	private static String[] categories = { "Miscellaneous", "Salary", "Bills", "Chores", "Work", "Allowance",
-			"Entertainment", "Dining", "Education", "Insurance", "Health", "Groceries", "Transportation", "Home",
+	private static String[] categories = { 
+			"Miscellaneous", 
+			"Salary", 
+			"Bills", 
+			"Chores", 
+			"Work", 
+			"Allowance",
+			"Entertainment", 
+			"Dining", 
+			"Education", 
+			"Insurance", 
+			"Health", 
+			"Groceries", 
+			"Transportation", 
+			"Home",
 			"Travel" };
 
 	public static String[] getCategories() {
