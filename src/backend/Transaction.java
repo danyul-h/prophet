@@ -51,7 +51,7 @@ public class Transaction {
 		this.details = details;
 	}
 	
-	public static ArrayList<Transaction> sortTransactions(ArrayList<Transaction> transactions){
+	public static void sortTransactions(ArrayList<Transaction> transactions){
 		boolean swapped;
 		for (int i = 0; i < transactions.size()-1; i++) {
 			swapped = false;
@@ -63,7 +63,6 @@ public class Transaction {
 				}
 			}
 		}
-		return transactions;
 	}
 	
 	public static double getExpenses(ArrayList<Transaction> transactions) {

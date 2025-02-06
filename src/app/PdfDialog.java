@@ -156,7 +156,7 @@ public class PdfDialog extends JDialog {
 		try {
 			String home = System.getProperty("user.home");
 			LocalDateTime retrieveDate = LocalDateTime.now();
-			PdfWriter writer = new PdfWriter(home+"/Downloads/Prophet-Transactions_" + retrieveDate.format(DateTimeFormatter.ofPattern("LLLL-d-yyyy_k-m-s")) + ".pdf");
+			PdfWriter writer = new PdfWriter(home+"/Downloads/Prophet-Transactions_" + retrieveDate.format(DateTimeFormatter.ofPattern("LLLL-d-yyyy_kk-mm-ss")) + ".pdf");
 			PdfDocument pdf = new PdfDocument(writer);
 			pdf.setDefaultPageSize(PageSize.A4);
 			Document document = new Document(pdf);
@@ -165,7 +165,7 @@ public class PdfDialog extends JDialog {
 					.setFontColor(new DeviceRgb(40, 3, 50))
 					.setFontSize(20f)
 					.setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD));
-			Paragraph subtitle = new Paragraph("Retrieved " + retrieveDate.format(DateTimeFormatter.ofPattern("LLLL d yyyy, k:m:s")))
+			Paragraph subtitle = new Paragraph("Retrieved " + retrieveDate.format(DateTimeFormatter.ofPattern("LLLL d yyyy, kk:mm:ss")))
 					.setFontColor(new DeviceRgb(100, 24, 120))
 					.setFontSize(12f)
 					.setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_OBLIQUE));
@@ -201,7 +201,7 @@ public class PdfDialog extends JDialog {
 					.setBorder(Border.NO_BORDER);
 			
 			ArrayList<Transaction> filteredTransactions = Transaction.filterDayRange(transactions, start, end);
-			String startValue = String.format("%.2f", Transaction.getDayValue(filteredTransactions, start));
+			String startValue = String.format("%.2f", Transaction.getDayValue(filteredTransactions, start.minusDays(1)));
 			String endValue = String.format("%.2f", Transaction.getDayValue(filteredTransactions, end));
 			String totalExpenses = String.format("%.2f", Transaction.getExpenses(filteredTransactions));
 			String totalIncomes = String.format("%.2f", Transaction.getIncomes(filteredTransactions));
@@ -214,22 +214,33 @@ public class PdfDialog extends JDialog {
 			summary.addCell(new Cell().add(new Paragraph("Total Period Income")).setBorder(Border.NO_BORDER));
 			summary.addCell(new Cell().add(new Paragraph(totalIncomes).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
 			summary.addCell(new Cell().add(new Paragraph("Ending Balance")).setBorder(Border.NO_BORDER));
-			summary.addCell(new Cell().add(new Paragraph(endValue).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
+			summary.addCell(new Cell().add(new Paragraph(endValue).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));	
 			document.add(summary);
 			document.add(divider);
 			document.add(new Paragraph("All Transactions").setTextAlignment(TextAlignment.CENTER).setFontColor(new DeviceRgb(100, 24, 120))).setBorder(Border.NO_BORDER);
 			
-			Table table = new Table(5)
-					.useAllAvailableWidth();
-			for(Transaction i : filteredTransactions) {
-				System.out.println(i);
-			}
-			System.out.println("heheehehehehehe");
+			Table table = new Table(UnitValue.createPercentArray(new float[] {15, 20, 30, 15, 20}))
+					.useAllAvailableWidth()
+					.setBorder(Border.NO_BORDER);
+			table.addCell(new Cell().add((new Paragraph("Date").setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD)))).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
+			table.addCell(new Cell().add((new Paragraph("Category").setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD)))).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
+			table.addCell(new Cell().add((new Paragraph("Details").setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD)))).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
+			table.addCell(new Cell().add((new Paragraph("Value").setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD)))).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
+			table.addCell(new Cell().add((new Paragraph("Total Balance").setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD)))).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
+			
+			double balance = Transaction.getDayValue(filteredTransactions, start.minusDays(1));
 			Transaction.sortTransactions(filteredTransactions);
 			for(Transaction i : filteredTransactions) {
-				System.out.println(i);
+				table.addCell(new Cell().add(new Paragraph(i.getDate().toString())).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
+				table.addCell(new Cell().add(new Paragraph(i.getCategory())).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
+				table.addCell(new Cell().add(new Paragraph(i.getDetails())).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
+				table.addCell(new Cell().add(new Paragraph(String.format("%.2f", i.getValue().doubleValue())).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
+				balance += i.getValue().doubleValue();
+				balance = Math.round(balance*100) / 100.0;
+				table.addCell(new Cell().add(new Paragraph(String.format("%.2f", balance)).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f/5f)));
 			}
 			
+			document.add(table);
 			document.close();			
 		} catch(Exception e) {
 			e.printStackTrace();
