@@ -7,28 +7,29 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
 import java.sql.Date;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.toedter.calendar.JDateChooser;
 
 import backend.Transaction;
@@ -56,11 +57,11 @@ public class PdfDialog extends JDialog {
 		setTitle("Prophet Transactions");
 		setIconImage(appIcon.getImage());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 300, 350);
+		setBounds(100, 100, 300, 375);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		contentPanel.setPreferredSize(new Dimension(300, 320));
+		contentPanel.setPreferredSize(new Dimension(300, 340));
 		contentPanel.setBackground(new Color(255, 255, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPanel.setLayout(null);
@@ -99,7 +100,7 @@ public class PdfDialog extends JDialog {
 				+ "</ul>"
 				+ "</html>");
 		helpLbl.setFont(new Font("Arial", Font.PLAIN, 12));
-		helpLbl.setBounds(10, 116, 280, 140);
+		helpLbl.setBounds(10, 116, 250, 160);
 		contentPanel.add(helpLbl);
 		
 		JPanel buttonPane = new JPanel();
@@ -121,7 +122,9 @@ public class PdfDialog extends JDialog {
 				else startDate = Date.valueOf(LocalDate.ofInstant(startDateField.getDate().toInstant(), ZoneId.systemDefault()));
 				if(endDateField.getDate() == null) endDate = Date.valueOf(LocalDate.now().plusDays(1));
 				else endDate = Date.valueOf(LocalDate.ofInstant(endDateField.getDate().toInstant(), ZoneId.systemDefault()));
-				System.out.println();
+				downloaded = true;
+				generatePdf(startDate, endDate);
+				dispose();
 			}
 		});
 		buttonPane.add(downloadBtn);
@@ -137,5 +140,25 @@ public class PdfDialog extends JDialog {
 		buttonPane.add(cancelBtn);
 		
 		this.setLocationRelativeTo(null);
+	}
+	
+	public void generatePdf(Date start, Date end) {
+		try {
+			String home = System.getProperty("user.home");
+			PdfWriter writer = new PdfWriter(home+"/Downloads/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("Prophet-Transactions_LLLL-d-yyyy_k-m-s")) + ".pdf");
+			PdfDocument pdf = new PdfDocument(writer);
+			pdf.setDefaultPageSize(PageSize.A4);
+			Document document = new Document(pdf);
+			float twocol = 285f;
+			float twocol150 = twocol + 150f;
+			float twocolumnWidth[] = {twocol150, twocol};
+			
+			Table table = new Table(twocolumnWidth);
+			
+			document.add(new Paragraph("Hello World!"));
+			document.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
