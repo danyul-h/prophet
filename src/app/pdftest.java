@@ -8,12 +8,12 @@ import com.itextpdf.layout.element.Paragraph;
 public class pdftest{
 	public static void main(String[] args) {
 		try {
-			PdfWriter writer = new PdfWriter("/home/dhoang/Downloads/output.pdf");
+			String home = System.getProperty("user.home");
+			PdfWriter writer = new PdfWriter(home+"/Downloads/output.pdf");
 			PdfDocument pdf = new PdfDocument(writer);
 			Document document = new Document(pdf);
 			document.add(new Paragraph("Hello World!"));
 			document.close();
-			System.out.println("eh!");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

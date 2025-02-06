@@ -18,14 +18,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import backend.Database;
 import backend.Transaction;
+import components.Button;
 
 import javax.swing.ImageIcon;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.FlowLayout;
@@ -38,6 +44,7 @@ public class App extends JFrame {
 	private static final ImageIcon walletIcon = new ImageIcon(App.class.getResource("/icons/wallet.png"));
 	private static final ImageIcon pieIcon = new ImageIcon(App.class.getResource("/icons/pie.png"));
 	private static final ImageIcon logoutIcon = new ImageIcon(App.class.getResource("/icons/logout.png"));
+	private static final ImageIcon pdfIcon = new ImageIcon(App.class.getResource("/icons/pdf.png"));
 	
 	private JPanel contentPane;
 	private ArrayList<Transaction> transactions;
@@ -163,13 +170,26 @@ public class App extends JFrame {
 		nav.add(sysBtns, BorderLayout.SOUTH);
 		
 		JLabel pdfBtn = new JLabel("");
-		pdfBtn.addMouseListener(new MouseAdapter() {
-			@Override
+		pdfBtn.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
-				pagesLayout.show(pages, "wallet");
+				PdfDialog dialog = new PdfDialog(transactions);
+				dialog.setModal(true);
+				dialog.setVisible(true);
+				if (!dialog.downloaded) {
+					JOptionPane.showMessageDialog(getParent(), 
+							"Download cancelled!", 
+							"Cancellation", 
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+						JOptionPane.showMessageDialog(getParent(), 
+							"Donwload Successful!",
+							"Success", 
+							JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
-		pdfBtn.setIcon(new ImageIcon(walletIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
+		
+		pdfBtn.setIcon(new ImageIcon(pdfIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
 		sysBtns.add(pdfBtn);
 		
 		JLabel logout = new JLabel("");

@@ -69,6 +69,14 @@ public class Transaction {
 		return income;
 	}
 	
+	public static double getDayValue(ArrayList<Transaction> transactions, java.util.Date date) {
+		double value = 0;
+		for (Transaction i : transactions) {
+			if (i.getDate().compareTo(date) <= 0) value+=i.getValue().doubleValue();
+		}
+		return value;
+	}
+	
 	public static ArrayList<Transaction> filterDayDistance(ArrayList<Transaction> transactions, int days){
 		ArrayList<Transaction> filtered =  new ArrayList<Transaction>();
 		Calendar c = Calendar.getInstance();
