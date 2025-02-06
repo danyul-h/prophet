@@ -94,12 +94,12 @@ public class PdfDialog extends JDialog {
 				+ "<h2 style=\"margin-bottom:-5;text-align:center;margin-top:-5;\">PDF Download</h2>"
 				+ "<ul style=\"margin-left:20\">"
 					+ "<li>Export a PDF of all your transactions in a date range here!</li>"
-					+ "<li>If no start date, the date range will start at the first transaction date on your account.</li>"
-					+ "<li>If no end date, the date range will end at the last transaction date on your account.</li>"
+					+ "<li>If no valid start date, the date range will start at the first transaction date on your account.</li>"
+					+ "<li>If no valid end date, the date range will end at the last transaction date on your account.</li>"
 				+ "</ul>"
 				+ "</html>");
 		helpLbl.setFont(new Font("Arial", Font.PLAIN, 12));
-		helpLbl.setBounds(10, 103, 280, 140);
+		helpLbl.setBounds(10, 116, 280, 140);
 		contentPanel.add(helpLbl);
 		
 		JPanel buttonPane = new JPanel();
@@ -115,10 +115,13 @@ public class PdfDialog extends JDialog {
 		downloadBtn.setText("Download");
 		downloadBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
-				Date startDate = Date.valueOf(LocalDate.ofInstant(startDateField.getDate().toInstant(), ZoneId.systemDefault()));
-				if(startDate == null) startDate = new Date(Long.MIN_VALUE);
-				Date endDate = Date.valueOf(LocalDate.ofInstant(endDateField.getDate().toInstant(), ZoneId.systemDefault()));
-				if(endDate == null) endDate = Date.valueOf(LocalDate.now().plusDays(1));
+				Date startDate;
+				Date endDate;
+				if(startDateField.getDate() == null) startDate = new Date(Long.MIN_VALUE);
+				else startDate = Date.valueOf(LocalDate.ofInstant(startDateField.getDate().toInstant(), ZoneId.systemDefault()));
+				if(endDateField.getDate() == null) endDate = Date.valueOf(LocalDate.now().plusDays(1));
+				else endDate = Date.valueOf(LocalDate.ofInstant(endDateField.getDate().toInstant(), ZoneId.systemDefault()));
+				System.out.println();
 			}
 		});
 		buttonPane.add(downloadBtn);

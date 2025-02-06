@@ -69,6 +69,9 @@ public class Transaction {
 		return income;
 	}
 	
+	public static Transaction getOldest(ArrayList<Transaction> transactions) {
+	}
+	
 	public static double getDayValue(ArrayList<Transaction> transactions, java.util.Date date) {
 		double value = 0;
 		for (Transaction i : transactions) {

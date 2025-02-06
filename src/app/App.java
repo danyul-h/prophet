@@ -177,12 +177,12 @@ public class App extends JFrame {
 				dialog.setVisible(true);
 				if (!dialog.downloaded) {
 					JOptionPane.showMessageDialog(getParent(), 
-							"Download cancelled!", 
+							"Download was cancelled and no action has been made.", 
 							"Cancellation", 
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
 						JOptionPane.showMessageDialog(getParent(), 
-							"Donwload Successful!",
+							"Download was successful and you may check your downloads folder!",
 							"Success", 
 							JOptionPane.INFORMATION_MESSAGE);
 				}
