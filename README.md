@@ -8,6 +8,7 @@ Prophet is a financial tracking app for students to manage their personal financ
 - 1st Place Winner for Maryland FBLA's Regional Coding and Programming Event
 
 # Dependencies and Utilities
+- iText Core/Community Library
 - JFreeCharts Library
 - JCalendar Library
 - MySQL Connector/J
