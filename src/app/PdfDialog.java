@@ -170,7 +170,7 @@ public class PdfDialog extends JDialog {
 					.setFontSize(12f)
 					.setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_OBLIQUE));
 			
-			Table table = new Table(UnitValue.createPercentArray(new float[] {60,40}))
+			Table header = new Table(UnitValue.createPercentArray(new float[] {60,40}))
 					.setBorder(Border.NO_BORDER)
 					.useAllAvailableWidth();
 			
@@ -179,7 +179,7 @@ public class PdfDialog extends JDialog {
 					.setBorder(Border.NO_BORDER);
 			tableTitle.addCell(new Cell().add(title).setBorder(Border.NO_BORDER));
 			tableTitle.addCell(new Cell().add(subtitle).setBorder(Border.NO_BORDER));
-			table.addCell(new Cell().add(tableTitle).setBorder(Border.NO_BORDER));
+			header.addCell(new Cell().add(tableTitle).setBorder(Border.NO_BORDER));
 			
 			Table tableDates = new Table(1)
 					.useAllAvailableWidth()
@@ -187,9 +187,9 @@ public class PdfDialog extends JDialog {
 			tableDates.addCell(new Cell().add(new Paragraph("START DATE: " + start.format(DateTimeFormatter.ofPattern("LLLL d, yyyy"))).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
 			tableDates.addCell(new Cell().add(new Paragraph("END DATE: " + end.format(DateTimeFormatter.ofPattern("LLLL d, yyyy"))).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
 			tableDates.addCell(new Cell().add(new Paragraph("USER: " + username).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
-			table.addCell(new Cell().add(tableDates).setBorder(Border.NO_BORDER));
+			header.addCell(new Cell().add(tableDates).setBorder(Border.NO_BORDER));
 			
-			document.add(table);
+			document.add(header);
 			
 			Table divider = new Table(1)
 					.useAllAvailableWidth()
@@ -218,6 +218,17 @@ public class PdfDialog extends JDialog {
 			document.add(summary);
 			document.add(divider);
 			document.add(new Paragraph("All Transactions").setTextAlignment(TextAlignment.CENTER).setFontColor(new DeviceRgb(100, 24, 120))).setBorder(Border.NO_BORDER);
+			
+			Table table = new Table(5)
+					.useAllAvailableWidth();
+			for(Transaction i : filteredTransactions) {
+				System.out.println(i);
+			}
+			System.out.println("heheehehehehehe");
+			Transaction.sortTransactions(filteredTransactions);
+			for(Transaction i : filteredTransactions) {
+				System.out.println(i);
+			}
 			
 			document.close();			
 		} catch(Exception e) {

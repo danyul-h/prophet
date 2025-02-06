@@ -51,6 +51,21 @@ public class Transaction {
 		this.details = details;
 	}
 	
+	public static ArrayList<Transaction> sortTransactions(ArrayList<Transaction> transactions){
+		boolean swapped;
+		for (int i = 0; i < transactions.size()-1; i++) {
+			swapped = false;
+			for (int j = 0; j < transactions.size()-1; j++) {
+				if (transactions.get(j).getDate().compareTo(transactions.get(j+1).getDate()) > 0) {
+					Transaction temp = transactions.set(j, transactions.get(j+1));
+					transactions.set(j+1, temp);
+					swapped = true;
+				}
+			}
+		}
+		return transactions;
+	}
+	
 	public static double getExpenses(ArrayList<Transaction> transactions) {
 		double cost = 0;
 		for (Transaction i : transactions) {
