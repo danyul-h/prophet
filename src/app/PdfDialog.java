@@ -67,11 +67,11 @@ public class PdfDialog extends JDialog {
 		setTitle("Prophet Transactions");
 		setIconImage(appIcon.getImage());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 300, 375);
+		setBounds(100, 100, 300, 400);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		contentPanel.setPreferredSize(new Dimension(300, 340));
+		contentPanel.setPreferredSize(new Dimension(300, 360));
 		contentPanel.setBackground(new Color(255, 255, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPanel.setLayout(null);
@@ -110,7 +110,7 @@ public class PdfDialog extends JDialog {
 				+ "</ul>"
 				+ "</html>");
 		helpLbl.setFont(new Font("Arial", Font.PLAIN, 12));
-		helpLbl.setBounds(10, 116, 250, 160);
+		helpLbl.setBounds(10, 116, 250, 220);
 		contentPanel.add(helpLbl);
 		
 		JPanel buttonPane = new JPanel();
