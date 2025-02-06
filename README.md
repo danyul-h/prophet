@@ -4,9 +4,6 @@ Struggling to keep up with tracking all your expenses? Profit off of Prophet!
 # Description
 Prophet is a financial tracking app for students to manage their personal finances by tracking account balances, income, and expenses. Users can add, edit, and delete transactions. Each transaction collects the date, value, category, and details of that transaction. Prophet shows the current balance as well as summaries of finances over specified periods of time and categories using a pie chart to show spending patterns. It allows the user to search and use filters to find specific transactions easier. 
 
-# Recognition
-- 1st Place Winner for Maryland FBLA's Regional Coding and Programming Event
-
 # Dependencies and Utilities
 - iText Core/Community Library
 - JFreeCharts Library
