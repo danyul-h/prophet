@@ -51,7 +51,25 @@ public class Transaction {
 		this.details = details;
 	}
 	
-	public static double getCategoryExpenses(ArrayList<Transaction> transactions, String category) {
+	public static double getExpenses(ArrayList<Transaction> transactions) {
+		double cost = 0;
+		for (Transaction i : transactions) {
+			double value = i.getValue().doubleValue();
+			if(value < 0) cost += Math.abs(value);
+		}
+		return cost;
+	}
+	
+	public static double getIncomes(ArrayList<Transaction> transactions) {
+		double income = 0;
+		for (Transaction i : transactions) {
+			double value = i.getValue().doubleValue();
+			if(value>0) income += value;
+		}
+		return income;
+	}
+	
+ 	public static double getCategoryExpenses(ArrayList<Transaction> transactions, String category) {
 		double cost = 0;
 		for (Transaction i : transactions) {
 			double value = i.getValue().doubleValue();
@@ -69,10 +87,32 @@ public class Transaction {
 		return income;
 	}
 	
-	public static Transaction getOldest(ArrayList<Transaction> transactions) {
+	public static Transaction getLatest(ArrayList<Transaction> transactions) {
+		Date date = null;
+		Transaction transaction = null;
+		for (Transaction i : transactions) {
+			if (date == null || date.compareTo(i.getDate()) < 0) {
+				date = i.getDate();
+				transaction = i;
+			}
+		}
+		return transaction;
 	}
 	
-	public static double getDayValue(ArrayList<Transaction> transactions, java.util.Date date) {
+	public static Transaction getOldest(ArrayList<Transaction> transactions) {
+		Date date = null;
+		Transaction transaction = null;
+		for (Transaction i : transactions) {
+			if (date == null || date.compareTo(i.getDate()) > 0) {
+				date = i.getDate();
+				transaction = i;
+			}
+		}
+		return transaction;
+	}
+	
+	public static double getDayValue(ArrayList<Transaction> transactions, LocalDate d) {
+		java.util.Date date = Date.valueOf(d);
 		double value = 0;
 		for (Transaction i : transactions) {
 			if (i.getDate().compareTo(date) <= 0) value+=i.getValue().doubleValue();
@@ -93,10 +133,12 @@ public class Transaction {
 		return filtered;
 	}
 	
-	public static ArrayList<Transaction> filterDayRange(ArrayList<Transaction> transactions, java.util.Date startDate, java.util.Date endDate){
+	public static ArrayList<Transaction> filterDayRange(ArrayList<Transaction> transactions, LocalDate startDate, LocalDate endDate){
 		ArrayList<Transaction> filtered = new ArrayList<Transaction>();
+		java.util.Date start = Date.valueOf(startDate);
+		java.util.Date end = Date.valueOf(endDate);
 		for (Transaction i : transactions) {
-			if (i.getDate().compareTo(startDate) >= 0 && i.getDate().compareTo(endDate) <= 0) filtered.add(i); 
+			if (i.getDate().compareTo(start) >= 0 && i.getDate().compareTo(end) <= 0) filtered.add(i); 
 		}
 		return filtered;
 	}

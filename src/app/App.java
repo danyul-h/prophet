@@ -172,7 +172,7 @@ public class App extends JFrame {
 		JLabel pdfBtn = new JLabel("");
 		pdfBtn.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
-				PdfDialog dialog = new PdfDialog(transactions);
+				PdfDialog dialog = new PdfDialog(transactions, username);
 				dialog.setModal(true);
 				dialog.setVisible(true);
 				if (!dialog.downloaded) {

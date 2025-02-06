@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -23,13 +24,20 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import com.toedter.calendar.JDateChooser;
 
 import backend.Transaction;
@@ -44,14 +52,16 @@ public class PdfDialog extends JDialog {
 	private ArrayList<Transaction> transactions;
 	private JDateChooser startDateField;
 	private JDateChooser endDateField;
+	private String username;
 	public boolean downloaded = false;
 	
 	public ArrayList<Transaction> getTransactions() {
 		return transactions;
 	}
 
-	public PdfDialog(ArrayList<Transaction> entries) {
+	public PdfDialog(ArrayList<Transaction> entries, String user) {
 		this.transactions = entries;
+		this.username = user;
 		
 		setResizable(false);
 		setTitle("Prophet Transactions");
@@ -116,12 +126,12 @@ public class PdfDialog extends JDialog {
 		downloadBtn.setText("Download");
 		downloadBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
-				Date startDate;
-				Date endDate;
-				if(startDateField.getDate() == null) startDate = new Date(Long.MIN_VALUE);
-				else startDate = Date.valueOf(LocalDate.ofInstant(startDateField.getDate().toInstant(), ZoneId.systemDefault()));
-				if(endDateField.getDate() == null) endDate = Date.valueOf(LocalDate.now().plusDays(1));
-				else endDate = Date.valueOf(LocalDate.ofInstant(endDateField.getDate().toInstant(), ZoneId.systemDefault()));
+				LocalDate startDate;
+				LocalDate endDate;
+				if(startDateField.getDate() == null) startDate = Transaction.getOldest(transactions).getDate().toLocalDate();
+				else startDate = LocalDate.ofInstant(startDateField.getDate().toInstant(), ZoneId.systemDefault());
+				if(endDateField.getDate() == null) endDate = Transaction.getLatest(transactions).getDate().toLocalDate();
+				else endDate = LocalDate.ofInstant(endDateField.getDate().toInstant(), ZoneId.systemDefault());
 				downloaded = true;
 				generatePdf(startDate, endDate);
 				dispose();
@@ -142,21 +152,74 @@ public class PdfDialog extends JDialog {
 		this.setLocationRelativeTo(null);
 	}
 	
-	public void generatePdf(Date start, Date end) {
+	public void generatePdf(LocalDate start, LocalDate end) {
 		try {
 			String home = System.getProperty("user.home");
-			PdfWriter writer = new PdfWriter(home+"/Downloads/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("Prophet-Transactions_LLLL-d-yyyy_k-m-s")) + ".pdf");
+			LocalDateTime retrieveDate = LocalDateTime.now();
+			PdfWriter writer = new PdfWriter(home+"/Downloads/Prophet-Transactions_" + retrieveDate.format(DateTimeFormatter.ofPattern("LLLL-d-yyyy_k-m-s")) + ".pdf");
 			PdfDocument pdf = new PdfDocument(writer);
 			pdf.setDefaultPageSize(PageSize.A4);
 			Document document = new Document(pdf);
-			float twocol = 285f;
-			float twocol150 = twocol + 150f;
-			float twocolumnWidth[] = {twocol150, twocol};
 			
-			Table table = new Table(twocolumnWidth);
+			Paragraph title = new Paragraph("Prophet Transactions")
+					.setFontColor(new DeviceRgb(40, 3, 50))
+					.setFontSize(20f)
+					.setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD));
+			Paragraph subtitle = new Paragraph("Retrieved " + retrieveDate.format(DateTimeFormatter.ofPattern("LLLL d yyyy, k:m:s")))
+					.setFontColor(new DeviceRgb(100, 24, 120))
+					.setFontSize(12f)
+					.setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_OBLIQUE));
 			
-			document.add(new Paragraph("Hello World!"));
-			document.close();
+			Table table = new Table(UnitValue.createPercentArray(new float[] {60,40}))
+					.setBorder(Border.NO_BORDER)
+					.useAllAvailableWidth();
+			
+			Table tableTitle = new Table(1)
+					.useAllAvailableWidth()
+					.setBorder(Border.NO_BORDER);
+			tableTitle.addCell(new Cell().add(title).setBorder(Border.NO_BORDER));
+			tableTitle.addCell(new Cell().add(subtitle).setBorder(Border.NO_BORDER));
+			table.addCell(new Cell().add(tableTitle).setBorder(Border.NO_BORDER));
+			
+			Table tableDates = new Table(1)
+					.useAllAvailableWidth()
+					.setBorder(Border.NO_BORDER);
+			tableDates.addCell(new Cell().add(new Paragraph("START DATE: " + start.format(DateTimeFormatter.ofPattern("LLLL d, yyyy"))).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
+			tableDates.addCell(new Cell().add(new Paragraph("END DATE: " + end.format(DateTimeFormatter.ofPattern("LLLL d, yyyy"))).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
+			tableDates.addCell(new Cell().add(new Paragraph("USER: " + username).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
+			table.addCell(new Cell().add(tableDates).setBorder(Border.NO_BORDER));
+			
+			document.add(table);
+			
+			Table divider = new Table(1)
+					.useAllAvailableWidth()
+					.setBorder(new SolidBorder(1f/5f));
+			document.add(divider);
+			
+			Table summary = new Table(UnitValue.createPercentArray(new float[] {65,35}))
+					.useAllAvailableWidth()
+					.setBorder(Border.NO_BORDER);
+			
+			ArrayList<Transaction> filteredTransactions = Transaction.filterDayRange(transactions, start, end);
+			String startValue = String.format("%.2f", Transaction.getDayValue(filteredTransactions, start));
+			String endValue = String.format("%.2f", Transaction.getDayValue(filteredTransactions, end));
+			String totalExpenses = String.format("%.2f", Transaction.getExpenses(filteredTransactions));
+			String totalIncomes = String.format("%.2f", Transaction.getIncomes(filteredTransactions));
+			
+			document.add(new Paragraph("Transactions Summary").setTextAlignment(TextAlignment.CENTER).setFontColor(new DeviceRgb(100, 24, 120))).setBorder(Border.NO_BORDER);
+			summary.addCell(new Cell().add(new Paragraph("Beginning Balance")).setBorder(Border.NO_BORDER));
+			summary.addCell(new Cell().add(new Paragraph(startValue).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
+			summary.addCell(new Cell().add(new Paragraph("Total Period Expenses")).setBorder(Border.NO_BORDER));
+			summary.addCell(new Cell().add(new Paragraph(totalExpenses).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
+			summary.addCell(new Cell().add(new Paragraph("Total Period Income")).setBorder(Border.NO_BORDER));
+			summary.addCell(new Cell().add(new Paragraph(totalIncomes).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
+			summary.addCell(new Cell().add(new Paragraph("Ending Balance")).setBorder(Border.NO_BORDER));
+			summary.addCell(new Cell().add(new Paragraph(endValue).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
+			document.add(summary);
+			document.add(divider);
+			document.add(new Paragraph("All Transactions").setTextAlignment(TextAlignment.CENTER).setFontColor(new DeviceRgb(100, 24, 120))).setBorder(Border.NO_BORDER);
+			
+			document.close();			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
