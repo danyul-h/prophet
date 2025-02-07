@@ -224,15 +224,13 @@ public class Database {
 		}
 	}
 
-	// log in, verifies login with provided username and password by comparing it to
-	// rows in the users table in prophet database in mysql
+	// log in, verifies login with provided username and password by comparing it to rows in the users table in prophet database in mysql
 	public static Status login(String username, String password) {
 		Connection connection = connect();
 		if (connection == null) return Status.UNAVAILABLE;
 		// try to login
 		try {
-			// prepare a statement to execute in mysql, looking for a user based off of
-			// username and password
+			// prepare a statement to execute in mysql, looking for a user based off of username and password
 			PreparedStatement statement = connection
 					.prepareStatement("SELECT * FROM users WHERE username=? AND password=?");
 			statement.setString(1, username); // input the user's username
@@ -242,8 +240,7 @@ public class Database {
 			// close connection after execution
 			connection.close();
 			if (foundUser) {
-				// if the statement found results, close the connection and return successful
-				// status
+				// return successful status if found user
 				return Status.SUCCESSFUL;
 			}
 			return Status.INVALID; // if user not found, return invalid status
