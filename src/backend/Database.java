@@ -226,18 +226,17 @@ public class Database {
 
 	// log in, verifies login with provided username and password by comparing it to rows in the users table in prophet database in mysql
 	public static Status login(String username, String password) {
-		Connection connection = connect();
-		if (connection == null) return Status.UNAVAILABLE;
+		Connection connection = connect(); //get a connection the mysql database
+		if (connection == null) return Status.UNAVAILABLE; //if connection is null, return unavailable status
 		// try to login
 		try {
 			// prepare a statement to execute in mysql, looking for a user based off of username and password
-			PreparedStatement statement = connection
-					.prepareStatement("SELECT * FROM users WHERE username=? AND password=?");
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE username=? AND password=?");
 			statement.setString(1, username); // input the user's username
 			statement.setString(2, password); // input the user's password
 			// now we execute the statement
 			boolean foundUser = statement.executeQuery().next();
-			// close connection after execution
+			// close connection after execution, no longer need
 			connection.close();
 			if (foundUser) {
 				// return successful status if found user
