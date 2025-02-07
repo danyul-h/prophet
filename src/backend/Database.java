@@ -23,7 +23,26 @@ public class Database {
 		DUPLICATE, // if action attempted to add a duplicate username, etc.
 	}
 
-	public static Properties getProps() {
+	private static Connection connect() {
+		// getting properties from .env file
+		Properties props = getProps();
+		if (props == null)
+			return null; // if getting props didn't work, return unavailable
+		Connection connection; // initializing connection
+		try {
+			// finds the class to connect to the database
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			// connects to the database described by the properties in the .env file
+			connection = DriverManager.getConnection((String) props.get("DB_URL"), (String) props.get("DB_USER"),
+					(String) props.get("DB_PASSWORD"));
+		} catch (Exception e) {
+			// if connection didn't work, return unavailable
+			return null;
+		}
+		return connection;
+	}
+	
+	private static Properties getProps() {
 		// initialize properties
 		Properties props = new Properties();
 		// load .env path
@@ -38,21 +57,8 @@ public class Database {
 	}
 
 	public static Transaction getTransaction(int id) {
-		// getting properties from .env file
-		Properties props = getProps();
-		if (props == null)
-			return null; // if getting props didn't work, return null
-		Connection connection; // initializing connection
-		try {
-			// finds the class to connect to the database
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			// connects to the database described by the properties in the .env file
-			connection = DriverManager.getConnection((String) props.get("DB_URL"), (String) props.get("DB_USER"),
-					(String) props.get("DB_PASSWORD"));
-		} catch (Exception e) {
-			// if connection didn't work, return null
-			return null;
-		}
+		Connection connection = connect();
+		if (connection == null) return null;
 		try {
 			// look for transactions in the database based on its id
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions WHERE id=?");
@@ -74,24 +80,9 @@ public class Database {
 	}
 
 	public static ArrayList<Transaction> getTransactions(String username) {
-		// getting properties from .env file
-		Properties props = getProps();
-		if (props == null)
-			return null; // if getting props didn't work, return null
-		Connection connection; // initializing connection
-		try {
-			// finds the class to connect to the database
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			// connects to the database described by the properties in the .env file
-			connection = DriverManager.getConnection((String) props.get("DB_URL"), (String) props.get("DB_USER"),
-					(String) props.get("DB_PASSWORD"));
-		} catch (Exception e) {
-			// if connection didn't work, return null
-			return null;
-		}
+		Connection connection = connect();
+		if (connection == null) return null;
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		if (connection == null)
-			return null;
 		try {
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions WHERE username=?");
 			statement.setString(1, username);
@@ -182,21 +173,11 @@ public class Database {
 	
 	//method deletes transaction based on unique id
 	public static Status deleteTransaction(int id) {
-		// getting properties from .env file
-		Properties props = getProps();
-		if (props == null)
-			return Status.UNAVAILABLE; // if getting props didn't work, return unavailable
-		Connection connection; // initializing connection
-		try {
-			// finds the class to connect to the database
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			// connects to the database described by the properties in the .env file
-			connection = DriverManager.getConnection((String) props.get("DB_URL"), (String) props.get("DB_USER"),
-					(String) props.get("DB_PASSWORD"));
-		} catch (Exception e) {
-			// if connection didn't work, return unavailable
-			return Status.UNAVAILABLE;
-		}
+		//get connection to mysql database
+		Connection connection = connect();
+		//if connection failed, return unavailable status
+		if (connection == null) return Status.UNAVAILABLE;
+		//otherwise...
 		try {
 			//prepare a statement to send to the mysql server
 			PreparedStatement statement = connection.prepareStatement("DELETE FROM transactions WHERE id=?");
@@ -217,21 +198,8 @@ public class Database {
 	// signs up with given username and password, essentially inserts a row into the
 	// users table in prophet database in mysql
 	public static Status signup(String username, String password) {
-		// getting properties from .env file
-		Properties props = getProps();
-		if (props == null)
-			return Status.UNAVAILABLE; // if getting props didn't work, return unavailable
-		Connection connection; // initializing connection
-		try {
-			// finds the class to connect to the database
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			// connects to the database described by the properties in the .env file
-			connection = DriverManager.getConnection((String) props.get("DB_URL"), (String) props.get("DB_USER"),
-					(String) props.get("DB_PASSWORD"));
-		} catch (Exception e) {
-			// if connection didn't work, return unavailable
-			return Status.UNAVAILABLE;
-		}
+		Connection connection = connect();
+		if (connection == null) return Status.UNAVAILABLE;
 		try {
 			/*
 			 * this statement says... insert a row into the users table with a value
@@ -259,21 +227,8 @@ public class Database {
 	// log in, verifies login with provided username and password by comparing it to
 	// rows in the users table in prophet database in mysql
 	public static Status login(String username, String password) {
-		// getting properties from .env file
-		Properties props = getProps();
-		if (props == null)
-			return Status.UNAVAILABLE; // if getting props didn't work, return unavailable
-		Connection connection; // initializing connection
-		try {
-			// finds the class to connect to the database
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			// connects to the database described by the properties in the .env file
-			connection = DriverManager.getConnection((String) props.get("DB_URL"), (String) props.get("DB_USER"),
-					(String) props.get("DB_PASSWORD"));
-		} catch (Exception e) {
-			// if connection didn't work, return unavailable
-			return Status.UNAVAILABLE;
-		}
+		Connection connection = connect();
+		if (connection == null) return Status.UNAVAILABLE;
 		// try to login
 		try {
 			// prepare a statement to execute in mysql, looking for a user based off of
