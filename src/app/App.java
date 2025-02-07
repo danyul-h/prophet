@@ -40,23 +40,27 @@ public class App extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	//icons in the app
 	private static final ImageIcon appIcon = new ImageIcon(App.class.getResource("/icons/app.png"));
 	private static final ImageIcon walletIcon = new ImageIcon(App.class.getResource("/icons/wallet.png"));
 	private static final ImageIcon pieIcon = new ImageIcon(App.class.getResource("/icons/pie.png"));
 	private static final ImageIcon logoutIcon = new ImageIcon(App.class.getResource("/icons/logout.png"));
 	private static final ImageIcon pdfIcon = new ImageIcon(App.class.getResource("/icons/pdf.png"));
 	
-	private JPanel contentPane;
-	private ArrayList<Transaction> transactions;
-	private BigDecimal balance = new BigDecimal(0);
-	private JLabel balanceLbl;
-	private String username;
-	private PiePage piePage;
-	private JPanel pages;
-	
+	//components on the app
+	private JPanel contentPane; //the pane where all components of the app are held
+	private ArrayList<Transaction> transactions; //array list of all the user's transactions
+	private BigDecimal balance = new BigDecimal(0); //the number value of the user's balance
+	private JLabel balanceLbl; //the label for the user's balance
+	private String username; //the user's username
+	private PiePage piePage; //the page showing a pie chart report of the user's transactions
+	private JPanel pages; //the 
+
+	//constructing the app, taking in a username for input
 	public App(String username) {
 		this.username = username;
 
+		//setting up dimensions, bordering, position, app icon and background colors.
 		setMinimumSize(new Dimension(1050, 850));
 		setTitle("Prophet");
 		setIconImage(appIcon.getImage());
@@ -66,19 +70,21 @@ public class App extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(null);
-
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
+		//setting up the info panel, where the user will be able to see most of their info either through the top, or 
 		JPanel info = new JPanel();
 		contentPane.add(info, BorderLayout.CENTER);
 		info.setLayout(new BorderLayout());
 
+		//setting up the top header of the app
 		JPanel top = new JPanel() {
+			//adding a gradient to the header by painting a rectangle gradient inside the top panel
 			public void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
-				Color c1 = new Color(120, 90, 140, 255); // light
-				Color c2 = new Color(100, 24, 120, 255); // dark
+				Color c1 = new Color(120, 90, 140, 255); // light shade
+				Color c2 = new Color(100, 24, 120, 255); // dark shade
 				GradientPaint gp = new GradientPaint(0, 0, c2, getWidth(), getHeight(), c1);
 				g2.setPaint(gp);
 				g2.fill(new Rectangle(getWidth(), getHeight()));
@@ -87,41 +93,48 @@ public class App extends JFrame {
 		top.setPreferredSize(new Dimension(10, 40));
 		top.setBackground(new Color(255, 168, 0));
 		info.add(top, BorderLayout.NORTH);
-		
+
+		//setting up the label welcoming the user, including its border, fonts, etc
 		JLabel welcome = new JLabel("Welcome, " + username.toUpperCase() + "!");
 		welcome.setBorder(new EmptyBorder(0, 10, 0, 0));
 		welcome.setHorizontalAlignment(SwingConstants.LEFT);
 		welcome.setForeground(new Color(255, 255, 255));
 		welcome.setFont(new Font("Arial", Font.BOLD, 16));
-		
+
+		//setting up the date label, informing them what weekday and date it is
 		JLabel date = new JLabel(new SimpleDateFormat("EEEE, MMM dd YYYY").format(Calendar.getInstance().getTime()));
 		date.setBorder(new EmptyBorder(0, 0, 0, 10));
 		date.setHorizontalAlignment(SwingConstants.RIGHT);
 		date.setForeground(Color.WHITE);
 		date.setFont(new Font("Arial", Font.BOLD, 16));
 		top.setLayout(new BorderLayout(0, 0));
+		
+		//adding the two prior labels to the top of the app
 		top.add(welcome, BorderLayout.WEST);
 		top.add(date, BorderLayout.EAST);
-		
+
+		//setting up the balance label, informing the user's current total value after all transactions
 		balanceLbl = new JLabel("Balance: $" + balance);
 		balanceLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		balanceLbl.setForeground(Color.WHITE);
 		balanceLbl.setFont(new Font("Dialog", Font.BOLD, 16));
 		balanceLbl.setBorder(new EmptyBorder(0, 10, 0, 0));
-		top.add(balanceLbl, BorderLayout.CENTER);
 		
+		//adding balance label to the top
+		top.add(balanceLbl, BorderLayout.CENTER);
+
 		pages = new JPanel();
 		pages.setBorder(null);
 		info.add(pages, BorderLayout.CENTER);
 		CardLayout pagesLayout = new CardLayout();
 		pages.setLayout(pagesLayout);
-		
+
 		piePage = new PiePage(Database.getTransactions(username));
 		pages.add(piePage, "pie");
 		refresh();
 		WalletPage walletPage = new WalletPage(username, transactions, this);
 		pages.add(walletPage, "wallet");
-		
+
 		JPanel nav = new JPanel() {
 			public void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
@@ -141,7 +154,7 @@ public class App extends JFrame {
 		flowLayout.setVgap(20);
 		pageBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(pageBtns, BorderLayout.NORTH);
-		
+
 		JLabel walletBtn = new JLabel("");
 		walletBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -151,7 +164,7 @@ public class App extends JFrame {
 		});
 		walletBtn.setIcon(new ImageIcon(walletIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
 		pageBtns.add(walletBtn);
-		
+
 		JLabel pieBtn = new JLabel("");
 		pieBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -168,30 +181,27 @@ public class App extends JFrame {
 		flowLayout_1.setVgap(20);
 		sysBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(sysBtns, BorderLayout.SOUTH);
-		
+
 		JLabel pdfBtn = new JLabel("");
-		pdfBtn.addMouseListener(new MouseAdapter(){
+		pdfBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				PdfDialog dialog = new PdfDialog(transactions, username);
 				dialog.setModal(true);
 				dialog.setVisible(true);
 				if (!dialog.downloaded) {
-					JOptionPane.showMessageDialog(getParent(), 
-							"Download was cancelled and no action has been made.", 
-							"Cancellation", 
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(getParent(), "Download was cancelled and no action has been made.",
+							"Cancellation", JOptionPane.INFORMATION_MESSAGE);
 				} else {
-						JOptionPane.showMessageDialog(getParent(), 
-							"Download was successful and you may check your downloads folder!",
-							"Success", 
+					JOptionPane.showMessageDialog(getParent(),
+							"Download was successful and you may check your downloads folder!", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
-		
+
 		pdfBtn.setIcon(new ImageIcon(pdfIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
 		sysBtns.add(pdfBtn);
-		
+
 		JLabel logout = new JLabel("");
 		logout.addMouseListener(new MouseAdapter() {
 			@Override
@@ -203,10 +213,10 @@ public class App extends JFrame {
 		});
 		logout.setIcon(new ImageIcon(logoutIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
 		sysBtns.add(logout);
-		
+
 		pagesLayout.show(pages, "wallet");
 	}
-	
+
 	public void refresh() {
 		transactions = Database.getTransactions(username);
 		balance = new BigDecimal(0);
