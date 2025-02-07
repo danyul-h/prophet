@@ -96,7 +96,6 @@ public class Database {
 				String category = rs.getString("category");
 				String title = rs.getString("details");
 				transactions.add(new Transaction(id, username, date, value, category, title));
-				connection.close();
 			}
 		} catch (Exception e) { //something goes wrong, return null
 			e.printStackTrace();
