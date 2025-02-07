@@ -179,12 +179,13 @@ public class Database {
 			return Status.UNAVAILABLE; // assume connection failure
 		}
 	}
-
+	
+	//method deletes transaction based on unique id
 	public static Status deleteTransaction(int id) {
 		// getting properties from .env file
 		Properties props = getProps();
 		if (props == null)
-			return Status.UNAVAILABLE; // if getting props didn't work, return null
+			return Status.UNAVAILABLE; // if getting props didn't work, return unavailable
 		Connection connection; // initializing connection
 		try {
 			// finds the class to connect to the database
@@ -193,16 +194,22 @@ public class Database {
 			connection = DriverManager.getConnection((String) props.get("DB_URL"), (String) props.get("DB_USER"),
 					(String) props.get("DB_PASSWORD"));
 		} catch (Exception e) {
-			// if connection didn't work, return null
+			// if connection didn't work, return unavailable
 			return Status.UNAVAILABLE;
 		}
 		try {
+			//prepare a statement to send to the mysql server
 			PreparedStatement statement = connection.prepareStatement("DELETE FROM transactions WHERE id=?");
 			statement.setInt(1, id);
+			//execute the statement
 			statement.executeUpdate();
+			//we no longer need the connection to the server, so close
+			connection.close();
+			//return a successful status if it worked
 			return Status.SUCCESSFUL;
 		} catch (Exception e) {
 			e.printStackTrace();
+			//otherwise return an unavailable status
 			return Status.UNAVAILABLE;
 		}
 	}
