@@ -18,17 +18,21 @@ public class PasswordField extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	//components of the password field
 	private JPasswordField field;
 	private JLabel label;
 
+	//reset the password field, setting the text to empty string
 	public void reset() {
 		field.setText("");
 	}
 
+	//getting the input password from the field
 	public String getPassword() {
 		return String.valueOf(field.getPassword());
 	}
 
+	//setters and getters
 	public void setTitle(String str) {
 		title = str;
 		label.setText(title);
@@ -56,26 +60,33 @@ public class PasswordField extends JPanel {
 	private Color secondaryColor;
 	private Color fontColor;
 
+	//constructing password fields
 	public PasswordField(String str, Color pri, Color sec, Color font) {
+		//setting dimensions of password field
 		setMaximumSize(new Dimension(32767, 64));
 		setMinimumSize(new Dimension(10, 64));
 		setPreferredSize(new Dimension(10, 64));
+		
+		//setting the attributes of the passwordfield
 		title = str;
 		primaryColor = pri;
 		secondaryColor = sec;
 		fontColor = font;
 
+		//setting background color and border, and layout (how things are arranged inside)
 		setBackground(primaryColor);
 		setBorder(new CompoundBorder(new LineBorder(secondaryColor), new EmptyBorder(5, 10, 5, 10)));
 		setBounds(new Rectangle(0, 0, 0, 64));
 		setLayout(new BorderLayout(0, 0));
 
+		//creating the label for the field
 		label = new JLabel(title);
 		label.setVerticalAlignment(SwingConstants.TOP);
 		label.setForeground(secondaryColor);
 		label.setFont(new Font("Arial", Font.PLAIN, 12));
 		add(label, BorderLayout.NORTH);
 
+		//creating the actual input field for the password field
 		field = new JPasswordField();
 		field.setForeground(fontColor);
 		field.setBackground(primaryColor);

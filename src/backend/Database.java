@@ -80,10 +80,12 @@ public class Database {
 	}
 
 	public static ArrayList<Transaction> getTransactions(String username) {
+		//connecting
 		Connection connection = connect();
 		if (connection == null) return null;
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		try {
+			//getting all the transaction based off username
 			PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions WHERE username=?");
 			statement.setString(1, username);
 			ResultSet rs = statement.executeQuery();
@@ -94,9 +96,11 @@ public class Database {
 				String category = rs.getString("category");
 				String title = rs.getString("details");
 				transactions.add(new Transaction(id, username, date, value, category, title));
+				connection.close();
 			}
-		} catch (Exception e) {
+		} catch (Exception e) { //something goes wrong, return null
 			e.printStackTrace();
+			return null;
 		}
 		return transactions;
 	}
@@ -118,6 +122,7 @@ public class Database {
 			return -1;
 		}
 		try {
+			//adding transaction into database
 			PreparedStatement statement = connection.prepareStatement(
 					"INSERT INTO transactions(username, date, value, category, details) values(?, ?, ?, ?, ?)");
 			statement.setString(1, transaction.getUsername());

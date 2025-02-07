@@ -44,6 +44,7 @@ public class PiePage extends JPanel {
 		Expenses, Income,
 	}
 
+	//fields
 	private static final long serialVersionUID = 1L;
 	private int days;
 	private Type chartType;
@@ -53,14 +54,17 @@ public class PiePage extends JPanel {
 	private JLabel reportDynamic;
 	private ChartPanel pie;
 
+	//constructor based of transactions
 	public PiePage(ArrayList<Transaction> transactions) {
 		days = 30;
 		this.transactions = transactions;
 
+		//set background
 		setBackground(Color.white);
 		setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), null));
 		setLayout(new BorderLayout());
 
+		//set top panel
 		JPanel top = new JPanel();
 		top.setBackground(new Color(255, 255, 255));
 		top.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -68,12 +72,14 @@ public class PiePage extends JPanel {
 		add(top, BorderLayout.CENTER);
 		top.setLayout(new BorderLayout(0, 0));
 
+		//set settings panel
 		JPanel settings = new JPanel();
 		settings.setBackground(new Color(255, 255, 255));
 		settings.setPreferredSize(new Dimension(400, 10));
 		top.add(settings, BorderLayout.WEST);
 		settings.setLayout(null);
 
+		//let user specify expenses or income
 		typeField = new JComboBox<Type>(new Type[] { Type.Expenses, Type.Income });
 		typeField.setFont(new Font("Arial", Font.PLAIN, 16));
 		typeField.setSelectedIndex(0);
@@ -81,23 +87,25 @@ public class PiePage extends JPanel {
 		typeField.setBackground(new Color(255, 255, 255));
 		typeField.setBounds(103, 50, 185, 32);
 		settings.add(typeField);
-
+		
+		//label the field
 		JLabel typeLbl = new JLabel("Chart Type: ");
 		typeLbl.setFont(new Font("Arial", Font.PLAIN, 16));
 		typeLbl.setBounds(12, 50, 116, 32);
 		settings.add(typeLbl);
 
+		//label the date field
 		JLabel dateLbl = new JLabel("Date Range: Past");
 		dateLbl.setFont(new Font("Arial", Font.PLAIN, 16));
 		dateLbl.setBounds(12, 90, 165, 32);
 		settings.add(dateLbl);
-
 		JLabel dayLbl = new JLabel("days");
 		dayLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		dayLbl.setFont(new Font("Arial", Font.PLAIN, 16));
 		dayLbl.setBounds(228, 90, 60, 32);
 		settings.add(dayLbl);
 
+		//let user choose day range
 		dayField = new JComboBox<Integer>(new Integer[] { 7, 14, 21, 30, 60, 120, 180, 365 });
 		dayField.setFont(new Font("Arial", Font.PLAIN, 16));
 		dayField.setSelectedItem(30);
@@ -106,24 +114,29 @@ public class PiePage extends JPanel {
 		dayField.setBounds(145, 90, 100, 32);
 		settings.add(dayField);
 
+		//label for settings
 		JLabel settingsLbl = new JLabel("Chart Settings");
 		settingsLbl.setFont(new Font("Arial", Font.BOLD, 24));
 		settingsLbl.setBounds(12, 12, 185, 32);
 		settings.add(settingsLbl);
 
+		//panel that holds chart
 		JPanel piePanel = new JPanel();
 		piePanel.setBackground(new Color(255, 255, 255));
 		piePanel.setBorder(new CompoundBorder(new EmptyBorder(5, 0, 0, 0), new LineBorder(new Color(0, 0, 0))));
 		add(piePanel, BorderLayout.SOUTH);
 
+		//panel that holds word report
 		JPanel report = new JPanel();
 		report.setBackground(new Color(255, 255, 255));
 		top.add(report, BorderLayout.CENTER);
 
+		//dynamic report
 		reportDynamic = new JLabel();
 		reportDynamic.setHorizontalAlignment(SwingConstants.LEFT);
 		reportDynamic.setVerticalAlignment(SwingConstants.TOP);
 		reportDynamic.setFont(new Font("Arial", Font.PLAIN, 16));
+		//group layout for dynamic sizing
 		GroupLayout gl_report = new GroupLayout(report);
 		gl_report.setHorizontalGroup(gl_report.createParallelGroup(Alignment.TRAILING).addGroup(Alignment.LEADING,
 				gl_report.createSequentialGroup().addContainerGap()
@@ -135,10 +148,12 @@ public class PiePage extends JPanel {
 						.addContainerGap()));
 		report.setLayout(gl_report);
 
+		//set data for pie chart
 		setData();
 		pie.setLayout(new BorderLayout(0, 0));
 		piePanel.add(pie);
 
+		//add button for applying customization settings
 		Button btnApply = new Button();
 		btnApply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -155,10 +170,13 @@ public class PiePage extends JPanel {
 	}
 
 	private void setData() {
+		//find desired chart type and date range
 		chartType = (Type) typeField.getSelectedItem();
 		days = (Integer) dayField.getSelectedItem();
 
+		//init unsorted data
 		Map<String, Double> unsortedData = new HashMap<String, Double>();
+		//get total expenses/incomes in categories
 		for (String category : Transaction.getCategories()) {
 			double cost = Transaction.getCategoryExpenses(Transaction.filterDayDistance(transactions, days), category);
 			double income = Transaction.getCategoryIncomes(Transaction.filterDayDistance(transactions, days), category);
@@ -173,9 +191,10 @@ public class PiePage extends JPanel {
 				break;
 			}
 		}
-
+		//sort data based on value
 		Map<String, Double> sortedData = sortMapValues(unsortedData);
 
+		//create dataset for pie chart
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		double total = 0;
 		for (String i : sortedData.keySet()) {
@@ -183,10 +202,13 @@ public class PiePage extends JPanel {
 			total += sortedData.get(i);
 		}
 
+		//create pie chart
 		JFreeChart pieChart = ChartFactory.createPieChart("Categorical " + chartType + " in the Past " + days + " Days",
 				dataset, true, true, false);
+		//plot pie chart
 		PiePlot plot = (PiePlot) pieChart.getPlot();
 
+		//labels for the plot
 		PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0}: ${1} ({2})",
 				new DecimalFormat("#,###.##"), new DecimalFormat("#,###.##%"));
 		plot.setLabelGenerator(gen);
@@ -197,6 +219,7 @@ public class PiePage extends JPanel {
 		pie.setBackground(new Color(255, 255, 255));
 		pie.setPreferredSize(new Dimension(920, 600));
 		pie.setBorder(null);
+		//chart report information in words
 		if (dataset.getItemCount() > 0) {
 			reportDynamic.setText(""
 					+ "<html>"
@@ -237,6 +260,7 @@ public class PiePage extends JPanel {
 		return sortedMap;
 	}
 
+	//getter and setter for days
 	public int getDays() {
 		return days;
 	}

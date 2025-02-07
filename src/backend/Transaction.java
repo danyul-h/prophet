@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class Transaction {
 
+	//setting up the available categories for a transaction
 	private static String[] categories = { 
 			"Miscellaneous", 
 			"Salary", 
@@ -28,10 +29,12 @@ public class Transaction {
 			"Home",
 			"Travel" };
 
+	//get categories
 	public static String[] getCategories() {
 		return categories;
 	}
 
+	//fields of a transaction object (the input date)
 	private int id;
 	private String username;
 	private Date date;
@@ -39,6 +42,7 @@ public class Transaction {
 	private String category;
 	private String details;
 
+	//constructing a transaction with username, using default values
 	public Transaction(String username) {
 		this.id = -1;
 		this.username = username;
@@ -48,6 +52,7 @@ public class Transaction {
 		this.details = "Transaction";
 	}
 
+	//constructing a transaction with id and all the other input data
 	public Transaction(int id, String username, Date date, BigDecimal value, String category, String details) {
 		this.id = id;
 		this.username = username;
@@ -57,6 +62,7 @@ public class Transaction {
 		this.details = details;
 	}
 
+	//constructing a transaction with default id of -1 and all other input data
 	public Transaction(String username, Date date, BigDecimal value, String category, String details) {
 		this.id = -1;
 		this.username = username;
@@ -66,6 +72,7 @@ public class Transaction {
 		this.details = details;
 	}
 
+	//sort transactions based on date
 	public static void sortTransactions(ArrayList<Transaction> transactions) {
 		boolean swapped;
 		for (int i = 0; i < transactions.size() - 1; i++) {
@@ -80,6 +87,7 @@ public class Transaction {
 		}
 	}
 
+	//get all the total expenses of a list of transactions
 	public static double getExpenses(ArrayList<Transaction> transactions) {
 		double cost = 0;
 		for (Transaction i : transactions) {
@@ -90,6 +98,7 @@ public class Transaction {
 		return cost;
 	}
 
+	//get all the total incomes of a list of transactions
 	public static double getIncomes(ArrayList<Transaction> transactions) {
 		double income = 0;
 		for (Transaction i : transactions) {
@@ -100,6 +109,7 @@ public class Transaction {
 		return income;
 	}
 
+	//get all the total expenses of a list of transactions under a specific category
 	public static double getCategoryExpenses(ArrayList<Transaction> transactions, String category) {
 		double cost = 0;
 		for (Transaction i : transactions) {
@@ -110,6 +120,7 @@ public class Transaction {
 		return cost;
 	}
 
+	//get all the total incomes of a list of transactions under a specific category
 	public static double getCategoryIncomes(ArrayList<Transaction> transactions, String category) {
 		double income = 0;
 		for (Transaction i : transactions) {
@@ -120,6 +131,7 @@ public class Transaction {
 		return income;
 	}
 
+	//get the latest transaction
 	public static Transaction getLatest(ArrayList<Transaction> transactions) {
 		Date date = null;
 		Transaction transaction = null;
@@ -132,6 +144,7 @@ public class Transaction {
 		return transaction;
 	}
 
+	//get the oldest transaction
 	public static Transaction getOldest(ArrayList<Transaction> transactions) {
 		Date date = null;
 		Transaction transaction = null;
@@ -144,6 +157,7 @@ public class Transaction {
 		return transaction;
 	}
 
+	//get the total balance on a certain day
 	public static double getDayValue(ArrayList<Transaction> transactions, LocalDate d) {
 		java.util.Date date = Date.valueOf(d);
 		double value = 0;
@@ -154,6 +168,7 @@ public class Transaction {
 		return value;
 	}
 
+	//get the list of transaction filtered starting from today to the past x amount of days
 	public static ArrayList<Transaction> filterDayDistance(ArrayList<Transaction> transactions, int days) {
 		ArrayList<Transaction> filtered = new ArrayList<Transaction>();
 		Calendar c = Calendar.getInstance();
@@ -168,6 +183,7 @@ public class Transaction {
 		return filtered;
 	}
 
+	//get the list of transactions filtered based on a date range
 	public static ArrayList<Transaction> filterDayRange(ArrayList<Transaction> transactions, LocalDate startDate,
 			LocalDate endDate) {
 		ArrayList<Transaction> filtered = new ArrayList<Transaction>();
@@ -180,6 +196,7 @@ public class Transaction {
 		return filtered;
 	}
 
+	//turn the transactions into a 2d array, or a table
 	public static Object[][] toTable(ArrayList<Transaction> transactions) {
 		Object[][] table = new Object[transactions.size()][];
 		for (int i = 0; i < transactions.size(); i++) {
@@ -189,11 +206,13 @@ public class Transaction {
 	}
 
 	@Override
+	//get a hashcode of the transaction
 	public int hashCode() {
 		return Objects.hash(category, date, details, id, username, value);
 	}
 
 	@Override
+	//this function specifies how to compare transaction objects
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -207,15 +226,18 @@ public class Transaction {
 				&& Objects.equals(value, other.value);
 	}
 
+	//turn a transaction into an array
 	public Object[] toArray() {
 		return new Object[] { id, date, value, category, details, username };
 	}
 
+	//turn a transaction into a string, how they get printed out
 	public String toString() {
 		return id + " " + details + ": valued at " + value + " on " + new SimpleDateFormat("EE").format(date) + " "
 				+ date;
 	}
 
+	//setters and getters for the fields below
 	public void setId(int id) {
 		this.id = id;
 	}

@@ -90,6 +90,7 @@ public class App extends JFrame {
 				g2.fill(new Rectangle(getWidth(), getHeight()));
 			}
 		};
+		//setting up the size of the top header
 		top.setPreferredSize(new Dimension(10, 40));
 		top.setBackground(new Color(255, 168, 0));
 		info.add(top, BorderLayout.NORTH);
@@ -123,31 +124,40 @@ public class App extends JFrame {
 		//adding balance label to the top
 		top.add(balanceLbl, BorderLayout.CENTER);
 
+		//content will be split into multiple pages
 		pages = new JPanel();
 		pages.setBorder(null);
 		info.add(pages, BorderLayout.CENTER);
+		//so we use a card layout, which will let us change the main pae
 		CardLayout pagesLayout = new CardLayout();
 		pages.setLayout(pagesLayout);
 
+		//initialize the pie page that will show us the transactions
 		piePage = new PiePage(Database.getTransactions(username));
 		pages.add(piePage, "pie");
+		//refresh in order to make sure all the transactions aligns throughout the pages
 		refresh();
+		//add the wallet page where you can control transactions
 		WalletPage walletPage = new WalletPage(username, transactions, this);
 		pages.add(walletPage, "wallet");
 
+		//add the side nav that lets us change the pages
 		JPanel nav = new JPanel() {
+			//color the nav
 			public void paintComponent(Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
 				g2.setPaint(new Color(40, 3, 50, 255));
 				g2.fill(new Rectangle(getWidth(), getHeight()));
 			}
 		};
+		//set up nav size and aesthetic
 		nav.setBorder(null);
 		nav.setBackground(new Color(0, 64, 128));
 		nav.setPreferredSize(new Dimension(100, 380));
 		contentPane.add(nav, BorderLayout.WEST);
 		nav.setLayout(new BorderLayout(0, 0));
 
+		//split one part of the nav into page buttons
 		JPanel pageBtns = new JPanel();
 		pageBtns.setPreferredSize(new Dimension(10, 400));
 		FlowLayout flowLayout = (FlowLayout) pageBtns.getLayout();
@@ -155,6 +165,7 @@ public class App extends JFrame {
 		pageBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(pageBtns, BorderLayout.NORTH);
 
+		//add the wallet button to the page buttons with an icon of a wallet
 		JLabel walletBtn = new JLabel("");
 		walletBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -165,6 +176,7 @@ public class App extends JFrame {
 		walletBtn.setIcon(new ImageIcon(walletIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
 		pageBtns.add(walletBtn);
 
+		//add the pie button to the page buttons with an icon of a pie chart
 		JLabel pieBtn = new JLabel("");
 		pieBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -175,6 +187,7 @@ public class App extends JFrame {
 		pieBtn.setIcon(new ImageIcon(pieIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
 		pageBtns.add(pieBtn);
 
+		//another part of the nav will be system buttons
 		JPanel sysBtns = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) sysBtns.getLayout();
 		sysBtns.setPreferredSize(new Dimension(10, 190));
@@ -182,26 +195,31 @@ public class App extends JFrame {
 		sysBtns.setBackground(new Color(0, 0, 0, 0));
 		nav.add(sysBtns, BorderLayout.SOUTH);
 
+		//add pdf button, outputting and downloading a report
 		JLabel pdfBtn = new JLabel("");
 		pdfBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				//bring up a dialog popup
 				PdfDialog dialog = new PdfDialog(transactions, username);
 				dialog.setModal(true);
 				dialog.setVisible(true);
 				if (!dialog.downloaded) {
+					//if the user cancelled download, say that
 					JOptionPane.showMessageDialog(getParent(), "Download was cancelled and no action has been made.",
 							"Cancellation", JOptionPane.INFORMATION_MESSAGE);
 				} else {
+					//if download successful, say that
 					JOptionPane.showMessageDialog(getParent(),
 							"Download was successful and you may check your downloads folder!", "Success",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
-
+		//pdf button's icon
 		pdfBtn.setIcon(new ImageIcon(pdfIcon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH)));
 		sysBtns.add(pdfBtn);
 
+		//logout button, signs you out and returns to log in section
 		JLabel logout = new JLabel("");
 		logout.addMouseListener(new MouseAdapter() {
 			@Override
@@ -218,11 +236,13 @@ public class App extends JFrame {
 	}
 
 	public void refresh() {
+		//refreshing gets all the transactions from the database
 		transactions = Database.getTransactions(username);
 		balance = new BigDecimal(0);
 		for (Transaction i : transactions) {
 			balance = balance.add(i.getValue());
 		}
+		//also sets up the balance title
 		balanceLbl.setText("Balance: $" + new DecimalFormat("#,###.00").format(balance));
 		pages.remove(piePage);
 		piePage = new PiePage(transactions);

@@ -53,6 +53,7 @@ public class TransactionDialog extends JDialog {
 	public TransactionDialog(Transaction entry) {
 		this.transaction = entry;
 
+		//setting up the window
 		setResizable(false);
 		setTitle("Prophet Transactions");
 		setIconImage(appIcon.getImage());
@@ -61,11 +62,13 @@ public class TransactionDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
+		//content panel for all the components
 		contentPanel.setPreferredSize(new Dimension(500, 215));
 		contentPanel.setBackground(new Color(255, 255, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPanel.setLayout(null);
 
+		//setting up the fields and their labels below
 		JLabel dateLbl = new JLabel("Transaction Date:");
 		dateLbl.setBounds(10, 11, 153, 32);
 		dateLbl.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -117,6 +120,7 @@ public class TransactionDialog extends JDialog {
 		detailsField.setBounds(170, 140, 320, 64);
 		contentPanel.add(detailsField);
 
+		//instructions
 		JLabel helpLbl = new JLabel("" 
 				+ "<html>"
 					+ "<h2 style=\"margin-bottom:-5;text-align:center;margin-top:-5;\">Transactions</h2>"
@@ -128,7 +132,8 @@ public class TransactionDialog extends JDialog {
 		helpLbl.setFont(new Font("Arial", Font.PLAIN, 12));
 		helpLbl.setBounds(316, 11, 174, 118);
 		contentPanel.add(helpLbl);
-
+		
+		//button panel for buttons
 		JPanel buttonPane = new JPanel();
 		buttonPane.setBackground(new Color(255, 255, 255));
 		FlowLayout fl_buttonPane = new FlowLayout(FlowLayout.RIGHT);
@@ -137,12 +142,14 @@ public class TransactionDialog extends JDialog {
 		buttonPane.setLayout(fl_buttonPane);
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
+		//save button to save field inputs
 		Button saveBtn = new Button();
 		saveBtn.setPreferredSize(new Dimension(70, 32));
 		saveBtn.setText("Save");
 		saveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
 				try {
+					//a lot of validation and returning error messages based on validation below
 					Date date = Date
 							.valueOf(LocalDate.ofInstant(dateField.getDate().toInstant(), ZoneId.systemDefault()));
 					if (date == null) {
@@ -181,6 +188,7 @@ public class TransactionDialog extends JDialog {
 		});
 		buttonPane.add(saveBtn);
 
+		//cancel button
 		Button cancelBtn = new Button();
 		cancelBtn.setPreferredSize(new Dimension(70, 32));
 		cancelBtn.setText("Cancel");
@@ -196,6 +204,7 @@ public class TransactionDialog extends JDialog {
 		refresh();
 	}
 
+	//refresh all the fields
 	public void refresh() {
 		dateField.setDate(transaction.getDate());
 		valueField.setText(transaction.getValue().toString());

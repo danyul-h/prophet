@@ -46,11 +46,13 @@ public class WalletPage extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	//construct wallet page
 	public WalletPage(String username, ArrayList<Transaction> transactions, App app) {
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EmptyBorder(10, 10, 10, 5));
 		setLayout(new BorderLayout(0, 0));
 
+		//lets users scroll through table of transactions
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setBorder(new CompoundBorder(new EmptyBorder(0, 0, 0, 10), new LineBorder(new Color(0, 0, 0))));
@@ -58,6 +60,7 @@ public class WalletPage extends JPanel {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scrollPane, BorderLayout.CENTER);
 
+		//init the table of all transactions
 		JTable table = new JTable() {
 			@Override
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -68,6 +71,7 @@ public class WalletPage extends JPanel {
 		table.getTableHeader().setPreferredSize(new Dimension(24, 24));
 		table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
 
+		//model for the table to follow, describing the different data types
 		DefaultTableModel model = new DefaultTableModel(Transaction.toTable(transactions),
 				new String[] { "ID", "Date", "Value", "Category", "Details" }) {
 			@Override
@@ -89,6 +93,7 @@ public class WalletPage extends JPanel {
 			}
 		};
 
+		//setting up the table
 		table.setModel(model);
 		table.getColumnModel().removeColumn(table.getColumnModel().getColumn(0));
 
@@ -101,6 +106,7 @@ public class WalletPage extends JPanel {
 		table.setRowHeight(32);
 		table.setFont(new Font("Arial", Font.PLAIN, 14));
 
+		//sorting the tables based on desire
 		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
 		table.setRowSorter(sorter);
 		ArrayList<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
@@ -120,6 +126,7 @@ public class WalletPage extends JPanel {
 		table.getTableHeader().setReorderingAllowed(false);
 		scrollPane.setViewportView(table);
 
+		//side panel
 		JPanel side = new JPanel();
 		side.setBorder(null);
 		side.setPreferredSize(new Dimension(200, 10));
@@ -127,12 +134,14 @@ public class WalletPage extends JPanel {
 		add(side, BorderLayout.EAST);
 		side.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
+		//editor panel
 		JPanel editor = new JPanel();
 		editor.setBackground(new Color(255, 255, 255));
 		editor.setBorder(new LineBorder(new Color(0, 0, 0)));
 		editor.setPreferredSize(new Dimension(200, 335));
 		side.add(editor);
 
+		//adding transactions
 		Button addBtn = new Button();
 		addBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -141,16 +150,20 @@ public class WalletPage extends JPanel {
 				dialog.setModal(true);
 				dialog.setVisible(true);
 				Transaction newTransaction = dialog.getTransaction();
+				// if dialog returns a null transaction or one that has all impossible default values, it'll be marked as cancelled
 				if (newTransaction == null || newTransaction.equals(transaction)) {
 					JOptionPane.showMessageDialog(getParent(), "Transaction addition cancelled!", "Cancellation",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else {
+					//otherwise get the id of the new transaction added into the database
 					int newId = Database.addTransaction(newTransaction);
 					if (newId == -1) {
+						//if the id was invalid, connection was unavailable
 						JOptionPane.showMessageDialog(getParent(),
 								"Connection unavailable, transaction addition failed.", "Error",
 								JOptionPane.WARNING_MESSAGE);
 					} else {
+						//otherwise set the id of the transaction locally and mark as success
 						newTransaction.setId(newId);
 						model.addRow(newTransaction.toArray());
 						app.refresh();
@@ -162,15 +175,18 @@ public class WalletPage extends JPanel {
 		});
 		addBtn.setText("Add Transaction");
 
+		//editting transactions
 		Button editBtn = new Button();
 		editBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent a) {
 				int row = table.getSelectedRow();
 				if (row == -1) {
+					//button was clicked with no row specified
 					JOptionPane.showMessageDialog(getParent(),
 							"Please select a transaction from the table to edit first.", "Error",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
+					//get the row data and turn into transaction
 					row = table.convertRowIndexToModel(row);
 					Transaction transaction = Database.getTransaction((int) table.getModel().getValueAt(row, 0));
 					TransactionDialog dialog = new TransactionDialog(transaction);
@@ -178,17 +194,21 @@ public class WalletPage extends JPanel {
 					dialog.setVisible(true);
 					Transaction editedTransaction = dialog.getTransaction();
 					if (editedTransaction == null || editedTransaction.equals(transaction)) {
+						//if nothing changed, tell user it was cancelled
 						JOptionPane.showMessageDialog(getParent(), "No changes to transaction!", "No changes",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else {
 						model.removeRow(row);
 						model.addRow(editedTransaction.toArray());
+						//when editing row, just delete old and add the new transaction
 						switch (Database.editTransaction(editedTransaction)) {
 						case Status.UNAVAILABLE:
+							//if unavailable status, tell user edit wont save properly
 							JOptionPane.showMessageDialog(getParent(),
 									"Connection unavailable, transaction will show locally, but not save.", "Error",
 									JOptionPane.WARNING_MESSAGE);
 						case Status.SUCCESSFUL:
+							//tell user if successful
 							app.refresh();
 							JOptionPane.showMessageDialog(getParent(), "Transaction edit successful!", "Success",
 									JOptionPane.INFORMATION_MESSAGE);
@@ -199,15 +219,18 @@ public class WalletPage extends JPanel {
 		});
 		editBtn.setText("Edit Transaction");
 
+		//button for deleting transactoins
 		Button deleteBtn = new Button();
 		deleteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = table.getSelectedRow();
 				if (row == -1) {
+					//if no row selected, tell user they have to select one
 					JOptionPane.showMessageDialog(getParent(),
 							"Please select a transaction from the table to delete first.", "Error",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
+					//otherwise get row and delete the transaction from database and row
 					row = table.convertRowIndexToModel(row);
 					Database.deleteTransaction((int) table.getModel().getValueAt(row, 0));
 					model.removeRow(row);
@@ -219,6 +242,7 @@ public class WalletPage extends JPanel {
 		});
 		deleteBtn.setText("Delete Transaction");
 
+		//editor instructions
 		JLabel editorInfo = new JLabel(""
 				+ "<html>"
 					+ "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Editor</h2>"
@@ -233,6 +257,7 @@ public class WalletPage extends JPanel {
 		editorInfo.setFont(new Font("Arial", Font.PLAIN, 14));
 		editorInfo.setBackground(Color.WHITE);
 
+		//group layout for resizing
 		GroupLayout gl_editor = new GroupLayout(editor);
 		gl_editor.setHorizontalGroup(gl_editor.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_editor.createSequentialGroup().addContainerGap()
@@ -254,18 +279,21 @@ public class WalletPage extends JPanel {
 						.addComponent(editorInfo, GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE).addGap(13)));
 		editor.setLayout(gl_editor);
 
+		//filter panel for filtering
 		JPanel filter = new JPanel();
 		filter.setBackground(new Color(255, 255, 255));
 		filter.setBorder(new LineBorder(new Color(0, 0, 0)));
 		filter.setPreferredSize(new Dimension(200, 365));
 		side.add(filter);
 
+		//details field to filter transactions
 		JTextField detailsField = new JTextField();
 		detailsField.setBorder(
 				new TitledBorder(null, "Search Details", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		detailsField.setFont(new Font("Arial", Font.PLAIN, 18));
 		detailsField.setColumns(10);
 
+		//selecting filter categories
 		JComboBox<String> categoryField = new JComboBox<String>(new String[] { 
 				"All", 
 				"Income", 
@@ -289,6 +317,7 @@ public class WalletPage extends JPanel {
 		categoryField.setBorder(
 				new TitledBorder(null, "Search Categories", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
+		//setting filter button
 		Button filterBtn = new Button();
 		filterBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -297,6 +326,7 @@ public class WalletPage extends JPanel {
 		});
 		filterBtn.setText("Set Filter");
 
+		//reseting filtering
 		Button resetBtn = new Button();
 		resetBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -307,6 +337,7 @@ public class WalletPage extends JPanel {
 		});
 		resetBtn.setText("Clear");
 
+		//instructions on filtering
 		JLabel filterInfo = new JLabel("" 
 						+ "<html>"
 							+ "<h2 style=\"margin-bottom:-5;text-align:center\">Transaction Filters</h2>"
@@ -319,6 +350,8 @@ public class WalletPage extends JPanel {
 		filterInfo.setForeground(Color.BLACK);
 		filterInfo.setFont(new Font("Arial", Font.PLAIN, 14));
 		filterInfo.setBackground(Color.WHITE);
+		
+		//group layout for dynamic sizing
 		GroupLayout gl_filter = new GroupLayout(filter);
 		gl_filter.setHorizontalGroup(gl_filter.createParallelGroup(Alignment.LEADING).addGroup(gl_filter
 				.createSequentialGroup().addContainerGap()

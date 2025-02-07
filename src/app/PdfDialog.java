@@ -49,20 +49,24 @@ public class PdfDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private static final ImageIcon appIcon = new ImageIcon(TransactionDialog.class.getResource("/icons/app.png"));
 
+	//fields
 	private ArrayList<Transaction> transactions;
 	private JDateChooser startDateField;
 	private JDateChooser endDateField;
 	private String username;
 	public boolean downloaded = false;
 
+	//getting the transactions
 	public ArrayList<Transaction> getTransactions() {
 		return transactions;
 	}
 
+	//constructor
 	public PdfDialog(ArrayList<Transaction> entries, String user) {
 		this.transactions = entries;
 		this.username = user;
 
+		//setting up window settings
 		setResizable(false);
 		setTitle("Prophet Transactions");
 		setIconImage(appIcon.getImage());
@@ -71,35 +75,41 @@ public class PdfDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
+		//init the content panel where all components are held
 		contentPanel.setPreferredSize(new Dimension(300, 360));
 		contentPanel.setBackground(new Color(255, 255, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPanel.setLayout(null);
 
+		//label for start date field
 		JLabel startDateLbl = new JLabel("Start Date:");
 		startDateLbl.setBounds(10, 11, 90, 32);
 		startDateLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		startDateLbl.setFont(new Font("Arial", Font.PLAIN, 16));
 		contentPanel.add(startDateLbl);
 
+		//start date field chooser for user input
 		startDateField = new JDateChooser();
 		startDateField.setBorder(new LineBorder(new Color(0, 0, 0)));
 		startDateField.setBounds(120, 11, 136, 32);
 		startDateField.setFont(new Font("Arial", Font.PLAIN, 16));
 		contentPanel.add(startDateField);
 
+		//end date label
 		JLabel endDateLbl = new JLabel("End Date:");
 		endDateLbl.setBounds(10, 60, 90, 32);
 		endDateLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		endDateLbl.setFont(new Font("Arial", Font.PLAIN, 16));
 		contentPanel.add(endDateLbl);
 
+		//end date chooser
 		endDateField = new JDateChooser();
 		endDateField.setBorder(new LineBorder(new Color(0, 0, 0)));
 		endDateField.setBounds(120, 60, 136, 32);
 		endDateField.setFont(new Font("Arial", Font.PLAIN, 16));
 		contentPanel.add(endDateField);
 
+		//instructions to help user
 		JLabel helpLbl = new JLabel("" 
 				+ "<html>"
 					+ "<h2 style=\"margin-bottom:-5;text-align:center;margin-top:-5;\">Report Download</h2>"
@@ -113,6 +123,7 @@ public class PdfDialog extends JDialog {
 		helpLbl.setBounds(10, 116, 250, 220);
 		contentPanel.add(helpLbl);
 
+		//a bottom section for the buttons
 		JPanel buttonPane = new JPanel();
 		buttonPane.setBackground(new Color(255, 255, 255));
 		FlowLayout fl_buttonPane = new FlowLayout(FlowLayout.RIGHT);
@@ -121,13 +132,16 @@ public class PdfDialog extends JDialog {
 		buttonPane.setLayout(fl_buttonPane);
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
+		//download button
 		Button downloadBtn = new Button();
 		downloadBtn.setPreferredSize(new Dimension(90, 32));
 		downloadBtn.setText("Download");
 		downloadBtn.addActionListener(new ActionListener() {
+			//when button is clicked...
 			public void actionPerformed(ActionEvent a) {
 				LocalDate startDate;
 				LocalDate endDate;
+				//using default values if the fields are not valid, otherwise use input fields
 				if (startDateField.getDate() == null)
 					startDate = Transaction.getOldest(transactions).getDate().toLocalDate();
 				else
@@ -137,12 +151,15 @@ public class PdfDialog extends JDialog {
 				else
 					endDate = LocalDate.ofInstant(endDateField.getDate().toInstant(), ZoneId.systemDefault());
 				downloaded = true;
+				//generate the pdf
 				generatePdf(startDate, endDate);
+				//close window
 				dispose();
 			}
 		});
 		buttonPane.add(downloadBtn);
 
+		//cancel btn closes the window
 		Button cancelBtn = new Button();
 		cancelBtn.setPreferredSize(new Dimension(70, 32));
 		cancelBtn.setText("Cancel");
@@ -157,30 +174,40 @@ public class PdfDialog extends JDialog {
 	}
 
 	public void generatePdf(LocalDate start, LocalDate end) {
+		//generating pdf 
 		try {
+			//locate user's downloads folder
 			String home = System.getProperty("user.home");
 			LocalDateTime retrieveDate = LocalDateTime.now();
+			//create the file with the name including the report and date and time retrieved
 			PdfWriter writer = new PdfWriter(home + "/Downloads/Prophet-Transactions-Report_"
 					+ retrieveDate.format(DateTimeFormatter.ofPattern("LLLL-d-yyyy_kk-mm-ss")) + ".pdf");
 			PdfDocument pdf = new PdfDocument(writer);
+			//pdf size
 			pdf.setDefaultPageSize(PageSize.A4);
 			Document document = new Document(pdf);
 
+			//adding title to pdf
 			Paragraph title = new Paragraph("Prophet Transactions Report").setFontColor(new DeviceRgb(40, 3, 50))
 					.setFontSize(20f).setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD));
+			//adding retrieval date and time to pdf
 			Paragraph subtitle = new Paragraph(
 					"Retrieved " + retrieveDate.format(DateTimeFormatter.ofPattern("LLLL d yyyy, kk:mm:ss")))
 					.setFontColor(new DeviceRgb(100, 24, 120)).setFontSize(12f)
 					.setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_OBLIQUE));
 
+			//adding a header table
 			Table header = new Table(UnitValue.createPercentArray(new float[] { 60, 40 })).setBorder(Border.NO_BORDER)
 					.useAllAvailableWidth();
 
+			//adding a table to hold titles, add the titles to the table
 			Table tableTitle = new Table(1).useAllAvailableWidth().setBorder(Border.NO_BORDER);
 			tableTitle.addCell(new Cell().add(title).setBorder(Border.NO_BORDER));
 			tableTitle.addCell(new Cell().add(subtitle).setBorder(Border.NO_BORDER));
+			//add the titles to the header
 			header.addCell(new Cell().add(tableTitle).setBorder(Border.NO_BORDER));
 
+			//adding start and end date range
 			Table tableDates = new Table(1).useAllAvailableWidth().setBorder(Border.NO_BORDER);
 			tableDates.addCell(new Cell()
 					.add(new Paragraph("START DATE: " + start.format(DateTimeFormatter.ofPattern("LLLL d, yyyy")))
@@ -191,16 +218,19 @@ public class PdfDialog extends JDialog {
 							.setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER));
 			tableDates.addCell(new Cell().add(new Paragraph("USER: " + username).setTextAlignment(TextAlignment.RIGHT))
 					.setBorder(Border.NO_BORDER));
+			//adding the dates to the header
 			header.addCell(new Cell().add(tableDates).setBorder(Border.NO_BORDER));
-
 			document.add(header);
 
+			//add a divider
 			Table divider = new Table(1).useAllAvailableWidth().setBorder(new SolidBorder(1f / 5f));
 			document.add(divider);
 
+			//add a summary
 			Table summary = new Table(UnitValue.createPercentArray(new float[] { 65, 35 })).useAllAvailableWidth()
 					.setBorder(Border.NO_BORDER);
 
+			//data for the summary
 			ArrayList<Transaction> filteredTransactions = Transaction.filterDayRange(transactions, start, end);
 			String startValue = String.format("%.2f",
 					Transaction.getDayValue(filteredTransactions, start.minusDays(1)));
@@ -208,6 +238,7 @@ public class PdfDialog extends JDialog {
 			String totalExpenses = String.format("%.2f", Transaction.getExpenses(filteredTransactions));
 			String totalIncomes = String.format("%.2f", Transaction.getIncomes(filteredTransactions));
 
+			//add summary labels and their values
 			document.add(new Paragraph("Transactions Summary").setTextAlignment(TextAlignment.CENTER)
 					.setFontColor(new DeviceRgb(100, 24, 120))).setBorder(Border.NO_BORDER);
 			summary.addCell(new Cell().add(new Paragraph("Beginning Balance")).setBorder(Border.NO_BORDER));
@@ -223,10 +254,13 @@ public class PdfDialog extends JDialog {
 			summary.addCell(new Cell().add(new Paragraph(endValue).setTextAlignment(TextAlignment.RIGHT))
 					.setBorder(Border.NO_BORDER));
 			document.add(summary);
+			//add another divider after summary
 			document.add(divider);
+			//add a list of all transactions
 			document.add(new Paragraph("All Transactions").setTextAlignment(TextAlignment.CENTER)
 					.setFontColor(new DeviceRgb(100, 24, 120))).setBorder(Border.NO_BORDER);
 
+			//create column headers date, category, details, value, total balance
 			Table table = new Table(UnitValue.createPercentArray(new float[] { 15, 20, 30, 15, 20 }))
 					.useAllAvailableWidth().setBorder(Border.NO_BORDER);
 			table.addCell(new Cell()
@@ -245,9 +279,12 @@ public class PdfDialog extends JDialog {
 					(new Paragraph("Total Balance").setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD))))
 					.setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f / 5f)));
 
+			//find double value of start balance
 			double balance = Transaction.getDayValue(filteredTransactions, start.minusDays(1));
 			Transaction.sortTransactions(filteredTransactions);
+			//iterate over sorted transactions
 			for (Transaction i : filteredTransactions) {
+				//add values to the table
 				table.addCell(new Cell().add(new Paragraph(i.getDate().toString())).setBorder(Border.NO_BORDER)
 						.setBorderBottom(new SolidBorder(1f / 5f)));
 				table.addCell(new Cell().add(new Paragraph(i.getCategory())).setBorder(Border.NO_BORDER)
@@ -265,6 +302,7 @@ public class PdfDialog extends JDialog {
 						.setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(1f / 5f)));
 			}
 
+			//add the table and close the document, it will be in downloads now
 			document.add(table);
 			document.close();
 		} catch (Exception e) {

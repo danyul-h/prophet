@@ -14,6 +14,7 @@ public class Button extends JButton {
 
 	private static final long serialVersionUID = 1L;
 
+	//setters and getters below
 	public Color getColor() {
 		return color;
 	}
@@ -47,8 +48,9 @@ public class Button extends JButton {
 		this.radius = radius;
 	}
 
+	//constructor here
 	public Button() {
-		// Init Color
+		// init color and font of button
 		setFont(new Font("Arial", Font.PLAIN, 16));
 		setColor(Color.WHITE);
 		colorClick = Color.LIGHT_GRAY;
@@ -56,7 +58,7 @@ public class Button extends JButton {
 		setFocusable(false);
 		borderColor = Color.black;
 		setContentAreaFilled(false);
-		// Add event mouse
+		// Add event mouse, when clicking the color will change to make the button more interactive
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent me) {
@@ -70,12 +72,14 @@ public class Button extends JButton {
 		});
 	}
 
+	//different fields to customize the button
 	private Color color;
 	private Color colorClick;
 	private Color borderColor;
 	private int radius = 20;
 
 	@Override
+	//drawing the actual button using the parent function paintComponent
 	protected void paintComponent(Graphics grphcs) {
 		Graphics2D g2 = (Graphics2D) grphcs;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
